@@ -8,19 +8,36 @@ export default new Router({
   routes: [
     {
       path: "/",
-      alias: "/tutorials",
-      name: "tutorials",
-      component: () => import("./components/TutorialsList")
+      alias: "/login",
+      name: "login",
+      component: () => import("./components/login")
     },
     {
-      path: "/tutorials/:id",
-      name: "tutorial-details",
-      component: () => import("./components/Tutorial")
+      path: "/student",
+      //alias: "/student/dashboard",
+      name: "student-dashboard",
+      component: () => import("./components/StudentDashboard")
+    },
+    {
+      path: "/teacher",
+      //alias: "/teacher/dashboard",
+      name: "teacher-dashboard",
+      component: () => import("./components/TeacherDashboard")
+    },
+    {
+      path: "/student/form",
+      name: "student-form",
+      component: () => import("./components/StudentForm")
+    },
+    {
+      path: "/teacher/form",
+      name: "teacher-form",
+      component: () => import("./components/TeacherForm")
     },
     {
       path: "/add",
       name: "add",
       component: () => import("./components/AddTutorial")
-    }
+    },
   ]
 });

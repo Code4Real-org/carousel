@@ -1,6 +1,6 @@
 module.exports = {
   HOST: "localhost",
-  USER: "code4real",
+  USER: "anjugoenka",
   PASSWORD: "teamc4r",
   DB: "carousel",
   dialect: "mysql",
