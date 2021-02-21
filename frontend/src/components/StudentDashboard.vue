@@ -57,7 +57,8 @@ body {
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
-  font-family: Varela Round;
+  font-family: Varela Round, sans-serif;
+  width: 100%;
 }
 
 /* Links inside the navbar left */
@@ -200,7 +201,7 @@ body {
   margin-top: 1.5%;
   margin-right: 1%;
   text-decoration: none;
-  font-size: 38pt;
+  font-size: 28pt;
 }
 .create-form:hover {
   background-color: #654321;
@@ -222,6 +223,7 @@ body {
   color: ivory;
   border-color: black;
   border-style: solid;
+  border-width: 1px;
 }
 
 .quick-access-header {
@@ -237,6 +239,7 @@ body {
   padding: 5px;
   border-color: black;
   border-style: solid;
+  border-width: 1px;
   text-align: center;
   background-color: #ede1d1ff;
   width: 45%;
@@ -255,6 +258,7 @@ body {
 .folder-item {
   border-color: black;
   border-style: solid;
+  border-width: 1px;
   text-align: center;
   background-color: #eeeeeeff;
   width: 21%;
