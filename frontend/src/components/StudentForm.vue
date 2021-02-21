@@ -143,7 +143,7 @@ body {
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
-  font-family: Varela Round;
+  font-family: Varela Round, sans-serif;
 }
 
 /* Links inside the navbar left */
