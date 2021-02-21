@@ -220,8 +220,24 @@
 
     <!-- <button class="adding_button" @click="addNewQuestion">+</button> -->
 
+    
+
     <!--topic choice box-->
     <div id="topicChoiceBox" class="questions">
+      <!--minimum question box-->
+        <div id="minQuestionBox">
+          <p>
+             <label>Set minimum questions to be answered: </label>
+               <input type="text" name="minQuestions" list="minQuestionInput" size="2" maxlength="2"/>
+                  <datalist id="minQuestionInput">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </datalist>
+          </p>
+        </div>
       <p>Set your choice questions here</p>
 
       <!--topic label-->
@@ -431,7 +447,7 @@ export default {
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
-  font-family: Varela Round;
+  font-family: Varela Round, sans-serif;;
 }
 
 /* Links inside the navbar left */
@@ -785,4 +801,5 @@ export default {
   display: block;
   text-align: center;
 }
+
 </style>
