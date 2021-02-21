@@ -3,7 +3,7 @@
   <div>
   <div class="navigator">
     <div class="left-side">
-      <a href="/teacher">Return to Dashboard</a>
+      <a href="/teacher">Dashboard</a>
     </div>
     <div class="right-side">
       <div class="dropdown">
@@ -80,7 +80,7 @@ body {
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
-  font-family: Varela Round;
+  font-family: Varela Round, sans-serif;;
 }
 
 /* Links inside the navbar left */
@@ -223,7 +223,8 @@ body {
   margin-top: 1.5%;
   margin-right: 1%;
   text-decoration: none;
-  font-size: 38pt;
+  font-size: 20pt;
+  
 }
 .create-form:hover{
   background-color: #654321;
@@ -315,7 +316,7 @@ body {
   margin-top: 1.5%;
   margin-right: 1%;
   text-decoration: none;
-  font-size: 38pt;
+  font-size: 28pt;
 }
 
 .tip-dropdown-content {
