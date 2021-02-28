@@ -228,17 +228,20 @@
         <div id="minQuestionBox">
           <p>
              <label>Set minimum questions to be answered: </label>
-               <input type="text" name="minQuestions" list="minQuestionInput" size="2" maxlength="2"/>
+               <input 
+               class = "questionnumber" 
+               type="text" 
+               v-model= "minQuestions" 
+               name="minQuestions" 
+               list="minQuestionInput" 
+               size="4" 
+               maxlength="2"
+               />
                   <datalist id="minQuestionInput">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
                   </datalist>
           </p>
         </div>
-      <p>Set your choice questions here</p>
+      <p>Set your choice questions here: </p>
 
       <!--topic label-->
       <!--
@@ -338,6 +341,7 @@ export default {
     return {
       title: "",
       desc: "",
+      minQuestions: "3",
       dueDate: getISOStringWithoutSecsAndMillisecs2(new Date()),
       choiceQuestions: [
         {
@@ -583,8 +587,8 @@ export default {
 }
 /* box for x-button */
 .x-button {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   background-color: #c95237ff;
   float: right;
   border: 1px solid white;
@@ -718,6 +722,7 @@ export default {
   margin-top: 6%;
   border: 1px solid black;
   display: block;
+  padding: 5px;
 }
 
 /* label of choice box */
@@ -758,7 +763,7 @@ export default {
 /* adding multiple choice/checkbox button */
 .adding_mc_button {
   background-color: white;
-  border: none;
+  border: 1px solid black;
   color: grey;
   display: flex;
   float: left;
@@ -774,12 +779,13 @@ export default {
 .question-box-choices {
   -webkit-text-fill-color: #779fa1;
   height: 32px;
-  width: 80px;
+  width: 90px;
   float: right;
   background-color: #ede1d1ff;
   margin-right: 1%;
   margin-top: 3%;
   border: 1px solid black;
+  text-align: center;
 }
 
 .deleting_mc_button {
@@ -800,6 +806,16 @@ export default {
   color: white;
   display: block;
   text-align: center;
+}
+
+.questionnumber {
+  margin-top: 1%;
+  margin-left: 1%;
+  text-align: center;
+  height: 25px;
+  font-size: 12px;
+  width: 50px;
+  color: #779fa1;
 }
 
 </style>
