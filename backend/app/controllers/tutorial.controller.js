@@ -1,5 +1,6 @@
 const db = require("../models");
 const Tutorial = db.tutorials;
+const User = db.users;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
@@ -19,6 +20,10 @@ exports.create = (req, res) => {
     published: req.body.published ? req.body.published : false
   };
 
+  const user = {
+    
+  }
+
   // Save Tutorial in the database
   Tutorial.create(tutorial)
     .then(data => {
@@ -30,7 +35,9 @@ exports.create = (req, res) => {
           err.message || "Some error occurred while creating the Tutorial."
       });
     });
-};
+  };
+
+
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
