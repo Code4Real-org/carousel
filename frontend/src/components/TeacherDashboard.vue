@@ -247,6 +247,7 @@ body {
   color: ivory;
   border-color: black;
   border-style: solid;
+  border-width: 1px;
 }
 
 .quick-access-header {
@@ -267,6 +268,7 @@ body {
   width: 45%;
   display: inline-block;
   margin: 1%;
+  border-width: 1px;
 }
 .folders-header {
   margin: 1% 10% 1% 10%;
@@ -280,6 +282,7 @@ body {
 .folder-item {
   border-color: black;
   border-style: solid;
+  border-width: 1px;
   text-align: center;
   background-color: #eeeeeeff;
   width: 21%;
