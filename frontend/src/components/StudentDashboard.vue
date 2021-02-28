@@ -17,7 +17,6 @@
     </div>
   </div>
   <!--dashboard-->
-      <router-link class="create-form" to="/student/form">+</router-link>
   <div class="tip">
     <img src="" />
   </div>
@@ -26,9 +25,7 @@
   </div>
   <h2 class="quick-access-header">Quick Access:</h2>
   <div class="quick-access">
-    <div class="recent-forms">
-      <p>Most Recent Form</p>
-    </div>
+      <router-link class="recent-forms" to="/student/form">Your Recent Form</router-link>
   </div>
   <h2 class="forms-header">Forms:</h2>
   <div class="forms">
@@ -203,9 +200,7 @@ body {
   text-decoration: none;
   font-size: 28pt;
 }
-.create-form:hover {
-  background-color: #654321;
-}
+
 /* box for question */
 #questions {
   width: 600px;
@@ -242,9 +237,15 @@ body {
   border-width: 1px;
   text-align: center;
   background-color: #ede1d1ff;
-  width: 45%;
+  width: 100%;
   display: inline-block;
   margin: 1%;
+  color: black;
+  text-decoration: none;
+}
+
+.recent-forms:hover {
+  background-color: #e1caabff;
 }
 .folders-header {
   margin: 1% 10% 1% 10%;
