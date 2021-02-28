@@ -143,4 +143,4 @@ exports.findAllPublished = (req, res) => {
           err.message || "Some error occurred while retrieving tutorials."
       });
     });
-};x
+};
