@@ -1,6 +1,5 @@
 const db = require("../models");
 const Tutorial = db.tutorials;
-const User = db.users;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
@@ -20,9 +19,6 @@ exports.create = (req, res) => {
     published: req.body.published ? req.body.published : false
   };
 
-  const user = {
-    
-  }
 
   // Save Tutorial in the database
   Tutorial.create(tutorial)

@@ -1,12 +1,13 @@
 <template>
   <div>
-    <button v-google-signin-button="clientId" class="google-signin-button">Register With Google</button>
-    <button @click="login">Auth</button>
+    <button v-google-signin-button="clientId" class="google-signin-button" data-onsuccess="onSignIn">Register With Google</button>
+    <button @click="saveUser">Confirm</button>
   </div>
 </template>
 
+<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
 <script>
-import TutorialDataService from "../services/TutorialDataService";
+import UserDataService from "../services/UserDataService";
 import GoogleSignInButton from 'vue-google-signin-button-directive'
 export default {
   directives: {
@@ -15,48 +16,37 @@ export default {
   data() {
     return {
       clientId: '266665755285-1ko4rd39v8ke1criuutid8s65cgnlvve.apps.googleusercontent.com',
-      tutorial: {
-        id: null,
-        googleid: ""
+      user: {
+        gid: "",
+        fname: "bob",
+        lname: "asdas",
       },
-      submitted: false
     };
   },
   methods: {
+    saveUser() {
+      var data = {
+        gid: this.user.gid,
+        fname: this.user.fname,
+        lname: this.user.lname,
+      };
+      console.log(data);
+      UserDataService.create(data)
+          .then(response => {
+            this.user.gid = response.data.gid;
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+    },
     OnGoogleAuthSuccess (idToken) {
-      console.log(idToken);
-      this.tutorial.googleid = idToken;
+      this.user.gid = idToken;
     },
     OnGoogleAuthFail (error) {
       console.log(error)
     },
-    saveTutorial() {
-      var data = {
-        title: this.tutorial.title,
-        description: this.tutorial.description,
-        googleid: this.tutorial.googleid,
-      };
-      TutorialDataService.create(data)
-          .then(response => {
-            this.tutorial.id = response.data.id;
-            console.log(response.data);
-            this.submitted = true;
-          })
-          .catch(e => {
-            console.log(e);
-          });
-    },
-    login() {
-      TutorialDataService.login(this.tutorial.googleid)
-          .then(response => {
-            this.tutorials = response.data;
-            console.log(response.data);
-            console.log("googleid: " + this.tutorial.googleid);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-    },
+    
   }
 }
 </script>
