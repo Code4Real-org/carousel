@@ -9,16 +9,15 @@
       <div class="dropdown">
         <button class="drop-button">Your Name</button>
         <div class="button">
-          <a href="Setting.html">Settings</a>
-          <a href="Help.html">Help</a>
-          <a>Log Out</a>
+          <a href>Settings</a>
+          <a href>Help</a>
+          <a href>Log Out</a>
         </div>
       </div>
     </div>
   </div>
   <!--dashboard-->
   <div class="tip">
-    <img src="" />
   </div>
   <div class="header">
     <h2>Your Assigned Forms</h2>
@@ -44,18 +43,11 @@ export default {
 
 <style scoped>
 
-/* background color */
-body {
-  background-color: #f5f7e9ff;
-  font-family: "Varela Round", sans-serif;
-}
-
 /* Navbar container */
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
   font-family: Varela Round, sans-serif;
-  width: 100%;
 }
 
 /* Links inside the navbar left */
@@ -81,6 +73,7 @@ body {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  background-color: #779fa1ff;
 }
 
 /* The dropdown container */
@@ -98,9 +91,7 @@ body {
   padding: 14px 16px;
   background-color: inherit;
   font-family: inherit;
-  /* Important for vertical align on mobile phones */
   margin: 0;
-  /* Important for vertical align on mobile phones */
 }
 
 /* Add a purple background color to navbar links on hover */
@@ -114,30 +105,18 @@ body {
   background-color: #564154ff;
 }
 
-/* Dropdown content (hidden by default) */
-.button {
-  display: none;
-  position: absolute;
-  background-color: #779fa1ff;
-  min-width: 121px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.button a {
-  float: none;
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-
 /* Show the dropdown menu on hover */
 .dropdown:hover .button {
   display: block;
 }
+
+/* Dropdown content (hidden by default) */
+.button {
+  display: none;
+  position: absolute;
+}
+
+/*Nav Tool CSS Finished*/
 
 /* box for form */
 #form {
@@ -151,34 +130,6 @@ body {
   margin-bottom: 1%;
 }
 
-/* box for title */
-#title {
-  width: 600px;
-  height: 40px;
-  background-color: #eeeeeeff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2%;
-}
-
-/* box for description */
-#description {
-  width: 600px;
-  height: 40px;
-  background-color: #eeeeeeff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10%;
-}
-
-/* box for x-button */
-.x-button {
-  width: 20px;
-  height: 20px;
-  background-color: #c95237ff;
-  float: right;
-}
-
 /* letter in the x-button */
 .x-button a {
   float: none;
@@ -187,6 +138,7 @@ body {
   display: block;
   text-align: center;
 }
+
 .create-form {
   float: right;
   text-align: center;
