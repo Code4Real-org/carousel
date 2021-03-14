@@ -21,14 +21,35 @@ exports.create = (req, res) => {
 
 
   // Save Tutorial in the database
+  // User.create(user)
+  //   .then(data => {
+  //     res.send(data);
+  //   })
+  //   .catch(err => {
+  //     res.status(500).send({
+  //       message:
+  //         err.message || "Some error occurred while creating the User."
+  //     });
+  //   });
+  // };
+
   User.create(user)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the User."
-      });
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error user."
     });
-  };
+  });
+};
+
+  // User.create(user)
+  //   .then(data => {
+      
+  //   })
+  //   .catch(err => {
+      
+  //   });
+  // };

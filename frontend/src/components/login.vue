@@ -1,11 +1,14 @@
 <template>
   <div>
-    <button v-google-signin-button="clientId" class="google-signin-button" data-onsuccess="onSignIn">Register With Google</button>
-    <button @click="saveUser">Confirm</button>
+    <button v-google-signin-button="clientId" class="google-signin-button" data-onsuccess="onSignIn" data-scope="https://www.googleapis.com/auth/userinfo.profile">Register With Google</button>
   </div>
 </template>
 
-<script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script>
+
+</script>
 <script>
 import UserDataService from "../services/UserDataService";
 import GoogleSignInButton from 'vue-google-signin-button-directive'
@@ -16,6 +19,7 @@ export default {
   data() {
     return {
       clientId: '266665755285-1ko4rd39v8ke1criuutid8s65cgnlvve.apps.googleusercontent.com',
+      clientSecret: 'BytajOPLflugjn2UcAiR2feR',
       user: {
         gid: "",
         fname: "bob",
@@ -24,7 +28,9 @@ export default {
     };
   },
   methods: {
-    saveUser() {
+    
+    OnGoogleAuthSuccess (idToken) {
+      this.user.gid = idToken;
       var data = {
         gid: this.user.gid,
         fname: this.user.fname,
@@ -39,9 +45,6 @@ export default {
           .catch(e => {
             console.log(e);
           });
-    },
-    OnGoogleAuthSuccess (idToken) {
-      this.user.gid = idToken;
     },
     OnGoogleAuthFail (error) {
       console.log(error)
