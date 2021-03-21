@@ -73,8 +73,16 @@ export default {
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;;
+  font-family: Varela Round, sans-serif;
 }
+
+/* Navbar container */
+.navigator {
+  overflow: hidden;
+  background-color: #779fa1ff;
+  font-family: Varela Round, sans-serif;
+}
+
 /* Links inside the navbar left */
 .navigator .left-side a {
   float: left;
@@ -84,25 +92,18 @@ export default {
   padding: 14px 16px;
   text-decoration: none;
 }
+
 /*Right side of nav bar */
 .navigator .right-side {
   float: right;
 }
-/* Links inside navbar right */
-.navigator .right-side a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
+
 /* The dropdown container */
 .dropdown {
   float: left;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 }
+
 /* Dropdown button */
 .dropdown .drop-button {
   font-size: 16px;
@@ -116,24 +117,28 @@ export default {
   margin: 0;
   /* Important for vertical align on mobile phones */
 }
+
 /* Add a purple background color to navbar links on hover */
 .navigator .right-side a:hover,
 .dropdown:hover .drop-button {
   background-color: #564154ff;
 }
+
 /*Add a purple background color to nav bar links on hover (left) */
 .navigator .left-side a:hover {
   background-color: #564154ff;
 }
+
 /* Dropdown content (hidden by default) */
 .button {
   display: none;
   position: absolute;
+  min-width: 116px;
   background-color: #779fa1ff;
-  min-width: 121px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
+
 /* Links inside the dropdown */
 .button a {
   float: none;
@@ -143,11 +148,11 @@ export default {
   display: block;
   text-align: left;
 }
+
 /* Show the dropdown menu on hover */
 .dropdown:hover .button {
   display: block;
 }
-
 /* box for x-button */
 .x-button {
   width: 20px;
@@ -256,3 +261,4 @@ a:link {
   color: white;
 }
 </style>
+
