@@ -346,7 +346,7 @@ export default {
       choiceQuestions: [
         {
           type: "short",
-          question: "sdjfko;ajfdk;af",
+          question: "Enter your question here",
         },
       ],
       /*questionBoxes: [
@@ -451,7 +451,14 @@ export default {
 .navigator {
   overflow: hidden;
   background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;;
+  font-family: Varela Round, sans-serif;
+}
+
+/* Navbar container */
+.navigator {
+  overflow: hidden;
+  background-color: #779fa1ff;
+  font-family: Varela Round, sans-serif;
 }
 
 /* Links inside the navbar left */
@@ -469,20 +476,10 @@ export default {
   float: right;
 }
 
-/* Links inside navbar right */
-.navigator .right-side a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
 /* The dropdown container */
 .dropdown {
   float: left;
-  overflow: auto;
+  overflow: hidden;
 }
 
 /* Dropdown button */
@@ -514,8 +511,8 @@ export default {
 .button {
   display: none;
   position: absolute;
+  min-width: 116px;
   background-color: #779fa1ff;
-  min-width: 121px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
