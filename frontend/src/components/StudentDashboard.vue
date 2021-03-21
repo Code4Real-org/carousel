@@ -9,9 +9,9 @@
       <div class="dropdown">
         <button class="drop-button">Your Name</button>
         <div class="button">
-          <a href>Settings</a>
-          <a href>Help</a>
-          <a href>Log Out</a>
+          <a href="Settings.html">Settings</a>
+          <a href="Help.html">Help</a>
+          <a>Log Out</a>
         </div>
       </div>
     </div>
@@ -50,6 +50,13 @@ export default {
   font-family: Varela Round, sans-serif;
 }
 
+/* Navbar container */
+.navigator {
+  overflow: hidden;
+  background-color: #779fa1ff;
+  font-family: Varela Round, sans-serif;
+}
+
 /* Links inside the navbar left */
 .navigator .left-side a {
   float: left;
@@ -63,17 +70,6 @@ export default {
 /*Right side of nav bar */
 .navigator .right-side {
   float: right;
-}
-
-/* Links inside navbar right */
-.navigator .right-side a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  background-color: #779fa1ff;
 }
 
 /* The dropdown container */
@@ -91,7 +87,9 @@ export default {
   padding: 14px 16px;
   background-color: inherit;
   font-family: inherit;
+  /* Important for vertical align on mobile phones */
   margin: 0;
+  /* Important for vertical align on mobile phones */
 }
 
 /* Add a purple background color to navbar links on hover */
@@ -105,15 +103,29 @@ export default {
   background-color: #564154ff;
 }
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .button {
-  display: block;
-}
-
 /* Dropdown content (hidden by default) */
 .button {
   display: none;
   position: absolute;
+  min-width: 116px;
+  background-color: #779fa1ff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.button a {
+  float: none;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .button {
+  display: block;
 }
 
 /*Nav Tool CSS Finished*/
