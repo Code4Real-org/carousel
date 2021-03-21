@@ -148,6 +148,13 @@ body {
   font-family: Varela Round, sans-serif;
 }
 
+/* Navbar container */
+.navigator {
+  overflow: hidden;
+  background-color: #779fa1ff;
+  font-family: Varela Round, sans-serif;
+}
+
 /* Links inside the navbar left */
 .navigator .left-side a {
   float: left;
@@ -163,34 +170,10 @@ body {
   float: right;
 }
 
-/* Links inside navbar right */
-.navigator .right-side a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
 /* The dropdown container */
 .dropdown {
   float: left;
   overflow: hidden;
-}
-
-/* Dropdown button */
-.dropdown .drop-button {
-  font-size: 16px;
-  border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  /* Important for vertical align on mobile phones */
-  margin: 0;
-  /* Important for vertical align on mobile phones */
 }
 
 /* Add a purple background color to navbar links on hover */
@@ -208,8 +191,8 @@ body {
 .button {
   display: none;
   position: absolute;
+  min-width: 116px;
   background-color: #779fa1ff;
-  min-width: 121px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
