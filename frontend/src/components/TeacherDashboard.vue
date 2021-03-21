@@ -69,11 +69,6 @@ export default {
 </script>
 
 <style scoped>
-/* background color */
-body {
-  background-color: #f5f7e9ff;
-  font-family: 'Varela Round', sans-serif;
-}
 /* Navbar container */
 .navigator {
   overflow: hidden;
@@ -152,35 +147,7 @@ body {
 .dropdown:hover .button {
   display: block;
 }
-/* box for form */
-#form {
-  width: 850px;
-  height: 850px;
-  background-color: #e1caabff;
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-/* box for title */
-#title {
-  width: 600px;
-  height: 40px;
-  background-color: #eeeeeeff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2%;
-}
-/* box for description */
-#description {
-  width: 600px;
-  height: 40px;
-  background-color: #eeeeeeff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10%;
-}
+
 /* box for x-button */
 .x-button {
   width: 20px;
@@ -196,33 +163,7 @@ body {
   display: block;
   text-align: center;
 }
-/*.create-form{
-  float: right;
-  text-align: center;
-  width: 60px;
-  height: 60px;
-  background-color: #d0c4b4ff;
-  border-radius: 25px;
-  color: white;
-  margin-top: 1.5%;
-  margin-right: 1%;
-  text-decoration: none;
-  font-size: 20pt;
-  
-}
-.create-form:hover{
-  background-color: #654321;
-}
-*/
-/* box for question */
-#questions {
-  width: 600px;
-  height: 100px;
-  background-color: #eeeeeeff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5%
-}
+
 .header {
   background-color: #deb887ff;
   margin: 1% 7% 1% 7%;
