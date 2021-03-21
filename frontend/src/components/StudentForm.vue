@@ -1,6 +1,5 @@
 <template>
 
-
   <!--app header-->
   <div>
   <div class="navigator">
@@ -44,12 +43,14 @@
           Question (from database)
         </div>
         <!--Question Answer-->
-        <input
+        <div>
+          <input
             type="text"
             id="choice_question_answer"
             class="topic-choice-answer"
             placeholder="answer area"
-        />
+          />
+        </div>
       </div>
 
       <!--trash button-->
@@ -62,6 +63,7 @@
               fill="currentColor"
               class="bi bi-trash"
               viewBox="0 0 16 16"
+              float="right"
           >
             <path
                 d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
@@ -74,7 +76,7 @@
         </div>
       </div>
     </div>
-    <button @click="addNewOptionSet">Add</button>
+    <div class="adding_button" @click="addNewOptionSet">Add</div>
     <router-link class="submit-button" to="/student">Submit</router-link>
   </div>
   <!--form-->
@@ -288,9 +290,7 @@ body {
   text-decoration: none;
   font-size: 38pt;
 }
-.create-form:hover {
-  background-color: #654321;
-}
+
 /* box for question */
 #questions {
   width: 600px;
@@ -300,78 +300,6 @@ body {
   margin-right: auto;
   margin-top: 5%;
 }
-
-.header {
-  background-color: #deb887ff;
-  margin: 1% 7% 1% 7%;
-  text-align: center;
-  color: ivory;
-  border-color: black;
-  border-style: solid;
-}
-
-.quick-access-header {
-  margin: 1% 10% 1% 10%;
-}
-
-.quick-access {
-  margin: 1% 10% 1% 10%;
-  text-align: center;
-}
-
-.recent-forms {
-  padding: 5px;
-  border-color: black;
-  border-style: solid;
-  text-align: center;
-  background-color: #ede1d1ff;
-  width: 45%;
-  display: inline-block;
-  margin: 1%;
-}
-.folders-header {
-  margin: 1% 10% 1% 10%;
-}
-
-.folders {
-  margin: 1% 10% 1% 10%;
-  text-align: center;
-}
-
-.folder-item {
-  border-color: black;
-  border-style: solid;
-  text-align: center;
-  background-color: #eeeeeeff;
-  width: 21%;
-  display: inline-block;
-  margin: 1%;
-  border-radius: 15px;
-}
-
-.forms-header {
-  margin: 1% 10% 1% 10%;
-}
-
-.forms {
-  margin: 1% 10% 1% 10%;
-  text-align: center;
-}
-
-.active-form {
-  background-color: #e1caabff;
-  width: 100%;
-  padding: 10px;
-  margin: 1%;
-}
-
-.inactive-form {
-  background-color: lightgray;
-  width: 100%;
-  padding: 10px;
-  margin: 1%;
-}
-
 
 /* box for form */
 #form {
@@ -383,6 +311,9 @@ body {
   margin-right: auto;
   margin-top: 1%;
   margin-bottom: 10%;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   border: 1px solid black;
 }
 /* box for title */
@@ -394,6 +325,9 @@ body {
   margin-right: auto;
   margin-top: 2%;
   border: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
 }
 /* Text box for title */
 .title-text {
@@ -413,6 +347,9 @@ body {
   margin-right: auto;
   margin-top: 1%;
   border: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
 }
 /* Text box for descrption */
 .desc-text {
@@ -442,13 +379,17 @@ body {
   display: block;
   text-align: center;
 }
+
+.x-button:hover {
+  background-color: #973620ff;
+}
 /* box for due date */
 #due_date {
   width: auto;
   background-color: #779fa1ff;
   float: right;
   margin-right: 1%;
-  margin-top: 1%;
+  margin-top: 1.5%;
   border: 1px solid black;
 }
 
@@ -463,18 +404,9 @@ body {
   margin-top: 6%;
   border: 1px solid black;
   display: block;
+  border-radius: 5px;
 }
 
-/* label of choice box */
-.topic-label {
-  width: 200px;
-  height: 30px;
-  float: left;
-  margin-left: 1%;
-  margin-bottom: 10px;
-  float: bottom;
-  border: 1px solid black;
-}
 /*question and answer text inputs in choice question box*/
 .topic-choice-text {
   width: 550px;
@@ -483,15 +415,19 @@ body {
   margin-right: auto;
   margin-top: 3%;
   border: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
 }
 
 .topic-choice-answer {
   width: 550px;
   height: 80px;
+  margin-top: 4%;
+  border: 1px solid black;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 3%;
-  border: 1px solid black;
+  display: block;
 }
 
 .submit-button {
@@ -505,5 +441,35 @@ body {
   color: white;
   display: block;
   text-align: center;
+  vertical-align: middle;
+  line-height: 25px;
 }
+
+.trash_can {
+  margin-left: 96.5%;
+  margin-top: 1%;
+}
+
+.adding_button {
+  height: 25px;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  background-color: #eeeeeeff;
+  border: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 25px;
+  margin-bottom: 1%;
+}
+
+.adding_button:hover {
+  background-color: #e0e0e0ff;
+}
+
+.submit-button:hover {
+  background-color: #973620ff;
+}
+
 </style>
