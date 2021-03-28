@@ -72,15 +72,8 @@ export default {
 /* Navbar container */
 .navigator {
   overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
-}
-
-/* Navbar container */
-.navigator {
-  overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
+  background-color: #000634ff;
+  font-family: 'Montserrat', sans-serif;  
 }
 
 /* Links inside the navbar left */
@@ -121,12 +114,12 @@ export default {
 /* Add a purple background color to navbar links on hover */
 .navigator .right-side a:hover,
 .dropdown:hover .drop-button {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 
 /*Add a purple background color to nav bar links on hover (left) */
 .navigator .left-side a:hover {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 
 /* Dropdown content (hidden by default) */
@@ -134,7 +127,7 @@ export default {
   display: none;
   position: absolute;
   min-width: 116px;
-  background-color: #779fa1ff;
+  background-color: #00235bff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -170,13 +163,13 @@ export default {
 }
 
 .header {
-  background-color: #deb887ff;
+  /*background-color: rgb(156, 161, 172);*/
   margin: 1% 7% 1% 7%;
   text-align: center;
-  color: ivory;
-  border-color: black;
+  color: black;
+  /*border-color: black;
   border-style: solid;
-  border-width: 1px;
+  border-width: 1px;*/
 }
 .quick-access-header {
   margin: 1% 10% 1% 10%;
@@ -190,11 +183,13 @@ export default {
   border-color: black;
   border-style: solid;
   text-align: center;
-  background-color: #ede1d1ff;
+  background-color: #b0cdd3ff;
   width: 45%;
   display: inline-block;
   margin: 1%;
   border-width: 1px;
+  border-radius: 15px;
+
 }
 .folders-header {
   margin: 1% 10% 1% 10%;
@@ -208,7 +203,7 @@ export default {
   border-style: solid;
   border-width: 1px;
   text-align: center;
-  background-color: #eeeeeeff;
+  background-color: #b0cdd3ff;
   width: 21%;
   display: inline-block;
   margin: 1%;
@@ -222,17 +217,19 @@ export default {
   text-align: center;
 }
 .form-item{
-  background-color: #e1caabff;
+  background-color:#b0cdd3ff;
   width: 100%;
   padding-top: 100px;
   padding-bottom: 100px;
+  border-radius: 15px;
+
 }
 .tip-dropdown {
   float: right;
   text-align: center;
   width: 60px;
   height: 60px;
-  background-color: #d0c4b4ff;
+  background-color: #76a5afff;
   border-radius: 25px;
   color: white;
   margin-top: 1.5%;
