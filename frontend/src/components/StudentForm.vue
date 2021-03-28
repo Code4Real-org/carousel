@@ -138,21 +138,14 @@ export default {
 /* background color */
 body {
   background-color: #f5f7e9ff;
-  font-family: "Varela Round", sans-serif;
+  font-family: 'Montserrat', sans-serif;  
 }
 
 /* Navbar container */
 .navigator {
   overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
-}
-
-/* Navbar container */
-.navigator {
-  overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
+  background-color: #000634ff;
+  font-family: 'Montserrat', sans-serif;  
 }
 
 /* Links inside the navbar left */
@@ -179,12 +172,12 @@ body {
 /* Add a purple background color to navbar links on hover */
 .navigator .right-side a:hover,
 .dropdown:hover .drop-button {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 
 /*Add a purple background color to nav bar links on hover (left) */
 .navigator .left-side a:hover {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 
 /* Dropdown content (hidden by default) */
@@ -192,7 +185,7 @@ body {
   display: none;
   position: absolute;
   min-width: 116px;
-  background-color: #779fa1ff;
+  background-color: #00235bff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -265,7 +258,7 @@ body {
   text-align: center;
   width: 60px;
   height: 60px;
-  background-color: #d0c4b4ff;
+  background-color: #d1d6e0ff;
   border-radius: 25px;
   color: white;
   margin-top: 1.5%;
@@ -288,7 +281,7 @@ body {
 #form {
   height: auto;
   width: 70%;
-  background-color: #e1caabff;
+  background-color: #d1d6e0ff;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -369,7 +362,7 @@ body {
 /* box for due date */
 #due_date {
   width: auto;
-  background-color: #779fa1ff;
+  background-color: #76a5afff;
   float: right;
   margin-right: 1%;
   margin-top: 1.5%;
