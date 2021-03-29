@@ -1,6 +1,11 @@
 <template>
   <div>
-    <button v-google-signin-button="clientId" class="google-signin-button" data-onsuccess="onSignIn" data-scope="https://www.googleapis.com/auth/userinfo.profile">Register With Google</button>
+    <!-- <button v-google-signin-button="clientId" class="google-signin-button" data-onsuccess="onSignIn" data-scope="https://www.googleapis.com/auth/userinfo.profile">Register With Google</button> -->
+  <button v-if="!authenticated" @click="login">Login</button>
+  <div v-if="authenticated">
+  <button @click="logout">Logout</button>
+  <h1>Hi {{ firstName }}!</h1>
+  </div>
   </div>
 </template>
 
@@ -11,47 +16,53 @@
 
 </script>
 <script>
-import UserDataService from "../services/UserDataService";
-import GoogleSignInButton from 'vue-google-signin-button-directive'
+
+import Firebase from '../firebase.js';
+
 export default {
-  directives: {
-    GoogleSignInButton
+  name: 'HelloWorld',
+  props: {
+    msg: String
   },
-  data() {
-    return {
-      clientId: '266665755285-1ko4rd39v8ke1criuutid8s65cgnlvve.apps.googleusercontent.com',
-      clientSecret: 'BytajOPLflugjn2UcAiR2feR',
-      user: {
-        gid: "",
-        fname: "bob",
-        lname: "asdas",
+  data () {
+      return {
+        user: {
+          loggedIn: false,
+          data: {}
+        }
+      }
+    },
+    computed: {
+        authenticated(){
+          return this.user.loggedIn
+        },
+        firstName(){
+          if (this.user.data.displayName) {
+            return this.user.data.displayName.split(' ')[0]
+          }
+          return null
+        }
+    },
+    methods: {
+      login() {
+        Firebase.login();
       },
-    };
-  },
-  methods: {
-    
-    OnGoogleAuthSuccess (idToken) {
-      this.user.gid = idToken;
-      var data = {
-        gid: this.user.gid,
-        fname: this.user.fname,
-        lname: this.user.lname,
-      };
-      console.log(data);
-      UserDataService.create(data)
-          .then(response => {
-            this.user.gid = response.data.gid;
-            console.log(response.data);
-          })
-          .catch(e => {
-            console.log(e);
-          });
+      logout() {
+        Firebase.logout()
+      }
     },
-    OnGoogleAuthFail (error) {
-      console.log(error)
-    },
-    
-  }
+    mounted() {
+      Firebase.auth.onAuthStateChanged( user => {
+        if (user) {
+          this.user.loggedIn = true;
+          this.user.data = user;
+        }
+        else {
+          this.user.loggedIn = false;
+          this.user.data = {};
+        }
+      })
+    }
 }
 </script>
 
