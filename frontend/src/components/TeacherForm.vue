@@ -231,7 +231,8 @@
                <input 
                class = "questionnumber" 
                type="text" 
-               v-model= "minQuestions" 
+               value= "min"
+               @input="changeMessage"
                name="minQuestions" 
                list="minQuestionInput" 
                size="4" 
@@ -337,11 +338,12 @@ function getISOStringWithoutSecsAndMillisecs2(date) {
 export default {
   name: "TeacherForm",
   el: "#form",
+  props:['min'],
   data() {
     return {
       title: "",
       desc: "",
-      minQuestions: "3",
+      minQuestions: "",
       dueDate: getISOStringWithoutSecsAndMillisecs2(new Date()),
       choiceQuestions: [
         {
@@ -382,6 +384,10 @@ export default {
     };
   },
   methods: {
+    changeMin(event) {
+    this.minQuestions = event.target.value;
+    this.$emit('minChanged', this.minQuestions);
+    },
     addNewQuestion() {
       this.questionBoxes.push({
         question: "",

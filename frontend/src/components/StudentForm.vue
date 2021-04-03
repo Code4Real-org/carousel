@@ -1,5 +1,4 @@
 <template>
-
   <!--app header-->
   <div>
   <div class="navigator">
@@ -17,7 +16,9 @@
       </div>
     </div>
   </div>
-
+    <div>
+      <app-input :min="minQuestions" @minChanged="minQuestions = $event"></app-input>
+    </div>
   <div id="form">
     <div class="x-button">
       <router-link to="/student">X</router-link>
@@ -84,6 +85,7 @@
 </template>
 
 <script>
+import TeacherForm from "./TeacherForm.vue";
 function getISOStringWithoutSecsAndMillisecs2(date) {
   const dStr = date.toISOString();
   return dStr.substring(0, dStr.indexOf(":", dStr.indexOf(":") + 1));
@@ -114,6 +116,9 @@ export default {
         },
       ],
     };
+  },
+  components: {
+    'app-input': TeacherForm
   },
   methods: {
     addNewOptionSet() {
