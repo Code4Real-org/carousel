@@ -126,7 +126,7 @@ export default {
 .button {
   display: none;
   position: absolute;
-  min-width: 116px;
+  min-width: 121px; /*fix*/
   background-color: #00235bff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -183,7 +183,7 @@ export default {
   border-color: black;
   border-style: solid;
   text-align: center;
-  background-color: #b0cdd3ff;
+  background-color: #d1d6e0ff;
   width: 45%;
   display: inline-block;
   margin: 1%;
@@ -203,7 +203,7 @@ export default {
   border-style: solid;
   border-width: 1px;
   text-align: center;
-  background-color: #b0cdd3ff;
+  background-color: #d1d6e0ff;
   width: 21%;
   display: inline-block;
   margin: 1%;
@@ -217,7 +217,7 @@ export default {
   text-align: center;
 }
 .form-item{
-  background-color:#b0cdd3ff;
+  background-color:#d1d6e0ff;
   width: 100%;
   padding-top: 100px;
   padding-bottom: 100px;
@@ -229,7 +229,7 @@ export default {
   text-align: center;
   width: 60px;
   height: 60px;
-  background-color: #76a5afff;
+  background-color: rgb(162, 166, 175);
   border-radius: 25px;
   color: white;
   margin-top: 1.5%;
