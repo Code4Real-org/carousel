@@ -7,7 +7,7 @@
     </div>
     <div class="right-side">
       <div class="dropdown">
-        <button class="drop-button">Your Name</button>
+        <div class="drop-button">Your Name</div>
         <div class="button">
           <a href="Settings.html">Settings</a>
           <a href="Help.html">Help</a>
@@ -84,6 +84,7 @@ export default {
   /* Important for vertical align on mobile phones */
   margin: 0;
   /* Important for vertical align on mobile phones */
+  width: 90px;
 }
 
 /* Add a purple background color to navbar links on hover */
@@ -101,7 +102,7 @@ export default {
 .button {
   display: none;
   position: absolute;
-  min-width: 116px;
+  min-width: 121px; /*fix*/
   background-color: #00235bff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -124,13 +125,13 @@ export default {
 
 
 .header {
-  background-color: #76a5afff;
+  /*background-color: #76a5afff;*/
   margin: 1% 7% 1% 7%;
   text-align: center;
-  color: white;
-  border-color: black;
+  color: black;
+  /*border-color: black;
   border-style: solid;
-  border-width: 1px;
+  border-width: 1px; */
 }
 
 .quick-access-header {
@@ -148,7 +149,7 @@ export default {
   border-style: solid;
   border-width: 1px;
   text-align: center;
-  background-color: #b0cdd3ff;
+  background-color: #d1d6e0ff;
   width: 100%;
   display: inline-block;
   margin: 1%;
@@ -159,7 +160,7 @@ export default {
 }
 
 .recent-forms:hover {
-  background-color: #76a5afff;
+  background-color: rgb(162, 166, 175);
 }
 .folders-header {
   margin: 1% 10% 1% 10%;
@@ -175,7 +176,7 @@ export default {
   border-style: solid;
   border-width: 1px;
   text-align: center;
-  background-color: #b0cdd3ff;
+  background-color: #d1d6e0ff;
   width: 21%;
   display: inline-block;
   margin: 1%;
@@ -192,7 +193,7 @@ export default {
 }
 
 .active-form {
-  background-color: #b0cdd3ff;
+  background-color: #d1d6e0ff;
   width: 100%;
   padding: 10px;
   margin: 1%;
@@ -201,7 +202,7 @@ export default {
 }
 
 .inactive-form {
-  background-color: lightgray;
+  background-color: rgb(162, 166, 175);
   width: 100%;
   padding: 10px;
   margin: 1%;
