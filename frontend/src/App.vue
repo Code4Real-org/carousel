@@ -12,18 +12,6 @@
           <router-link to="/student" class="nav-link">Student</router-link>
         </a>
       </div>
-      <div class="right-side">
-        <div class="dropdown">
-          <div class="drop-button">
-            Your Name
-            <div class="button">
-              <a href="Settings.html">Settings</a>
-              <a href="Help.html">Help</a>
-              <a>Log Out</a>
-            </div>
-          </div>
-        </div>
-      </div>    
     </nav>
 
     <div class="container mt-3">
@@ -42,8 +30,8 @@ export default {
 /* Navbar container */
 .navigator {
   overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
+  background-color: #000634ff;
+  font-family: 'Montserrat', sans-serif;   
 }
 
 /* Links inside the navbar left */
@@ -84,19 +72,19 @@ export default {
   outline: none;
   color: white;
   padding: 14px 16px;
-  background-color: inherit;
+  background-color: #000634ff;
   font-family: inherit;
   margin: 0;
 }
 
 /* Add a purple background color to navbar links on hover */
 .dropdown:hover .drop-button {
-  background-color: #564154ff;
+  background-color: #666666ff;
   display: block;
 }
 
 /*Add a purple background color to nav bar links on hover (left) */
 .navigator .left-side a:hover {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 </style>

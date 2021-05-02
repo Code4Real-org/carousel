@@ -7,7 +7,7 @@
     </div>
     <div class="right-side">
       <div class="dropdown">
-        <button class="drop-button">Your Name</button>
+        <div class="drop-button">Your Name</div>
         <div class="button">
           <a href="Settings.html">Settings</a>
           <a href="Help.html">Help</a>
@@ -46,16 +46,10 @@ export default {
 /* Navbar container */
 .navigator {
   overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
+  background-color: #000634ff;
+  font-family: 'Montserrat', sans-serif;  
 }
 
-/* Navbar container */
-.navigator {
-  overflow: hidden;
-  background-color: #779fa1ff;
-  font-family: Varela Round, sans-serif;
-}
 
 /* Links inside the navbar left */
 .navigator .left-side a {
@@ -90,25 +84,26 @@ export default {
   /* Important for vertical align on mobile phones */
   margin: 0;
   /* Important for vertical align on mobile phones */
+  width: 90px;
 }
 
 /* Add a purple background color to navbar links on hover */
 .navigator .right-side a:hover,
 .dropdown:hover .drop-button {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 
 /*Add a purple background color to nav bar links on hover (left) */
 .navigator .left-side a:hover {
-  background-color: #564154ff;
+  background-color: #666666ff;
 }
 
 /* Dropdown content (hidden by default) */
 .button {
   display: none;
   position: absolute;
-  min-width: 116px;
-  background-color: #779fa1ff;
+  min-width: 121px; /*fix*/
+  background-color: #00235bff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -128,61 +123,15 @@ export default {
   display: block;
 }
 
-/*Nav Tool CSS Finished*/
-
-/* box for form */
-#form {
-  width: 850px;
-  height: 850px;
-  background-color: #e1caabff;
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-
-/* letter in the x-button */
-.x-button a {
-  float: none;
-  color: white;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-}
-
-.create-form {
-  float: right;
-  text-align: center;
-  width: 60px;
-  height: 60px;
-  background-color: #d0c4b4ff;
-  border-radius: 25px;
-  color: white;
-  margin-top: 1.5%;
-  margin-right: 1%;
-  text-decoration: none;
-  font-size: 28pt;
-}
-
-/* box for question */
-#questions {
-  width: 600px;
-  height: 100px;
-  background-color: #eeeeeeff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5%;
-}
 
 .header {
-  background-color: #deb887ff;
+  /*background-color: #76a5afff;*/
   margin: 1% 7% 1% 7%;
   text-align: center;
-  color: ivory;
-  border-color: black;
+  color: black;
+  /*border-color: black;
   border-style: solid;
-  border-width: 1px;
+  border-width: 1px; */
 }
 
 .quick-access-header {
@@ -200,16 +149,18 @@ export default {
   border-style: solid;
   border-width: 1px;
   text-align: center;
-  background-color: #ede1d1ff;
+  background-color: #d1d6e0ff;
   width: 100%;
   display: inline-block;
   margin: 1%;
   color: black;
   text-decoration: none;
+  border-radius: 10px;
+
 }
 
 .recent-forms:hover {
-  background-color: #e1caabff;
+  background-color: rgb(162, 166, 175);
 }
 .folders-header {
   margin: 1% 10% 1% 10%;
@@ -225,7 +176,7 @@ export default {
   border-style: solid;
   border-width: 1px;
   text-align: center;
-  background-color: #eeeeeeff;
+  background-color: #d1d6e0ff;
   width: 21%;
   display: inline-block;
   margin: 1%;
@@ -242,17 +193,21 @@ export default {
 }
 
 .active-form {
-  background-color: #e1caabff;
+  background-color: #d1d6e0ff;
   width: 100%;
   padding: 10px;
   margin: 1%;
+  border-radius: 10px;
+
 }
 
 .inactive-form {
-  background-color: lightgray;
+  background-color: rgb(162, 166, 175);
   width: 100%;
   padding: 10px;
   margin: 1%;
+  border-radius: 10px;
+
 }
 
 </style>
