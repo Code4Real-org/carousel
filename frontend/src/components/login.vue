@@ -13,12 +13,9 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <script>
-
 </script>
 <script>
-
 import Firebase from '../firebase.js';
-
 export default {
   name: 'HelloWorld',
   props: {
