@@ -7,6 +7,9 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING,
     },
+    title:{
+      type: Sequelize.STRING,
+    },
     poas1: {
       type: Sequelize.STRING,
     },
@@ -14,6 +17,24 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     bio1: {
+      type: Sequelize.STRING,
+    },
+    poas2: {
+      type: Sequelize.STRING,
+    },
+    sig2: {
+      type: Sequelize.STRING,
+    },
+    bio2: {
+      type: Sequelize.STRING,
+    },
+    poas3: {
+      type: Sequelize.STRING,
+    },
+    sig3: {
+      type: Sequelize.STRING,
+    },
+    bio3: {
       type: Sequelize.STRING,
     },
 
