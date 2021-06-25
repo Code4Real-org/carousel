@@ -35,9 +35,9 @@ export default new Router({
       component: () => import("./components/TeacherForm")
     },
     {
-      path: "/add",
-      name: "add",
-      component: () => import("./components/AddTutorial")
+      path: "/submit/form",
+      name: "submit-form",
+      component: () => import("./components/SubmitForm")
     },
   ]
 });
