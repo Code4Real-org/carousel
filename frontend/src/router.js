@@ -33,11 +33,6 @@ export default new Router({
       path: "/teacher/form",
       name: "teacher-form",
       component: () => import("./components/TeacherForm")
-    },
-    {
-      path: "/submit/form",
-      name: "submit-form",
-      component: () => import("./components/SubmitForm")
-    },
+    }
   ]
 });
