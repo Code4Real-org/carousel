@@ -7,8 +7,16 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       gid: {
-        type: Sequelize.STRING(700),
-        primaryKey: true,
+        type: Sequelize.STRING(256)
+      },
+      username: {
+        type: Sequelize.STRING
+      },
+      email: {
+        type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING
       }
     });
   
