@@ -29,17 +29,17 @@ db.sequelize.sync({ force: true }).then(() => {
 function initial() {
   Role.create({
     id: 1,
-    name: "user"
+    name: "admin"
   });
  
   Role.create({
     id: 2,
-    name: "moderator"
+    name: "teacher"
   });
  
   Role.create({
     id: 3,
-    name: "admin"
+    name: "student"
   });
 }
 
