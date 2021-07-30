@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const db = require("./app/models");
+const User = db.user;
 const Role = db.role;
 
 const app = express();
@@ -41,6 +42,16 @@ function initial() {
     id: 3,
     name: "student"
   });
+
+  // Root admin account
+  User.create({
+    id: 1,
+    username: "code4real",
+    email: "code4real.org@gmail.com",
+  })
+    .then(user => {
+      user.setRoles([1]);
+    });
 }
 
 // simple route
