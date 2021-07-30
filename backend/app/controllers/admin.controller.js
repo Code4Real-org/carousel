@@ -16,21 +16,32 @@ exports.signin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User not found." });
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400 // 24 hours
-      });
+      Role.findOne({
+        where: {
+          name: "admin"
+        }
+      })
+      .then(role => {
+        user.hasRoles(role).then(found => {
+          if (!found) {
+            return res.status(404).send({ message: "Role does not match." });
+          }
 
-      if (user.hasRole("admin")) {
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          accessToken: token
-        });
-      }
+          var token = jwt.sign({ id: user.id }, config.secret, {
+            expiresIn: 86400 // 24 hours
+          });
+
+          res.status(200).send({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            accessToken: token
+          });
+        })
+      })
     })
     .catch(err => {
       res.status(500).send({ message: err.message });

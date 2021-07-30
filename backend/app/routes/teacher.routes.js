@@ -20,4 +20,4 @@ module.exports = function(app) {
   );
 
   app.post("/api/teacher/signin", controller.signin);
-}
+};
