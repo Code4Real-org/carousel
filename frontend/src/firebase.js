@@ -1,6 +1,8 @@
-import firebase from "firebase/app"
-import 'firebase/auth';
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
+// firebase init
 const firebaseConfig = {
   apiKey:"AIzaSyAnDafQAaUOQupTAOXlVaNG8LWANKRnkYg",
   authDomain:"carouseltest-aea9b.firebaseapp.com",
@@ -9,15 +11,34 @@ const firebaseConfig = {
   messagingSenderId:"246333684038",
   appId:"1:246333684038:web:08bf8012a35ea871368d47",
   measurementId:"G-L68RQS8PL0"
-};
+}
+firebase.initializeApp(firebaseConfig)
 
-firebase.initializeApp(firebaseConfig);
+// utils
+const db = firebase.firestore()
+const auth = firebase.auth()
+
+// collection references
+const usersCollection = db.collection('users')
+const postsCollection = db.collection('posts')
+const commentsCollection = db.collection('comments')
+const likesCollection = db.collection('likes')
+
+// export utils/refs
+export {
+  db,
+  auth,
+  usersCollection,
+  postsCollection,
+  commentsCollection,
+  likesCollection
+}
 
 export default {
-    auth: firebase.auth(),
-    login() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
+  auth: firebase.auth(),
+  login() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
       .then(function(result) {
         console.log(result);
       })
@@ -27,12 +48,11 @@ export default {
         const email = error.email;
         const credential = error.credential;
         console.log(errorCode, errorMessage, email, credential);
-        })
-    },
-    logout() {
-      firebase.auth().signOut()
+      })
+  },
+  logout() {
+    firebase.auth().signOut()
       .then(function() {})
-      .catch(function(error) {
-        console.log(error)});
-    }
+      .catch(function(error) {console.log(error)});
+  }
 }
