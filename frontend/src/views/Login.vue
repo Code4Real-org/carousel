@@ -3,13 +3,16 @@
     <PasswordReset v-if="showPasswordReset" @close="togglePasswordReset()"></PasswordReset>
     <section>
       <div class="col1">
-        <h1>Vuegram</h1>
-        <p>Welcome to the <a href="https://savvyapps.com/" target="_blank">Savvy Apps</a> sample social media web app powered by Vue.js and Firebase.
-          Build this project by checking out The Definitive Guide to Getting Started with Vue.js</p>
+        <h1>Carousel</h1>
+        <p>Welcome to the "merry-go-around" web app for K-12 schools.</p>
+        <p>This application facilitates teachers and students to conduct a lottery in assigning class project topics.</p>
+        <p>Made by <a href="https://code4real.org/" target="_blank">Code4Real</a>.</p>
       </div>
       <div :class="{ 'signup-form': !showLoginForm }" class="col2">
         <form v-if="showLoginForm" @submit.prevent>
-          <h1>Welcome Back</h1>
+          <h1>Welcome</h1>
+          <p>Please sign in with your Google account for school use.</p>
+          <br>
           <div>
             <label for="email1">Email</label>
             <input v-model.trim="loginForm.email" type="text" placeholder="you@email.com" id="email1" />
