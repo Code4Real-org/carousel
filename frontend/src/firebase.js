@@ -4,13 +4,13 @@ import 'firebase/firestore'
 
 // firebase init
 const firebaseConfig = {
-  apiKey:"AIzaSyAnDafQAaUOQupTAOXlVaNG8LWANKRnkYg",
-  authDomain:"carouseltest-aea9b.firebaseapp.com",
-  projectId:"carouseltest-aea9b",
-  storageBucket:"carouseltest-aea9b.appspot.com",
-  messagingSenderId:"246333684038",
-  appId:"1:246333684038:web:08bf8012a35ea871368d47",
-  measurementId:"G-L68RQS8PL0"
+  apiKey: "AIzaSyCD8EyoJBEvnZnV6zY5cHX8o15-X-MN0-4",
+  authDomain: "code4real.firebaseapp.com",
+  projectId: "code4real",
+  storageBucket: "code4real.appspot.com",
+  messagingSenderId: "921798240468",
+  appId: "1:921798240468:web:7993fa2e8df0008a0a3341",
+  measurementId: "G-4J49NF465C"
 }
 firebase.initializeApp(firebaseConfig)
 
@@ -29,7 +29,7 @@ export {
   db,
   auth,
   usersCollection,
-  postsCollection,
+  postsCollection as postsCollection,
   commentsCollection,
   likesCollection
 }
