@@ -1,9 +1,9 @@
 import http from "../http-common";
 
 class UserDataService {
-  create(data) {
-    return http.post("/users", data);
+  update(data) {
+    return http.update("/api/user", data);
   }
 }
 
-export default new UserDataService();
+export default new UserDataService()
