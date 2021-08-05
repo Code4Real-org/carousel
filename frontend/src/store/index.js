@@ -2,22 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as fb from '../firebase'
 import router from '../router/index'
+import LotteryDataService from "../services/LotteryDataService";
 
 Vue.use(Vuex)
-
-// realtime firebase
-fb.postsCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
-  let postsArray = []
-
-  snapshot.forEach(doc => {
-    let post = doc.data()
-    post.id = doc.id
-
-    postsArray.push(post)
-  })
-
-  store.commit('setPosts', postsArray)
-})
 
 const store = new Vuex.Store({
   state: {
@@ -31,7 +18,7 @@ const store = new Vuex.Store({
     setPerformingRequest(state, val) {
       state.performingRequest = val
     },
-    setPosts(state, val) {
+    setLotteries(state, val) {
       state.posts = val
     }
   },
@@ -78,6 +65,54 @@ const store = new Vuex.Store({
       // redirect to login view
       router.push('/login')
     },
+    async fetchLotteryList({ commit }, user) {
+      LotteryDataService.getAll()
+        .then(response => {
+          //store.commit('setLotteries', response.data);
+          store.commit('setLotteries', [{}]);
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+      // fetch lottery list
+      //const lotteryList = await fb.usersCollection.doc(user.uid).get()
+
+      // realtime firebase
+      /*
+      fb.postsCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
+        let lotteriesArray = []
+
+        snapshot.forEach(doc => {
+          let lottery = doc.data()
+          lottery.id = doc.id
+
+          lotteriesArray.push(lottery)
+        })
+
+        store.commit('setLotteries', lotteriesArray)
+      })
+      */
+
+      // set user profile in state
+      //commit('setLotteryList', lotteryList.data())
+    },
+    async createPost({ state, commit }, lottery) {
+      var data = {
+        title: "title",
+        description: "description"
+      };
+
+      LotteryDataService.create(data)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    /*
     async createPost({ state, commit }, post) {
       // create post in firebase
       await fb.postsCollection.add({
@@ -89,6 +124,7 @@ const store = new Vuex.Store({
         likes: 0
       })
     },
+    */
     async likePost ({ commit }, post) {
       const userId = fb.auth.currentUser.uid
       const docId = `${userId}_${post.id}`
