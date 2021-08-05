@@ -68,8 +68,7 @@ const store = new Vuex.Store({
     async fetchLotteryList({ commit }, user) {
       LotteryDataService.getAll()
         .then(response => {
-          //store.commit('setLotteries', response.data);
-          store.commit('setLotteries', [{}]);
+          store.commit('setLotteries', response.data);
           console.log(response.data);
         })
         .catch(e => {
@@ -101,7 +100,8 @@ const store = new Vuex.Store({
     async createPost({ state, commit }, lottery) {
       var data = {
         title: "title",
-        description: "description"
+        description: "description",
+        content: lottery.content
       };
 
       LotteryDataService.create(data)
