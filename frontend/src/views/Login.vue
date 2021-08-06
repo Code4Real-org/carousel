@@ -8,11 +8,14 @@
         <p>This application facilitates teachers and students to conduct a lottery in assigning class project topics.</p>
         <p>Made by <a href="https://code4real.org/" target="_blank">Code4Real</a>.</p>
       </div>
+
       <div :class="{ 'signup-form': !showLoginForm }" class="col2">
-        <form v-if="showLoginForm" @submit.prevent>
-          <h1>Welcome</h1>
+        <h1>Welcome</h1>
           <p>Please sign in with your Google account for school use.</p>
+          <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
+          <p>
           <br>
+        <form v-if="showLoginForm" @submit.prevent>
           <div>
             <label for="email1">Email</label>
             <input v-model.trim="loginForm.email" type="text" placeholder="you@email.com" id="email1" />
@@ -56,14 +59,25 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login'
 import PasswordReset from '@/components/PasswordReset'
 
 export default {
   components: {
+    GoogleLogin,
     PasswordReset
   },
   data() {
     return {
+      params: {
+        client_id: "921798240468-7ef6ep21omf9pv15m4ilpa07patqjeio.apps.googleusercontent.com"
+      },
+      // only needed if you want to render the button with the google ui
+      renderParams: {
+        width: 250,
+        eight: 50,
+        longtitle: true
+      },
       loginForm: {
         email: '',
         password: ''
@@ -79,6 +93,15 @@ export default {
     }
   },
   methods: {
+    onSuccess(googleUser) {
+      console.log(googleUser);
+
+      // This only gets the user information: id, name, imageUrl and email
+      console.log(googleUser.getBasicProfile());
+    },
+    onFailure(error) {
+      console.log("Google signin failed: " + error)
+    },
     toggleForm() {
       this.showLoginForm = !this.showLoginForm
     },
