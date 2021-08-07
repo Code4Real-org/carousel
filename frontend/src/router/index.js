@@ -74,7 +74,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
 
-  if (requiresAuth && !store.state.userProfile.name) {
+  if (requiresAuth && !store.state.activeUser.email) {
     next('/login')
   } else {
     next()

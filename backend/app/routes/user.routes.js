@@ -1,4 +1,5 @@
 const { authJwt } = require("../middleware");
+const auth = require("../controllers/auth.controller");
 const controller = require("../controllers/user.controller");
 
 module.exports = function(app) {
@@ -10,7 +11,7 @@ module.exports = function(app) {
     next();
   });
 
-  app.get("/api/test/all", controller.allAccess);
+  app.post("/api/user/signin", auth.signin);
 
   app.get(
     "/api/student",

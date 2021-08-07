@@ -1,17 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as fb from '../firebase'
-import router from '../router/index'
+import router from '../router'
+import UserDataService from "../services/UserDataService";
 import LotteryDataService from "../services/LotteryDataService";
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    activeUser: {},
     userProfile: {},
     posts: []
   },
   mutations: {
+    setActiveUser(state, val) {
+      state.activeUser = val;
+    },
     setUserProfile(state, val) {
       state.userProfile = val
     },
@@ -30,15 +35,15 @@ const store = new Vuex.Store({
       // fetch user profile and set in state
       dispatch('fetchUserProfile', user)
     },
-    async glogin({ commit }, user) {
+    async glogin({ commit }, gUser) {
       // This only gets the user information: id, name, imageUrl and email
-      console.log(user.getBasicProfile());
+      console.log(gUser.getBasicProfile());
       // sign user in
-      //const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+      const token = gUser.getAuthResponse().id_token;
+      const gmail = gUser.getBasicProfile().getEmail();
+      const response = await UserDataService.signin({email: gmail, credential: token});
+      commit('setActiveUser', response.data);
 
-      // fetch user profile and set in state
-      //dispatch('fetchUserProfile', user)
-      commit('setUserProfile', {name: "Testing"})
       router.push('/')
     },
     async signup({ dispatch }, form) {
