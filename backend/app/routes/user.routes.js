@@ -11,8 +11,6 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/user/signin", auth.signin);
-
   app.get(
     "/api/student",
     [authJwt.verifyToken, authJwt.isStudent],
