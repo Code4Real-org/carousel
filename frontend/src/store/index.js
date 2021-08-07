@@ -30,6 +30,17 @@ const store = new Vuex.Store({
       // fetch user profile and set in state
       dispatch('fetchUserProfile', user)
     },
+    async glogin({ commit }, user) {
+      // This only gets the user information: id, name, imageUrl and email
+      console.log(user.getBasicProfile());
+      // sign user in
+      //const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+
+      // fetch user profile and set in state
+      //dispatch('fetchUserProfile', user)
+      commit('setUserProfile', {name: "Testing"})
+      router.push('/')
+    },
     async signup({ dispatch }, form) {
       // sign user up
       const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
