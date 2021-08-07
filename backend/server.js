@@ -52,7 +52,28 @@ function initial() {
     .then(user => {
       user.setRoles([1]);
     });
-}
+
+  // Teacher account for testing
+  User.create({
+    id: 2,
+    username: "brookvaleboy",
+    email: "brookvaleboy@gmail.com",
+  })
+    .then(user => {
+      user.setRoles([2]);
+    });
+
+  // Sample student account
+  User.create({
+    id: 3,
+    username: "flozhao",
+    email: "florence.y.zhao@gmail.com",
+  })
+    .then(user => {
+      user.setRoles([3]);
+    });
+
+};
 
 // simple route
 app.get("/", (req, res) => {
