@@ -14,9 +14,9 @@ export default {
     SiteNav
   },
   computed: {
-    ...mapState(['userProfile']),
+    ...mapState(['activeUser']),
     showNav() {
-      return Object.keys(this.userProfile).length > 1
+      return Object.keys(this.activeUser).length > 1
     }
   }
 }

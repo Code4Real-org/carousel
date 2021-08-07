@@ -36,15 +36,17 @@ const store = new Vuex.Store({
       dispatch('fetchUserProfile', user)
     },
     async glogin({ commit }, gUser) {
-      // This only gets the user information: id, name, imageUrl and email
-      console.log(gUser.getBasicProfile());
-      // sign user in
-      const token = gUser.getAuthResponse().id_token;
-      const gmail = gUser.getBasicProfile().getEmail();
-      const response = await UserDataService.signin({email: gmail, credential: token});
-      commit('setActiveUser', response.data);
+      try {
+        // sign user in
+        const token = gUser.getAuthResponse().id_token;
+        const gmail = gUser.getBasicProfile().getEmail();
+        const response = await UserDataService.signin({email: gmail, credential: token});
+        commit('setActiveUser', response.data);
 
-      router.push('/')
+        router.push('/');
+      } catch (err) {
+        console.log(err);
+      }
     },
     async signup({ dispatch }, form) {
       // sign user up
