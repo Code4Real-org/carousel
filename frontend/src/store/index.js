@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
 import * as fb from '../firebase'
 import router from '../router'
 import AuthService from "../services/AuthService";
@@ -7,6 +8,7 @@ import AuthService from "../services/AuthService";
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
     activeUser: {},
     userProfile: {},
