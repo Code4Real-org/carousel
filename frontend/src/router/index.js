@@ -30,18 +30,18 @@ const routes = [
     },
     {
       path: "/student",
-      //alias: "/student/dashboard",
+      alias: "/student/dashboard",
       name: "student-dashboard",
-      component: () => import("../components/StudentDashboard"),
+      component: () => import("../views/Student.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
       path: "/teacher",
-      //alias: "/teacher/dashboard",
+      alias: "/teacher/dashboard",
       name: "teacher-dashboard",
-      component: () => import("../components/TeacherDashboard"),
+      component: () => import("../views/Teacher"),
       meta: {
         requiresAuth: true
       }

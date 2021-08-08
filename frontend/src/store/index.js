@@ -12,6 +12,7 @@ const store = new Vuex.Store({
   state: {
     activeUser: {},
     userProfile: {},
+    lotteries: [],
     posts: []
   },
   mutations: {
@@ -42,9 +43,20 @@ const store = new Vuex.Store({
         const token = gUser.getAuthResponse().id_token;
         const gmail = gUser.getBasicProfile().getEmail();
         const response = await AuthService.signin({email: gmail, credential: token});
-        commit('setActiveUser', response.data);
+        const activeUser = response.data;
+        commit('setActiveUser', activeUser);
 
-        router.push('/');
+        switch(activeUser.roles[0]) {
+        case "ROLE_STUDENT":  
+          router.push('/student');
+          break;
+        case "ROLE_TEACHER":
+          router.push('/teacher');
+          break;
+        default:
+          router.push('/');
+          break;
+        }
       } catch (err) {
         console.log(err);
       }
