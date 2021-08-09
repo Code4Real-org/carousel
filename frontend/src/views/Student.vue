@@ -8,15 +8,12 @@
         </div>
       </div>
       <div class="col2">
-        <div v-if="posts.length">
-          <div v-for="post in posts" :key="post.id" class="post">
-            <h5>{{ post.userName }}</h5>
-            <span>{{ post.createdOn | formatDate }}</span>
-            <p>{{ post.content | trimLength }}</p>
+        <div v-if="assignments.length">
+          <div v-for="assignment in assignments" :key="assignment.id" class="assignment">
+            <h5>{{ assignment.title }}</h5>
+            <span>{{ assignment.createdOn | formatDate }}</span>
             <ul>
-              <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
-              <li><a @click="likePost(post.id, post.likes)">likes {{ post.likes }}</a></li>
-              <li><a @click="viewPost(post)">view full post</a></li>
+              <li><a @click="editAssignment(assignment)">Edit full assignment</a></li>
             </ul>
           </div>
         </div>
@@ -26,12 +23,12 @@
       </div>
     </section>
 
-    <!-- full post modal -->
+    <!-- full assignment modal -->
     <transition name="fade">
       <div v-if="showPostModal" class="p-modal">
         <div class="p-container">
           <a @click="closePostModal()" class="close">close</a>
-          <div class="post">
+          <div class="assignment">
             <h5>{{ fullPost.userName }}</h5>
             <span>{{ fullPost.createdOn | formatDate }}</span>
             <p>{{ fullPost.content }}</p>
@@ -61,7 +58,7 @@ import moment from 'moment'
 export default {
   data() {
     return {
-      post: {
+      assignment: {
         content: ''
       },
       selectedPost: {},
@@ -71,18 +68,18 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeUser', 'lotteries', 'posts'])
+    ...mapState(['activeUser', 'assignments', 'posts'])
   },
   methods: {
     createPost() {
-      this.$store.dispatch('createPost', { content: this.post.content })
-      this.post.content = ''
+      this.$store.dispatch('createPost', { content: this.assignment.content })
+      this.assignment.content = ''
     },
     likePost(id, likesCount) {
       this.$store.dispatch('likePost', { id, likesCount })
     },
-    async viewPost(post) {
-      const docs = await commentsCollection.where('postId', '==', post.id).get()
+    async viewPost(assignment) {
+      const docs = await commentsCollection.where('postId', '==', assignment.id).get()
 
       docs.forEach(doc => {
         let comment = doc.data()
@@ -90,7 +87,7 @@ export default {
         this.postComments.push(comment)
       })
 
-      this.fullPost = post
+      this.fullPost = assignment
       this.showPostModal = true
     },
     closePostModal() {

@@ -12,7 +12,7 @@ const store = new Vuex.Store({
   state: {
     activeUser: {},
     userProfile: {},
-    lotteries: [],
+    assignments: [],
     posts: []
   },
   mutations: {
@@ -47,7 +47,7 @@ const store = new Vuex.Store({
         commit('setActiveUser', activeUser);
 
         switch(activeUser.roles[0]) {
-        case "ROLE_STUDENT":  
+        case "ROLE_STUDENT":
           router.push('/student');
           break;
         case "ROLE_TEACHER":

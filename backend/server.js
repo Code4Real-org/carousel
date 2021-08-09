@@ -3,8 +3,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const db = require("./app/models");
+const assignmentModel = require("./app/models/assignment.model");
 const User = db.user;
 const Role = db.role;
+const Assignment = db.assignment;
 
 const app = express();
 
@@ -73,6 +75,15 @@ function initial() {
       user.setRoles([3]);
     });
 
+  Assignment.create({
+    id: 1,
+    title: "Person of American Significance",
+    description: "Choose a person of American significance to research and write an essay about. Each student must pick a unique person.",
+    maxEntries: 5
+  })
+    .then(assignment => {
+      assignment.setUsers([2, 3]);
+    });
 };
 
 // simple route
