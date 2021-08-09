@@ -2,11 +2,47 @@ const db = require("../models");
 const Op = db.Sequelize.Op;
 const User = db.user;
 const Role = db.role;
-const Student = db.students;
+const Assignment = db.assignment;
 
 const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+
+
+// Retrieve all Assignments from the database.
+exports.findAllAssignments = (req, res) => {
+  const uid = req.userId;
+
+  User.findByPk(uid)
+    .then(user => {
+      user.getAssignments().then(data => {
+        res.send(data);
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Assignments."
+      });
+    });
+};
+
+
+// Find a single Assignment with an id
+exports.findOneAssignment = (req, res) => {
+  const id = req.params.id;
+
+  Assignment.findByPk(id)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Assignment with id=" + id
+      });
+    });
+};
+
 
 exports.signup = (req, res) => {
   // Save User to Database

@@ -54,13 +54,12 @@
 import { commentsCollection } from '@/firebase'
 import { mapState } from 'vuex'
 import moment from 'moment'
+import StudentAssignmentDataService from "../services/StudentAssignmentDataService";
 
 export default {
   data() {
     return {
-      assignment: {
-        content: ''
-      },
+      assignments: [],
       selectedPost: {},
       showPostModal: false,
       fullPost: {},
@@ -68,9 +67,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeUser', 'assignments', 'posts'])
+    ...mapState(['activeUser', 'posts'])
   },
   methods: {
+    getAssignments() {
+      StudentAssignmentDataService.getAll()
+        .then(response => {
+          this.assignments = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     createPost() {
       this.$store.dispatch('createPost', { content: this.assignment.content })
       this.assignment.content = ''
@@ -94,6 +103,9 @@ export default {
       this.postComments = []
       this.showPostModal = false
     }
+  },
+  mounted() {
+    this.getAssignments();
   },
   filters: {
     formatDate(val) {

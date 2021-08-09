@@ -97,6 +97,7 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/admin.routes")(app);
 require("./app/routes/teacher.routes")(app);
 require("./app/routes/student.routes")(app);
+require("./app/routes/assignment.routes")(app);
 require("./app/routes/lottery.routes")(app);
 
 // set port, listen for requests

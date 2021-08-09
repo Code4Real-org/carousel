@@ -1,5 +1,5 @@
 const db = require("../models");
-const Lottery = db.lotteries;
+const Lottery = db.lottery;
 const Op = db.Sequelize.Op;
 
 

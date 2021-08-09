@@ -10,6 +10,16 @@ module.exports = function(app) {
     next();
   });
 
+  const assignmentRouter = require("express").Router();
+
+  // Retrieve all Assignments
+  assignmentRouter.get("/", controller.findAllAssignments);
+
+  // Retrieve a single Assignment with id
+  assignmentRouter.get("/:id", controller.findOneAssignment);
+
+  app.use("/api/student/assignments", authJwt.verifyToken, authJwt.isStudent, assignmentRouter);
+
   app.post(
     "/api/student/signup",
     [
