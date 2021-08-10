@@ -11,7 +11,7 @@
         <div v-if="assignments.length">
           <div v-for="assignment in assignments" :key="assignment.id" class="assignment">
             <h5>{{ assignment.title }}</h5>
-            <span>{{ assignment.createdOn | formatDate }}</span>
+            <span>{{ assignment.createdAt | formatDate }}</span>
             <ul>
               <li><a @click="editAssignment(assignment)">Edit full assignment</a></li>
             </ul>
@@ -25,23 +25,22 @@
 
     <!-- full assignment modal -->
     <transition name="fade">
-      <div v-if="showPostModal" class="p-modal">
+      <div v-if="showAssignmentModal" class="p-modal">
         <div class="p-container">
-          <a @click="closePostModal()" class="close">close</a>
-          <div class="assignment">
-            <h5>{{ fullPost.userName }}</h5>
-            <span>{{ fullPost.createdOn | formatDate }}</span>
-            <p>{{ fullPost.content }}</p>
+          <a @click="closeAssignmentModal()" class="close">close</a>
+          <div class="post">
+            <h5>{{ activeAssignment.title }}</h5>
+            <span>{{ activeAssignment.createdOn | formatDate }}</span>
+            <p>{{ activeAssignment.description }}</p>
             <ul>
-              <li><a>comments {{ fullPost.comments }}</a></li>
-              <li><a>likes {{ fullPost.likes }}</a></li>
+              <li><a>lotteries {{ activeAssignment.lotteries }}</a></li>
             </ul>
           </div>
-          <div v-show="postComments.length" class="comments">
-            <div v-for="comment in postComments" :key="comment.id" class="comment">
-              <p>{{ comment.userName }}</p>
-              <span>{{ comment.createdOn | formatDate }}</span>
-              <p>{{ comment.content }}</p>
+          <div v-show="lotteryEntries.length" class="comments">
+            <div v-for="entry in lotteryEntries" :key="entry.id" class="comment">
+              <p>{{ entry.prompt}}</p>
+              <span>{{ entry.createdOn | formatDate }}</span>
+              <p>{{ entry.content }}</p>
             </div>
           </div>
         </div>
@@ -51,19 +50,18 @@
 </template>
 
 <script>
-import { commentsCollection } from '@/firebase'
 import { mapState } from 'vuex'
 import moment from 'moment'
-import StudentAssignmentDataService from "../services/StudentAssignmentDataService";
+import StudentAssignmentDataService from "../services/StudentAssignmentDataService"
+import LotteryDataService from "../services/LotteryDataService"
 
 export default {
   data() {
     return {
       assignments: [],
-      selectedPost: {},
-      showPostModal: false,
-      fullPost: {},
-      postComments: []
+      showAssignmentModal: false,
+      activeAssignment: {},
+      lotteryEntries: []
     }
   },
   computed: {
@@ -80,28 +78,18 @@ export default {
           console.log(e);
         });
     },
-    createPost() {
-      this.$store.dispatch('createPost', { content: this.assignment.content })
-      this.assignment.content = ''
-    },
     likePost(id, likesCount) {
       this.$store.dispatch('likePost', { id, likesCount })
     },
-    async viewPost(assignment) {
-      const docs = await commentsCollection.where('postId', '==', assignment.id).get()
+    async editAssignment(assignment) {
+      this.lotteryEntries = await LotteryDataService.getAll(assignment.id)
 
-      docs.forEach(doc => {
-        let comment = doc.data()
-        comment.id = doc.id
-        this.postComments.push(comment)
-      })
-
-      this.fullPost = assignment
-      this.showPostModal = true
+      this.activeAssignment = assignment
+      this.showAssignmentModal = true
     },
-    closePostModal() {
-      this.postComments = []
-      this.showPostModal = false
+    closeAssignmentModal() {
+      this.lotteryEntries = []
+      this.showAssignmentModal = false
     }
   },
   mounted() {
@@ -111,7 +99,8 @@ export default {
     formatDate(val) {
       if (!val) { return '-' }
 
-      let date = val.toDate()
+      //let date = val.toDate()
+      let date = new Date(val)
       return moment(date).fromNow()
     },
     trimLength(val) {
