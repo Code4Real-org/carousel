@@ -29,20 +29,25 @@
         <div class="p-container">
           <a @click="closeAssignmentModal()" class="close">close</a>
           <div class="post">
-            <h5>{{ activeAssignment.title }}</h5>
-            <span>{{ activeAssignment.createdOn | formatDate }}</span>
+            <h3>{{ activeAssignment.title }}</h3>
+            <span>{{ activeAssignment.createdAt | formatDate }}</span>
             <p>{{ activeAssignment.description }}</p>
-            <ul>
-              <li><a>lotteries {{ activeAssignment.lotteries }}</a></li>
-            </ul>
           </div>
-          <div v-show="lotteryEntries.length" class="comments">
-            <div v-for="entry in lotteryEntries" :key="entry.id" class="comment">
-              <p>{{ entry.prompt}}</p>
-              <span>{{ entry.createdOn | formatDate }}</span>
+            <div v-for="(entry, counter) in lotteryEntries" :key="entry.id" class="comment">
+              <h4>{{counter + 1}}. Your choice of POAS (first, middle and last name):</h4>
+              <input type="text" v-model.lazy="entry.firstName" required>
+              <input type="text" v-model.lazy="entry.middleName">
+              <input type="text" v-model.lazy="entry.lastName" required>
+              <h5>What is the title of the (auto)biography?</h5>
+              <input type="text" v-model.lazy="entry.biography" required>
+              <h5>Your statement of significance for your choice:</h5>
+              <input type="text" v-model.lazy="entry.statement" required>
               <p>{{ entry.content }}</p>
             </div>
-          </div>
+          <br>
+          <button @click="addEntry">Add an entry</button>
+          <button @click="submitEntries(activeAssignment)">Submit</button>
+          <br>
         </div>
       </div>
     </transition>
@@ -82,10 +87,23 @@ export default {
       this.$store.dispatch('likePost', { id, likesCount })
     },
     async editAssignment(assignment) {
-      this.lotteryEntries = await LotteryDataService.getAll(assignment.id)
+      const result = await LotteryDataService.getAll(assignment.id)
+      this.lotteryEntries = result.data
 
       this.activeAssignment = assignment
       this.showAssignmentModal = true
+    },
+    addEntry() {
+      this.lotteryEntries.push({
+        firstName:'',
+        middleName:'',
+        lastName:'',
+        biography: '',
+        statement:''
+      })
+    },
+    async submitEntries(assignment) {
+      await LotteryDataService.create(assignment.id, this.lotteryEntries)
     },
     closeAssignmentModal() {
       this.lotteryEntries = []

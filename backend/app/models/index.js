@@ -22,7 +22,9 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.assignment = require("../models/assignment.model.js")(sequelize, Sequelize);
+db.user_assignments = require("../models/user_assignments.model.js")(sequelize, Sequelize);
 db.lottery = require("../models/lottery.model.js")(sequelize, Sequelize);
+db.poas = require("../models/poas.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -45,6 +47,9 @@ db.user.belongsToMany(db.assignment, {
   foreignKey: "userId",
   otherKey: "assignmentId"
 });
+
+db.user_assignments.hasMany(db.lottery);
+db.lottery.hasOne(db.poas);
 
 db.ROLES = ["admin", "teacher", "student"];
 

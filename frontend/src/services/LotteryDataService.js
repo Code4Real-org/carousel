@@ -1,16 +1,16 @@
 import http from "../http-common";
 
 class LotteryDataService {
-  getAll() {
-    return http.get("/lotteries");
+  getAll(assignmentId) {
+    return http.get(`/lotteries?assignment=${assignmentId}`);
   }
 
   get(id) {
     return http.get(`/lotteries/${id}`);
   }
 
-  create(data) {
-    return http.post("/lotteries", data);
+  create(assignmentId, data) {
+    return http.post(`/lotteries?assignment=${assignmentId}`, data);
   }
 
   update(id, data) {

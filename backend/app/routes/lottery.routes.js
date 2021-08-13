@@ -1,3 +1,5 @@
+const { authJwt } = require("../middleware");
+
 module.exports = app => {
   const lotteries = require("../controllers/lottery.controller.js");
 
@@ -21,5 +23,6 @@ module.exports = app => {
   // Delete all Lotteries
   router.delete("/", lotteries.deleteAll);
 
-  app.use('/api/lotteries', router);
+  // ToDo: Assuming for student use, need to provide for teachers too
+  app.use('/api/lotteries', authJwt.verifyToken, authJwt.isStudent, router);
 };

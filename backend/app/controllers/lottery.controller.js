@@ -1,4 +1,7 @@
+const { lottery } = require("../models");
 const db = require("../models");
+const User = db.user;
+const UserAssignments = db.user_assignments;
 const Lottery = db.lottery;
 const Op = db.Sequelize.Op;
 
@@ -33,24 +36,30 @@ exports.create = (req, res) => {
           err.message || "Some error occurred while creating the Lottery."
       });
     });
-  };
+};
 
 
 // Retrieve all Lotteries from the database.
-exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+exports.findAll = async (req, res) => {
+  const uid = req.userId;
+  const assignmentId = parseInt(req.query.assignment);
 
-  Lottery.findAll({ where: condition })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving lotteries."
-      });
+  try {
+    user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
+    lotteries = await user_assignment.getLotteries();
+    for (lottery in lotteries) {
+      poas = lottery.getPoas();
+      lottery.firstName = poas.firstName;
+      lottery.middleName = poas.middleName;
+      lottery.lastName = poas.lastName;
+    }
+    res.send(lotteries);
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving Assignments."
     });
+  }
 };
 
 
