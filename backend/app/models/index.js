@@ -39,13 +39,11 @@ db.user.belongsToMany(db.role, {
 
 db.assignment.belongsToMany(db.user, {
   through: "user_assignments",
-  foreignKey: "assignmentId",
-  otherKey: "userId"
+  uniqueKey: "userAssignmentsId"
 });
 db.user.belongsToMany(db.assignment, {
   through: "user_assignments",
-  foreignKey: "userId",
-  otherKey: "assignmentId"
+  uniqueKey: "userAssignmentsId"
 });
 
 db.user_assignments.hasMany(db.lottery);

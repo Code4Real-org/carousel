@@ -3,10 +3,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const db = require("./app/models");
-const assignmentModel = require("./app/models/assignment.model");
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
+const UserAssignment = db.user_assignments;
+const Poas = db.poas;
+const Lottery = db.lottery;
 
 const app = express();
 
@@ -17,7 +19,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json());
+app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,61 +31,72 @@ db.sequelize.sync({ force: true }).then(() => {
   initial();
 });
 
-function initial() {
-  Role.create({
+async function initial() {
+  await Role.create({
     id: 1,
     name: "admin"
   });
  
-  Role.create({
+  await Role.create({
     id: 2,
     name: "teacher"
   });
  
-  Role.create({
+  await Role.create({
     id: 3,
     name: "student"
   });
 
   // Root admin account
-  User.create({
+  user = await User.create({
     id: 1,
     username: "code4real",
     email: "code4real.org@gmail.com",
-  })
-    .then(user => {
-      user.setRoles([1]);
-    });
+  });
+  await user.setRoles([1]);
 
   // Teacher account for testing
-  User.create({
+  user = await User.create({
     id: 2,
     username: "brookvaleboy",
     email: "brookvaleboy@gmail.com",
-  })
-    .then(user => {
-      user.setRoles([2]);
-    });
+  });
+  await user.setRoles([2]);
 
   // Sample student account
-  User.create({
+  user = await User.create({
     id: 3,
     username: "flozhao",
     email: "florence.y.zhao@gmail.com",
-  })
-    .then(user => {
-      user.setRoles([3]);
-    });
+  });
+  await user.setRoles([3]);
 
-  Assignment.create({
+  assignment = await Assignment.create({
     id: 1,
     title: "Person of American Significance",
     description: "Choose a person of American significance to research and write an essay about. Each student must pick a unique person.",
     maxEntries: 5
-  })
-    .then(assignment => {
-      assignment.setUsers([2, 3]);
-    });
+  });
+  await assignment.setUsers([2, 3]);
+
+  poas = await Poas.create({
+    id: 1,
+    firstName: "Ray",
+    lastName: "Kloc",
+    counts: 0
+  });
+
+  lottery = await Lottery.create({
+    id: 1,
+    firstName: "Ray",
+    lastName: "Kloc",
+    biography: "bio",
+    statement: "my statement"
+  });
+  await lottery.setPoa(1);  // watch out for this generated name, it should have been Poas
+
+  userAssignment = await UserAssignment.findByPk(2);
+  await userAssignment.addLottery(1);
 };
 
 // simple route
