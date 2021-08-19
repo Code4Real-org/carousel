@@ -24,13 +24,13 @@ exports.create = async (req, res) => {
       await entry.destroy({ force: true });
     };
 
-    await lotteries.forEach(async (entry, index) => {
+    for (entry of lotteries) {
       let lottery = await Lottery.create(entry);
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
       await poas.addLottery(lottery.id);
       await poas.increment('count', {by: 1});
       await user_assignment.addLottery(lottery.id);
-    });
+    };
     res.send(lotteries);
   } catch(err) {
     res.status(500).send({
