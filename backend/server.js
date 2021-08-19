@@ -83,7 +83,7 @@ async function initial() {
     id: 1,
     firstName: "Ray",
     lastName: "Kloc",
-    counts: 0
+    count: 1
   });
 
   lottery = await Lottery.create({
@@ -91,12 +91,14 @@ async function initial() {
     firstName: "Ray",
     lastName: "Kloc",
     biography: "bio",
-    statement: "my statement"
+    statement: "my statement",
+    poaId: 1,
+    userAssignmentId: 2
   });
-  await lottery.setPoa(1);  // watch out for this generated name, it should have been Poas
+  //lottery.poaId = 1;  // watch out for this generated name, it should have been Poas
 
-  userAssignment = await UserAssignment.findByPk(2);
-  await userAssignment.addLottery(1);
+  //userAssignment = await UserAssignment.findByPk(2);
+  //lottery.userAssignmentId = userAssignment.id;
 };
 
 // simple route

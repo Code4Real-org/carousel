@@ -1,9 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
   const Poas = sequelize.define("poas", {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true
-    },
     firstName: {
       type: Sequelize.STRING,
       allowNull: false
@@ -15,8 +11,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    counts: {
-      type: Sequelize.JSON
+    count: {
+      type: Sequelize.INTEGER
     }
   });
 

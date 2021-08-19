@@ -39,15 +39,15 @@ db.user.belongsToMany(db.role, {
 
 db.assignment.belongsToMany(db.user, {
   through: "user_assignments",
-  uniqueKey: "userAssignmentsId"
+  uniqueKey: "userAssignmentId"
 });
 db.user.belongsToMany(db.assignment, {
   through: "user_assignments",
-  uniqueKey: "userAssignmentsId"
+  uniqueKey: "userAssignmentId"
 });
 
 db.user_assignments.hasMany(db.lottery);
-db.lottery.hasOne(db.poas);
+db.poas.hasMany(db.lottery);
 
 db.ROLES = ["admin", "teacher", "student"];
 

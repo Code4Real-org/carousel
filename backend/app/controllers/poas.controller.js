@@ -3,64 +3,37 @@ const User = db.user;
 const UserAssignments = db.user_assignments;
 const Lottery = db.lottery;
 const Poas = db.poas;
-const poasController = require("../controllers/poas.controller");
 
 
-// Create and Save a new Lottery
+// Create and Save a new POAS entry
 exports.create = async (req, res) => {
   const uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
 
-  // Create a Lottery
-  const lotteries = req.body;
+  const entry = req.body;
 
-  // Save Lottery in the database
+  // Save the entry in the database
   try {
     user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
-    let old_lotteries = await user_assignment.getLotteries();
-    for ( entry of old_lotteries) {
-      let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
-      await poas.decrement('count', {by: 1});
-      await entry.destroy({ force: true });
-    };
 
-    await lotteries.forEach(async (entry, index) => {
-      let lottery = await Lottery.create(entry);
-      let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
-      await poas.addLottery(lottery.id);
-      await poas.increment('count', {by: 1});
-      await user_assignment.addLottery(lottery.id);
-    });
-    res.send(lotteries);
+    let poas = await this.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
+    return poas;
   } catch(err) {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while creating the Lottery."
-    });
+    console.log(err.message || "Some error occurred while creating the POAS.");
   }
 };
 
 
-// Retrieve all Lotteries from the database.
-exports.findAll = async (req, res) => {
-  const uid = req.userId;
-  const assignmentId = parseInt(req.query.assignment);
-
+// Retrieve or create a new POAS entry in the database.
+exports.findOrCreate = async (first, middle, last) => {
   try {
-    let user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
-    let lotteries = await user_assignment.getLotteries();
-    lotteries.forEach (async (lottery) => {
-      let poas = await Poas.findByPk(lottery.poaId);  // have to use the odd name
-      lottery.firstName = poas.firstName;
-      lottery.middleName = poas.middleName;
-      lottery.lastName = poas.lastName;
-    });
-    res.send(lotteries);
+    let poas = await Poas.findOne({where: {firstName: first, middleName: middle, lastName: last}});
+    if (poas == null) {
+      poas = await Poas.create({firstName: first, middleName: middle, lastName: last, count: 0});
+    }
+    return(poas);
   } catch(err) {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while retrieving Assignments."
-    });
+    console.log(err.message || "Some error occurred while retrieving Assignments.");
   }
 };
 
