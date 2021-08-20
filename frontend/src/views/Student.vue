@@ -25,7 +25,8 @@
 
     <!-- full assignment modal -->
     <transition name="fade">
-      <lottery-modal v-if="showAssignmentModal" :activeAssignment="this.activeAssignment"></lottery-modal>
+      <lottery-modal v-if="showAssignmentModal" :activeAssignment="this.activeAssignment" @close="closeAssignmentModal()">
+      </lottery-modal>
     </transition>
   </div>
 </template>
