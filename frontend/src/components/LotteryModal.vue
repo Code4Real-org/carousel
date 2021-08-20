@@ -20,7 +20,7 @@
             </div>
           <br>
           <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
-          <button @click="submitEntries(activeAssignment)">Submit</button>
+          <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Submit</button>
           <br>
         </div>
       </div>
@@ -45,6 +45,14 @@ export default {
     ...mapState(['activeUser']),
     isMaxEntries: function() {
       return this.lotteryEntries.length >= this.activeAssignment.maxEntries
+    },
+    submitDisabled: function() {
+      for (let entry of this.lotteryEntries) {
+        if (!(entry.firstName || entry.lastName)) return true;
+        if (entry.biography.length <= 1) return true;
+        if (entry.statement.length <= 1) return true;
+      };
+      return false;
     }
   },
   methods: {
