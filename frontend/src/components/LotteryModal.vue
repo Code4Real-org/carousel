@@ -19,7 +19,7 @@
               <p>{{ entry.content }}</p>
             </div>
           <br>
-          <button @click="addEntry">Add an entry</button>
+          <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
           <button @click="submitEntries(activeAssignment)">Submit</button>
           <br>
         </div>
@@ -42,7 +42,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeUser', 'posts'])
+    ...mapState(['activeUser']),
+    isMaxEntries: function() {
+      return this.lotteryEntries.length >= this.activeAssignment.maxEntries
+    }
   },
   methods: {
     getAssignments() {
