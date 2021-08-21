@@ -1,32 +1,19 @@
 <template>
   <div id="dashboard">
-    <transition name="fade">
-      <CommentModal v-if="showCommentModal" :post="selectedPost" @close="toggleCommentModal()"></CommentModal>
-    </transition>
     <section>
       <div class="col1">
         <div class="profile">
-          <h5>{{ userProfile.name }}</h5>
-          <p>{{ userProfile.title }}</p>
-          <div class="create-post">
-            <p>create a post</p>
-            <form @submit.prevent>
-              <textarea v-model.trim="post.content"></textarea>
-              <button @click="createPost()" :disabled="post.content === ''" class="button">post</button>
-            </form>
-          </div>
+          <h5>{{ activeUser.email }}</h5>
+          <p>{{ activeUser.username }}</p>
         </div>
       </div>
       <div class="col2">
-        <div v-if="posts.length">
-          <div v-for="post in posts" :key="post.id" class="post">
-            <h5>{{ post.userName }}</h5>
-            <span>{{ post.createdOn | formatDate }}</span>
-            <p>{{ post.content | trimLength }}</p>
+        <div v-if="assignments.length">
+          <div v-for="assignment in assignments" :key="assignment.id" class="assignment">
+            <h5>{{ assignment.title }}</h5>
+            <span>{{ assignment.createdAt | formatDate }}</span>
             <ul>
-              <li><a @click="toggleCommentModal(post)">comments {{ post.comments }}</a></li>
-              <li><a @click="likePost(post.id, post.likes)">likes {{ post.likes }}</a></li>
-              <li><a @click="viewPost(post)">view full post</a></li>
+              <li><a @click="editAssignment(assignment)">Edit full assignment</a></li>
             </ul>
           </div>
         </div>
@@ -36,98 +23,62 @@
       </div>
     </section>
 
-    <!-- full post modal -->
+    <!-- full assignment modal -->
     <transition name="fade">
-      <div v-if="showPostModal" class="p-modal">
-        <div class="p-container">
-          <a @click="closePostModal()" class="close">close</a>
-          <div class="post">
-            <h5>{{ fullPost.userName }}</h5>
-            <span>{{ fullPost.createdOn | formatDate }}</span>
-            <p>{{ fullPost.content }}</p>
-            <ul>
-              <li><a>comments {{ fullPost.comments }}</a></li>
-              <li><a>likes {{ fullPost.likes }}</a></li>
-            </ul>
-          </div>
-          <div v-show="postComments.length" class="comments">
-            <div v-for="comment in postComments" :key="comment.id" class="comment">
-              <p>{{ comment.userName }}</p>
-              <span>{{ comment.createdOn | formatDate }}</span>
-              <p>{{ comment.content }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <assignment-modal v-if="showAssignmentModal" :activeAssignment="this.activeAssignment" @close="closeAssignmentModal()">
+      </assignment-modal>
     </transition>
   </div>
 </template>
 
 <script>
-import { commentsCollection } from '@/firebase'
 import { mapState } from 'vuex'
 import moment from 'moment'
-import CommentModal from '@/components/CommentModal'
+import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService"
+import AssignmentModal from '../components/AssignmentModal.vue'
 
 export default {
   components: {
-    CommentModal
+    AssignmentModal
   },
   data() {
     return {
-      post: {
-        content: ''
-      },
-      showCommentModal: false,
-      selectedPost: {},
-      showPostModal: false,
-      fullPost: {},
-      postComments: []
+      assignments: [],
+      showAssignmentModal: false,
+      activeAssignment: {}
     }
   },
   computed: {
-    ...mapState(['userProfile', 'posts'])
+    ...mapState(['activeUser', 'posts'])
   },
   methods: {
-    createPost() {
-      this.$store.dispatch('createPost', { content: this.post.content })
-      this.post.content = ''
+    getAssignments() {
+      TeacherAssignmentDataService.getAll()
+        .then(response => {
+          this.assignments = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
-    toggleCommentModal(post) {
-      this.showCommentModal = !this.showCommentModal
-
-      // if opening modal set selectedPost, else clear
-      if (this.showCommentModal) {
-        this.selectedPost = post
-      } else {
-        this.selectedPost = {}
-      }
+    async editAssignment(assignment) {
+      this.activeAssignment = assignment
+      this.showAssignmentModal = true
     },
-    likePost(id, likesCount) {
-      this.$store.dispatch('likePost', { id, likesCount })
-    },
-    async viewPost(post) {
-      const docs = await commentsCollection.where('postId', '==', post.id).get()
-
-      docs.forEach(doc => {
-        let comment = doc.data()
-        comment.id = doc.id
-        this.postComments.push(comment)
-      })
-
-      this.fullPost = post
-      this.showPostModal = true
-    },
-    closePostModal() {
-      this.postComments = []
-      this.showPostModal = false
+    closeAssignmentModal() {
+      this.showAssignmentModal = false
     }
+  },
+  mounted() {
+    this.getAssignments();
   },
   filters: {
     formatDate(val) {
       if (!val) { return '-' }
 
-      let date = val.toDate()
+      //let date = val.toDate()
+      let date = new Date(val)
       return moment(date).fromNow()
     },
     trimLength(val) {

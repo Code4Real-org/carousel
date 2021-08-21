@@ -1,44 +1,75 @@
 <template>
-  <div class="c-modal">
-    <div class="c-container">
+  <div class="p-modal">
+    <div class="p-container">
       <a @click="$emit('close')">close</a>
-      <p>add a comment</p>
+      <h3>{{ activeAssignment.title }}</h3>
+      <span>{{ activeAssignment.createdAt | formatDate }}</span>
+       <br><br>
+       <h5>Description</h5>
+        <textarea v-model.trim="description" rows="3" cols="80"></textarea>
+        <br><br>
+       <h5>Configurations</h5> 
+        <p>Maximum number of lottery entries each student can enter: {{ activeAssignment.maxEntries }}</p>
+        <br>
+      <h5>Operations</h5>
       <form @submit.prevent>
-        <textarea v-model.trim="comment"></textarea>
-        <button @click="addComment()" :disabled="comment == ''" class="button">add comment</button>
+        <button @click="doLottery(this.activeAssignment)" class="button">Conduct lottery</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { commentsCollection, postsCollection, auth } from '@/firebase'
+import { mapState } from 'vuex'
+import moment from 'moment'
+import StudentAssignmentDataService from "../services/StudentAssignmentDataService"
+import LotteryDataService from "../services/LotteryDataService"
 
 export default {
-  props: ['post'],
+  props: ['activeAssignment'],
   data() {
     return {
-      comment: ''
+      description: '',
+      lotteryEntries: []
     }
   },
+  computed: {
+    ...mapState(['activeUser'])
+  },
   methods: {
-    async addComment() {
-      // create comment
-      await commentsCollection.add({
-        createdOn: new Date(),
-        content: this.comment,
-        postId: this.post.id,
-        userId: auth.currentUser.uid,
-        userName: this.$store.state.userProfile.name
-      })
+    getAssignment() {
+      StudentAssignmentDataService.getOne(this.activeAssignment.id)
+        .then(response => {
+          this.assignment = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    async doLottery(assignment) {
+      await LotteryDataService.doLottery(assignment.id)
+    },
+    closeAssignmentModal() {
+      this.lotteryEntries = []
 
-      // update comment count on post
-      await postsCollection.doc(this.post.id).update({
-        comments: parseInt(this.post.comments) + 1
-      })
-
-      // close modal
       this.$emit('close')
+    }
+  },
+  async mounted() {
+    this.description = this.activeAssignment.description
+  },
+  filters: {
+    formatDate(val) {
+      if (!val) { return '-' }
+
+      //let date = val.toDate()
+      let date = new Date(val)
+      return moment(date).fromNow()
+    },
+    trimLength(val) {
+      if (val.length < 200) { return val }
+      return `${val.substring(0, 200)}...`
     }
   }
 }

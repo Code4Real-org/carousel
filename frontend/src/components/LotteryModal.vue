@@ -7,8 +7,9 @@
             <span>{{ activeAssignment.createdAt | formatDate }}</span>
             <p>{{ activeAssignment.description }}</p>
           </div>
-            <div v-for="(entry, counter) in lotteryEntries" :key="entry.id" class="comment">
-              <h4>{{counter + 1}}. Your choice of POAS (first, middle and last name):</h4>
+            <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
+              <h4>{{index + 1}}. <button @click="delEntry(index)">delete</button> </h4>
+              <h5>Your choice of POAS (first, middle and last name):</h5>
               <input type="text" v-model.lazy="entry.firstName" required>
               <input type="text" v-model.lazy="entry.middleName">
               <input type="text" v-model.lazy="entry.lastName" required>
@@ -74,6 +75,9 @@ export default {
         biography: '',
         statement:''
       })
+    },
+    delEntry(index) {
+      this.lotteryEntries.splice(index, 1);
     },
     async submitEntries(assignment) {
       await LotteryDataService.create(assignment.id, this.lotteryEntries)
