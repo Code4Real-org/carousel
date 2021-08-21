@@ -184,7 +184,9 @@ header {
     background: $white;
     padding: 2rem;
 
-    h5 {}
+    h5 {
+      margin: 0 0 0.5rem;
+    }
 
     p {
       color: $medium;

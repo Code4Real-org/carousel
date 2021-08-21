@@ -52,7 +52,7 @@ export default {
         if (!(entry.firstName || entry.lastName)) return true;
         if (entry.biography.length <= 1) return true;
         if (entry.statement.length <= 1) return true;
-      };
+      }
       return false;
     }
   },
