@@ -75,6 +75,7 @@ async function initial() {
     id: 1,
     title: "Person of American Significance",
     description: "Choose a person of American significance to research and write an essay about. Each student must pick a unique person.",
+    minEntries: 3,
     maxEntries: 5
   });
   await assignment.setUsers([2, 3]);

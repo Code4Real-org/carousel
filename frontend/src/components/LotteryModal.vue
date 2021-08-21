@@ -92,6 +92,12 @@ export default {
   async mounted() {
     const result = await LotteryDataService.getAll(this.activeAssignment.id)
     this.lotteryEntries = result.data
+    let count = this.lotteryEntries.length
+    while (count < this.activeAssignment.minEntries) {
+      this.addEntry()
+      count++
+    }
+
   },
   filters: {
     formatDate(val) {

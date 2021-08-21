@@ -10,6 +10,9 @@ module.exports = (sequelize, Sequelize) => {
     description: {
       type: Sequelize.STRING
     },
+    minEntries: {
+      type: Sequelize.INTEGER
+    },
     maxEntries: {
       type: Sequelize.INTEGER
     }
