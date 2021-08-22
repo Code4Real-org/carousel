@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Lottery = sequelize.define("lottery", {
+  const Lottery = sequelize.define("lotteries", {
     firstName: {
       type: Sequelize.STRING
     },
@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
     },
     statement: {
       type: Sequelize.STRING
+    },
+    preference: {
+      type: Sequelize.INTEGER
     }
   });
 

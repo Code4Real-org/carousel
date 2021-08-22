@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
   try {
     user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
     let old_lotteries = await user_assignment.getLotteries();
-    for ( entry of old_lotteries) {
+    for (entry of old_lotteries) {
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
       await poas.decrement('count', {by: 1});
       await entry.destroy({ force: true });

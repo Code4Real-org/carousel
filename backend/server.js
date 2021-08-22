@@ -6,7 +6,6 @@ const db = require("./app/models");
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
-const UserAssignment = db.user_assignments;
 const Poas = db.poas;
 const Lottery = db.lottery;
 
@@ -80,26 +79,41 @@ async function initial() {
   });
   await assignment.setUsers([2, 3]);
 
-  poas = await Poas.create({
+  poas1 = await Poas.create({
     id: 1,
     firstName: "Ray",
-    lastName: "Kloc",
+    lastName: "Kroc",
     count: 1
   });
 
-  lottery = await Lottery.create({
+  poas2 = await Poas.create({
+    id: 2,
+    firstName: "Howard",
+    lastName: "Hughes",
+    count: 1
+  });
+
+  lottery1 = await Lottery.create({
     id: 1,
     firstName: "Ray",
-    lastName: "Kloc",
+    lastName: "Kroc",
     biography: "bio",
     statement: "my statement",
+    preference: 1,
     poaId: 1,
     userAssignmentId: 2
   });
-  //lottery.poaId = 1;  // watch out for this generated name, it should have been Poas
 
-  //userAssignment = await UserAssignment.findByPk(2);
-  //lottery.userAssignmentId = userAssignment.id;
+  lottery2 = await Lottery.create({
+    id: 2,
+    firstName: "Howard",
+    lastName: "Hughes",
+    biography: "Bio",
+    statement: "Statement",
+    preference: 2,
+    poaId: 2,
+    userAssignmentId: 2
+  });
 };
 
 // simple route

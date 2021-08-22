@@ -54,7 +54,7 @@ export default {
     },
     submitDisabled: function() {
       for (let entry of this.lotteryEntries) {
-        if (!(entry.firstName || entry.lastName)) return true;
+        if (!entry.firstName || !entry.lastName) return true;
         if (entry.biography.length <= 1) return true;
         if (entry.statement.length <= 1) return true;
       }
@@ -78,7 +78,8 @@ export default {
         middleName:'',
         lastName:'',
         biography: '',
-        statement:''
+        statement:'',
+        preference: this.lotteryEntries.length + 1
       })
     },
     delEntry(index) {
