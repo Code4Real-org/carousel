@@ -8,7 +8,9 @@
             <p>{{ activeAssignment.description }}</p>
           </div>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
-              <h4>{{index + 1}}. <button @click="delEntry(index)">delete</button> </h4>
+              <h4>{{index + 1}}.
+                <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
+              </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
               <input type="text" v-model.lazy="entry.firstName" required>
               <input type="text" v-model.lazy="entry.middleName">
@@ -46,6 +48,9 @@ export default {
     ...mapState(['activeUser']),
     isMaxEntries: function() {
       return this.lotteryEntries.length >= this.activeAssignment.maxEntries
+    },
+    delDisabled: function() {
+      return this.lotteryEntries.length <= this.activeAssignment.minEntries
     },
     submitDisabled: function() {
       for (let entry of this.lotteryEntries) {
