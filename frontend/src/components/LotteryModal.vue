@@ -7,20 +7,23 @@
             <span>{{ activeAssignment.createdAt | formatDate }}</span>
             <p>{{ activeAssignment.description }}</p>
           </div>
+          <form @submit.prevent>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
               <h4>{{index + 1}}.
                 <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
               </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
-              <input type="text" v-model.lazy="entry.firstName" required>
-              <input type="text" v-model.lazy="entry.middleName">
-              <input type="text" v-model.lazy="entry.lastName" required>
+              <input type="text" id="fname" v-model.lazy="entry.firstName" required>
+              <input type="text" id="mname" v-model.lazy="entry.middleName">
+              <input type="text" id="lname" v-model.lazy="entry.lastName" required>
+              <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference">{{count}}</label>
               <h5>What is the title of the (auto)biography?</h5>
               <input type="text" v-model.lazy="entry.biography" required>
               <h5>Your statement of significance for your choice:</h5>
               <input type="text" v-model.lazy="entry.statement" required>
               <p>{{ entry.content }}</p>
             </div>
+          </form>
           <br>
           <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
           <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Submit</button>
