@@ -41,7 +41,8 @@ export default {
     return {
       assignments: [],
       showAssignmentModal: false,
-      lotteryEntries: []
+      lotteryEntries: [],
+      poasStats: []
     }
   },
   computed: {
@@ -97,7 +98,9 @@ export default {
   },
   async mounted() {
     const result = await LotteryDataService.getAll(this.activeAssignment.id)
-    this.lotteryEntries = result.data
+    this.lotteryEntries = result.data.lotteries
+    this.poasStats = result.data.poasStats
+    console.log("Stats: ", this.poasStats[0][0], this.poasStats[0][1])
     let count = this.lotteryEntries.length
     while (count < this.activeAssignment.minEntries) {
       this.addEntry()
