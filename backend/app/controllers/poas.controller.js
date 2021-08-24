@@ -47,7 +47,7 @@ exports.getCounts = async (userId, assignmentId, poasList) => {
   try {
     for (let poaId of poasList) {
       let counts = [];
-      
+
       for (let i = 1; i <= maxEntries; i++) {
         let result = await Lottery.findAll({
           attributes: [
@@ -64,13 +64,13 @@ exports.getCounts = async (userId, assignmentId, poasList) => {
         lotteryCount = result[0].count_per_preference;
         counts.push(lotteryCount);
       }
-  
+
       poasStats.push(counts);
     }
   } catch(err) {
     onsole.log(err.message || "Some error occurred while retrieving POAS stats.");
   }
-  
+
   return poasStats;
 }
 

@@ -18,6 +18,12 @@ module.exports = function(app) {
   // Retrieve a single Assignment with id
   assignmentRouter.get("/:id", controller.findOneAssignment);
 
+   // Do a lottery
+   assignmentRouter.post("/lottery", controller.doLottery);
+
+   // Return lottery result
+   assignmentRouter.get("/lottery", controller.showLottery);
+
   app.use("/api/teacher/assignments", authJwt.verifyToken, authJwt.isTeacher, assignmentRouter);
 
   app.post(

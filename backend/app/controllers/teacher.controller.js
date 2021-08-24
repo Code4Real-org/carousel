@@ -2,6 +2,9 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const Assignment = db.assignments;
+const UserAssignments = db.user_assignments;
+const poasController = require("../controllers/poas.controller");
 
 const Op = db.Sequelize.Op;
 
@@ -40,6 +43,61 @@ exports.findOneAssignment = (req, res) => {
         message: "Error retrieving Assignment with id=" + id
       });
     });
+};
+
+
+exports.doLottery = async (req, res) => {
+  const uid = req.userId;
+  const assignmentId = parseInt(req.query.assignment);
+
+  try {
+    let user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
+    let lotteries = await user_assignment.getLotteries();
+    let poasList = [];
+
+    for (lottery of lotteries) {
+      let poas = await Poas.findByPk(lottery.poaId);  // have to use the odd name
+      poasList.push(poas.id);
+      lottery.firstName = poas.firstName;
+      lottery.middleName = poas.middleName;
+      lottery.lastName = poas.lastName;
+    }
+
+    let poasStats = await poasController.getCounts(uid, assignmentId, poasList);
+    res.send({lotteries: lotteries, poasStats: poasStats});
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while conducting lottery."
+    });
+  }
+};
+
+exports.showLottery = async (req, res) => {
+  const uid = req.userId;
+  const assignmentId = parseInt(req.query.assignment);
+
+  try {
+    let user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
+    let lotteries = await user_assignment.getLotteries();
+    let poasList = [];
+
+    for (lottery of lotteries) {
+      let poas = await Poas.findByPk(lottery.poaId);  // have to use the odd name
+      poasList.push(poas.id);
+      lottery.firstName = poas.firstName;
+      lottery.middleName = poas.middleName;
+      lottery.lastName = poas.lastName;
+    }
+
+    let poasStats = await poasController.getCounts(uid, assignmentId, poasList);
+    res.send({lotteries: lotteries, poasStats: poasStats});
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving lottery result."
+    });
+  }
 };
 
 

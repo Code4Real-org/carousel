@@ -24,6 +24,15 @@ class TeacherAssignmentDataService {
   deleteAll() {
     return http.delete(`/teacher/assignments`);
   }
+
+  doLottery(assignmentId) {
+    return http.post(`/teacher/assignments/lottery?assignment=${assignmentId}`);
+  }
+
+  showLottery(assignmentId) {
+    return http.get(`/teacher/assignments/lottery?assignment=${assignmentId}`);
+  }
+
 }
 
 export default new TeacherAssignmentDataService();

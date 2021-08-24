@@ -1,8 +1,8 @@
+const { authJwt } = require("../middleware");
+const assignments = require("../controllers/assignment.controller.js");
+const router = require("express").Router();
+
 module.exports = app => {
-  const assignments = require("../controllers/assignment.controller.js");
-
-  var router = require("express").Router();
-
   // Create a new Assignment
   router.post("/", assignments.create);
 
@@ -15,5 +15,5 @@ module.exports = app => {
   // Delete all Assignments
   router.delete("/", assignments.deleteAll);
 
-  app.use('/api/assignments', router);
+   app.use('/api/assignments', authJwt.verifyToken, authJwt.isTeacher, router);
 };

@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import { auth } from '../firebase'
 import store from "../store"
 import Dashboard from '../views/Dashboard.vue'
 

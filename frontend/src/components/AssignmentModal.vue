@@ -13,8 +13,12 @@
         <br>
       <h5>Operations</h5>
       <form @submit.prevent>
-        <button @click="doLottery(this.activeAssignment)" class="button">Conduct lottery</button>
+        <button @click="doLottery(activeAssignment)" class="button">Conduct lottery</button>
       </form>
+
+      <br>
+      <upload-file></upload-file>
+
     </div>
   </div>
 </template>
@@ -22,11 +26,14 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import StudentAssignmentDataService from "../services/StudentAssignmentDataService"
-import LotteryDataService from "../services/LotteryDataService"
+import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService"
+import UploadFile from "../components/UploadFile"
 
 export default {
   props: ['activeAssignment'],
+  components: {
+    UploadFile
+  },
   data() {
     return {
       description: '',
@@ -37,18 +44,8 @@ export default {
     ...mapState(['activeUser'])
   },
   methods: {
-    getAssignment() {
-      StudentAssignmentDataService.getOne(this.activeAssignment.id)
-        .then(response => {
-          this.assignment = response.data;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
     async doLottery(assignment) {
-      await LotteryDataService.doLottery(assignment.id)
+      await TeacherAssignmentDataService.doLottery(assignment.id)
     },
     closeAssignmentModal() {
       this.lotteryEntries = []
