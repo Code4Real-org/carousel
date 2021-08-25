@@ -17,7 +17,7 @@
       <input type="file" ref="file" @change="selectFile" />
     </label>
 
-    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload">
+    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload(activeAssignment)">
       Upload
     </button>
 
@@ -30,6 +30,7 @@
 import UploadService from "../services/UploadFileService";
 export default {
   name: "upload-file",
+  props: ['activeAssignment'],
   data() {
     return {
       selectedFiles: undefined,
@@ -43,10 +44,10 @@ export default {
     selectFile() {
       this.selectedFiles = this.$refs.file.files;
     },
-    upload() {
+    upload(assignment) {
       this.progress = 0;
       this.currentFile = this.selectedFiles.item(0);
-      UploadService.upload(this.currentFile, event => {
+      UploadService.upload(this.currentFile, assignment.id, event => {
         this.progress = Math.round((100 * event.loaded) / event.total);
       })
         .then(response => {

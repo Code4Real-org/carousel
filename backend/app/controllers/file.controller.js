@@ -1,4 +1,7 @@
 const uploadFile = require("../middleware/upload");
+const readline = require('readline');
+const fs = require('fs');
+addrs = require("email-addresses");
 
 const upload = async (req, res) => {
   try {
@@ -7,6 +10,18 @@ const upload = async (req, res) => {
     if (req.file == undefined) {
       return res.status(400).send({ message: "Please upload a file!" });
     }
+
+    const filename = __basedir + "/uploads/" + req.file.originalname;
+    const readInterface = readline.createInterface({
+      input: fs.createReadStream(filename),
+      output: null,
+      console: false
+    });
+    readInterface.on('line', function(line) {
+      const email = addrs.parseOneAddress(line);
+      console.log("Name: ", email.name, "Address: ", email.address, "Local: ", email.local);
+    });
+
 
     res.status(200).send({
       message: "Uploaded the file successfully: " + req.file.originalname,

@@ -17,7 +17,7 @@
       </form>
 
       <br>
-      <upload-file></upload-file>
+      <upload-file :activeAssignment="activeAssignment"></upload-file>
 
     </div>
   </div>
