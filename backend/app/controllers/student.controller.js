@@ -1,12 +1,10 @@
 const db = require("../models");
-const Op = db.Sequelize.Op;
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
 
 const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
 
 
 // Retrieve all Assignments from the database.

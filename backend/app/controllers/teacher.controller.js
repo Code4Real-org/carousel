@@ -73,6 +73,7 @@ exports.doLottery = async (req, res) => {
   }
 };
 
+
 exports.showLottery = async (req, res) => {
   const uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
@@ -98,6 +99,11 @@ exports.showLottery = async (req, res) => {
         err.message || "Some error occurred while retrieving lottery result."
     });
   }
+};
+
+
+exports.addStudent = async (req, res) => {
+
 };
 
 

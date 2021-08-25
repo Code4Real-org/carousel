@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
       await poas.increment('count', {by: 1});
       await user_assignment.addLottery(lottery.id);
     };
-    res.send(lotteries);
+    res.status(200).send({message: "Done!"});
   } catch(err) {
     res.status(500).send({
       message:
