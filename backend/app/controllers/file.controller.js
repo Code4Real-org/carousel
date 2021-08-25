@@ -1,7 +1,11 @@
 const uploadFile = require("../middleware/upload");
 const readline = require('readline');
 const fs = require('fs');
-addrs = require("email-addresses");
+const addrs = require("email-addresses");
+
+const db = require("../models");
+const User = db.user;
+const Role = db.role;
 
 const upload = async (req, res) => {
   try {
@@ -20,6 +24,17 @@ const upload = async (req, res) => {
     readInterface.on('line', function(line) {
       const email = addrs.parseOneAddress(line);
       console.log("Name: ", email.name, "Address: ", email.address, "Local: ", email.local);
+      User.findOrCreate({
+        where: {gid: email.address},
+        defaults: {username: email.local}
+      })
+        .then(([user, created]) => {
+          console.log("Setting role for student");
+          user.setRoles([3]);
+        })
+        .catch(err => {
+          console.log("Error in processing email address");
+        });
     });
 
 
