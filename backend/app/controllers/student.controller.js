@@ -42,6 +42,29 @@ exports.findOneAssignment = (req, res) => {
 };
 
 
+// Retrieve all Assignments from the database.
+exports.findAll = async (req, res) => {
+  const uid = req.userId; // always a teacher
+  const assignmentId = parseInt(req.query.assignment);
+
+  try {
+    let assignment = await Assignment.findByPk(assignmentId);
+    let students = await assignment.getUsers();
+    students.forEach((student, index) => {
+      if (!student.hasRole(3)) {
+        students.splice(index, 1);
+      }
+    });
+    res.send(students);
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving students."
+    });
+  }
+};
+
+
 exports.signup = (req, res) => {
   // Save User to Database
   User.findOrCreate({

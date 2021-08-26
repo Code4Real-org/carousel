@@ -12,6 +12,7 @@ const store = new Vuex.Store({
   state: {
     activeUser: {},
     userProfile: {},
+    activeAssignment: {},
     assignments: [],
     posts: []
   },
@@ -22,8 +23,8 @@ const store = new Vuex.Store({
     setUserProfile(state, val) {
       state.userProfile = val
     },
-    setPerformingRequest(state, val) {
-      state.performingRequest = val
+    setActiveAssignment(state, val) {
+      state.activeAssignment = val
     },
     setLotteries(state, val) {
       state.posts = val
@@ -95,6 +96,9 @@ const store = new Vuex.Store({
 
       // redirect to login view
       router.push('/login')
+    },
+    async updateActiveAssignment({ commit }, assignment) {
+      commit('setActiveAssignment', assignment)
     },
     async updateProfile({ dispatch }, user) {
       const userId = fb.auth.currentUser.uid

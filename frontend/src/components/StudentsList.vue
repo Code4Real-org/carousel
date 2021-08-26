@@ -1,12 +1,16 @@
 <template>
+  <div class="p-modal">
+    <div class="p-container">
+      <a @click="$emit('close')">close</a>
+
   <div class="list row">
     <div class="col-md-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by title"
-          v-model="title"/>
+        <input type="text" class="form-control" placeholder="Search by name"
+          v-model="name"/>
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"
-            @click="searchTitle"
+            @click="searchName"
           >
             Search
           </button>
@@ -14,63 +18,70 @@
       </div>
     </div>
     <div class="col-md-6">
-      <h4>Tutorials List</h4>
+      <h4>Students List</h4>
       <ul class="list-group">
         <li class="list-group-item"
           :class="{ active: index == currentIndex }"
-          v-for="(tutorial, index) in tutorials"
+          v-for="(student, index) in students"
           :key="index"
-          @click="setActiveTutorial(tutorial, index)"
+          @click="setActiveStudent(student, index)"
         >
-          {{ tutorial.title }}
+          {{ student.username }}
         </li>
       </ul>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
+      <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
         Remove All
       </button>
     </div>
     <div class="col-md-6">
-      <div v-if="currentTutorial">
-        <h4>Tutorial</h4>
+      <div v-if="currentStudent">
+        <h4>Student</h4>
         <div>
-          <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+          <label><strong>Name:</strong></label> {{ currentStudent.username }}
         </div>
         <div>
-          <label><strong>Description:</strong></label> {{ currentTutorial.description }}
+          <label><strong>Gmail:</strong></label> {{ currentStudent.gid }}
         </div>
         <div>
           <label><strong>Status:</strong></label> {{ currentTutorial.published ? "Published" : "Pending" }}
         </div>
 
-        <router-link :to="'/tutorials/' + currentTutorial.id" class="badge badge-warning">Edit</router-link>
+        <router-link :to="'/students/' + currentStudent.id" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
         <br />
-        <p>Please click on a Tutorial...</p>
+        <p>Please click on a Student...</p>
       </div>
     </div>
+  </div>
+
+  </div>
   </div>
 </template>
 
 <script>
-import TutorialDataService from "../services/TutorialDataService";
+import { mapState } from 'vuex'
+import StudentDataService from "../services/StudentDataService";
 
 export default {
-  name: "tutorials-list",
+  name: "students-list",
   data() {
     return {
-      tutorials: [],
-      currentTutorial: null,
+      students: [],
+      currentStudent: null,
       currentIndex: -1,
-      title: ""
+      name: ""
     };
   },
+  computed: {
+    ...mapState(['activeAssignment'])
+  },
   methods: {
-    retrieveTutorials() {
-      TutorialDataService.getAll()
+    retrieveStudents(assignmentId) {
+      StudentDataService.getAll(assignmentId)
         .then(response => {
-          this.tutorials = response.data;
+          this.students = response.data;
           console.log(response.data);
         })
         .catch(e => {
@@ -79,18 +90,18 @@ export default {
     },
 
     refreshList() {
-      this.retrieveTutorials();
-      this.currentTutorial = null;
+      this.retrieveStudents();
+      this.currentStudent = null;
       this.currentIndex = -1;
     },
 
-    setActiveTutorial(tutorial, index) {
-      this.currentTutorial = tutorial;
+    setActiveTutorial(student, index) {
+      this.currentStudent = student;
       this.currentIndex = index;
     },
 
-    removeAllTutorials() {
-      TutorialDataService.deleteAll()
+    removeAllStudents() {
+      StudentDataService.deleteAll()
         .then(response => {
           console.log(response.data);
           this.refreshList();
@@ -100,8 +111,8 @@ export default {
         });
     },
     
-    searchTitle() {
-      TutorialDataService.findByTitle(this.title)
+    searchName() {
+      StudentDataService.findByName(this.name)
         .then(response => {
           this.tutorials = response.data;
           console.log(response.data);
@@ -109,10 +120,16 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+
+    closeStudentsList() {
+      this.students = []
+
+      this.$emit('close')
     }
   },
   mounted() {
-    this.retrieveTutorials();
+    this.retrieveStudents(this.activeAssignment.id);
   }
 };
 </script>

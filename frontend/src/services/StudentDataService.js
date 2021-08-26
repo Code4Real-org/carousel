@@ -1,8 +1,8 @@
 import http from "../http-common";
 
 class StudentDataService {
-  getAll() {
-    return http.get("/student");
+  getAll(assignmentId) {
+    return http.get(`/teacher/students?assignment=${assignmentId}`);
   }
 
   get(id) {
