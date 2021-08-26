@@ -15,6 +15,12 @@ module.exports = (sequelize, Sequelize) => {
     },
     maxEntries: {
       type: Sequelize.INTEGER
+    },
+    dueDate: {
+      type: Sequelize.DATEONLY
+    },
+    state: {
+      type: Sequelize.INTEGER
     }
   });
 

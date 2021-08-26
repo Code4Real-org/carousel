@@ -27,9 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // db.sequelize.sync();
 // drop the table if it already exists (not anymore)
-db.sequelize.sync({ force: false }).then(() => {
-  //console.log("Drop and re-sync db.");
-  //initial();
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+  initial();
 });
 
 async function initial() {
