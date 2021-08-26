@@ -2,14 +2,16 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
-const Assignment = db.assignments;
+const Assignment = db.assignment;
 const UserAssignments = db.user_assignments;
+const Poas = db.poas;
 const poasController = require("../controllers/poas.controller");
 
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { poas } = require("../models");
 
 // Retrieve all Assignments from the database.
 exports.findAllAssignments = (req, res) => {
@@ -51,20 +53,65 @@ exports.doLottery = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
 
   try {
-    let user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
-    let lotteries = await user_assignment.getLotteries();
-    let poasList = [];
+    let assignment = await Assignment.findByPk(assignmentId);
+    let students = await assignment.getUsers();
+    for (index = 0; index < students.length; index++) {
+      let student = students[index];
+      let isTeacher = await student.hasRole(2);
+      if (isTeacher) {
+        console.log("Removing user: ", student.id, " at ", index, " from the list");
+        students.splice(index, 1);
+      }
+    }
+    console.log("Student list: ");
+    students.forEach(student => {
+      console.log(student.id);
+    });
 
-    for (lottery of lotteries) {
-      let poas = await Poas.findByPk(lottery.poaId);  // have to use the odd name
-      poasList.push(poas.id);
-      lottery.firstName = poas.firstName;
-      lottery.middleName = poas.middleName;
-      lottery.lastName = poas.lastName;
+    const studentNum = students.length;
+    for (let i = studentNum - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i+1));
+      let temp = students[i];
+      students[i] = students[j];
+      students[j] = temp;
+    }
+    console.log("Randomized student list: ");
+    students.forEach(student => {
+      console.log(student.id);
+    });
+
+    // Clear POAS assignments
+    let poasList = await Poas.findAll();
+    for (let poas of poasList) {
+      poas.setUser(null);
+    };
+
+    for (let student of students) {
+      let user_assignment = await UserAssignments.findOne({where: {userId: student.id, assignmentId: assignmentId}});
+      let lotteries = await user_assignment.getLotteries({
+        order: [
+          ['preference', 'ASC']
+        ]
+      });
+
+      let assigned = false;
+      for (let lottery of lotteries) {
+        let poas = await Poas.findByPk(lottery.poaId);  // TODO: have to use the odd name for now
+        let user = await poas.getUser();
+        if (!user) {
+          assigned = true;
+          poas.setUser(student.id);
+          student.poaId = poas.id;
+          console.log("Assign student: ", student.id, " to POAS: ", poas.id)
+          break;
+        }
+      }
+      if (!assigned) {
+        console.log("Unable to assign student: ", student.id);
+      }
     }
 
-    let poasStats = await poasController.getCounts(uid, assignmentId, poasList);
-    res.send({lotteries: lotteries, poasStats: poasStats});
+    res.send({message: "Lottery done!"});
   } catch(err) {
     res.status(500).send({
       message:

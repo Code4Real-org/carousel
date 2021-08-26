@@ -26,10 +26,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // db.sequelize.sync();
-// drop the table if it already exists
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-  initial();
+// drop the table if it already exists (not anymore)
+db.sequelize.sync({ force: false }).then(() => {
+  //console.log("Drop and re-sync db.");
+  //initial();
 });
 
 async function initial() {

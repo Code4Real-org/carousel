@@ -31,6 +31,7 @@ const upload = async (req, res) => {
         .then(([user, created]) => {
           console.log("Setting role for student");
           user.setRoles([3]);
+          user.setAssignments([1]); // TODO: no hardcode
         })
         .catch(err => {
           console.log("Error in processing email address");
