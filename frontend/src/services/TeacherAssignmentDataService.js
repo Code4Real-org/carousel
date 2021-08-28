@@ -26,11 +26,11 @@ class TeacherAssignmentDataService {
   }
 
   doLottery(assignmentId) {
-    return http.post(`/teacher/assignments/lottery?assignment=${assignmentId}`);
+    return http.post(`/teacher/lottery?assignment=${assignmentId}`);
   }
 
   showLottery(assignmentId) {
-    return http.get(`/teacher/assignments/lottery?assignment=${assignmentId}`);
+    return http.get(`/teacher/lottery?assignment=${assignmentId}`);
   }
 
 }

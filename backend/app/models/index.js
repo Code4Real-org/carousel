@@ -47,8 +47,9 @@ db.user.belongsToMany(db.assignment, {
 });
 
 db.user_assignments.hasMany(db.lottery);
+db.user_assignments.hasOne(db.poas);
 db.poas.hasMany(db.lottery);
-db.poas.hasOne(db.user);
+//db.poas.hasOne(db.user);
 
 db.ROLES = ["admin", "teacher", "student"];
 

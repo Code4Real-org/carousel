@@ -6,8 +6,8 @@ const db = require("./app/models");
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
-const Poas = db.poas;
 const Lottery = db.lottery;
+const Poas = db.poas;
 
 const app = express();
 

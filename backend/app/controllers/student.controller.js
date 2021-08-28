@@ -50,11 +50,13 @@ exports.findAll = async (req, res) => {
   try {
     let assignment = await Assignment.findByPk(assignmentId);
     let students = await assignment.getUsers();
-    students.forEach((student, index) => {
-      if (!student.hasRole(3)) {
-        students.splice(index, 1);
+    for (let i = 0; i < students.length; i++) {
+      let student = students[i];
+      let isStudent = await student.hasRole(3);
+      if (!isStudent) {
+        students.splice(i, 1);
       }
-    });
+    }
     res.send(students);
   } catch(err) {
     res.status(500).send({

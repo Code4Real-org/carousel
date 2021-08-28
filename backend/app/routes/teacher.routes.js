@@ -12,27 +12,23 @@ module.exports = function(app) {
     next();
   });
 
-  const assignmentRouter = express.Router();
+  const router = express.Router();
 
   // Retrieve all Assignments
-  assignmentRouter.get("/", controller.findAllAssignments);
+  router.get("/assignments", controller.findAllAssignments);
 
   // Retrieve a single Assignment with id
-  assignmentRouter.get("/:id", controller.findOneAssignment);
+  router.get("/assignments/:id", controller.findOneAssignment);
 
-   // Do a lottery
-   assignmentRouter.post("/lottery", controller.doLottery);
+  // Do a lottery
+  router.post("/lottery", controller.doLottery);
 
-   // Return lottery result
-   assignmentRouter.get("/lottery", controller.showLottery);
+  // Return lottery result
+  router.get("/lottery", controller.showLottery);
 
-  app.use("/api/teacher/assignments", authJwt.verifyToken, authJwt.isTeacher, assignmentRouter);
+  router.get("/students", student.findAll);
 
-  const studentsRouter = express.Router();
-
-  studentsRouter.get("/", student.findAll);
-
-  app.use("/api/teacher/students", authJwt.verifyToken, authJwt.isTeacher, studentsRouter);
+  app.use("/api/teacher", authJwt.verifyToken, authJwt.isTeacher, router);
 
   app.post(
     "/api/teacher/signup",

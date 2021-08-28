@@ -15,7 +15,7 @@
             <ul>
               <li><a @click="editAssignment(assignment)">Edit</a></li>
               <li><a @click="manageStudents(assignment)">Students</a></li>
-              <li><a @click="conductLottery(assignment)">Lottery</a></li>
+              <li><a @click="adminLottery(assignment)">Lottery</a></li>
             </ul>
           </div>
         </div>
@@ -37,6 +37,11 @@
       </students-list>
     </transition>
 
+    <!-- lottery admin modal -->
+    <transition name="fade">
+      <lottery-admin v-if="showLotteryAdmin" :activeAssignment="this.activeAssignment" @close="closeLotteryAdmin()">
+      </lottery-admin>
+    </transition>
   </div>
 </template>
 
@@ -46,17 +51,20 @@ import moment from 'moment'
 import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService"
 import AssignmentModal from '../components/AssignmentModal.vue'
 import StudentsList from '../components/StudentsList.vue'
+import LotteryAdmin from '../components/LotteryAdmin.vue'
 
 export default {
   components: {
     AssignmentModal,
     StudentsList,
+    LotteryAdmin
   },
   data() {
     return {
       assignments: [],
       showAssignmentModal: false,
       showStudentsList: false,
+      showLotteryAdmin: false,
       activeAssignment: {}
     }
   },
@@ -89,6 +97,14 @@ export default {
     },
     closeStudentsList() {
       this.showStudentsList = false
+    },
+    async adminLottery(assignment) {
+      this.activeAssignment = assignment
+      this.$store.dispatch('updateActiveAssignment', assignment)
+      this.showLotteryAdmin = true
+    },
+    closeLotteryAdmin() {
+      this.showLotteryAdmin = false
     }
   },
   mounted() {

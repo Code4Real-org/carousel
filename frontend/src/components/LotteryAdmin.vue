@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <h4>Students List</h4>
+      <h4>Students lottery result</h4>
       <ul class="list-group">
         <li class="list-group-item"
           :class="{ active: index == currentIndex }"
@@ -26,7 +26,7 @@
           :key="index"
           @click="setActiveStudent(student, index)"
         >
-          {{ student.username }}
+          {{ student.userId }}  -->  {{ student.poa? student.poa.id: "unassigned" }}
         </li>
       </ul>
 
@@ -38,10 +38,11 @@
       <div v-if="currentStudent">
         <h4>Student</h4>
         <div>
-          <label><strong>Name:</strong></label> {{ currentStudent.username }}
+          <label><strong>Name:</strong></label> {{ currentStudent.userId }}
         </div>
         <div>
-          <label><strong>Gmail:</strong></label> {{ currentStudent.gid }}
+          <label><strong>POAS:</strong></label> 
+          {{ currentStudent.poa? currentStudent.poa.firstName + ' ' + currentStudent.poa.lastName: '' }}
         </div>
 
         <router-link :to="'/students/' + currentStudent.id" class="badge badge-warning">Edit</router-link>
@@ -60,6 +61,7 @@
 <script>
 import { mapState } from 'vuex'
 import StudentDataService from "../services/StudentDataService";
+import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService";
 
 export default {
   name: "students-list",
@@ -75,11 +77,11 @@ export default {
     ...mapState(['activeAssignment'])
   },
   methods: {
-    retrieveStudents(assignmentId) {
-      StudentDataService.getAll(assignmentId)
+    retrieveLotteryResult(assignmentId) {
+      TeacherAssignmentDataService.showLottery(assignmentId)
         .then(response => {
           this.students = response.data;
-          console.log(response.data);
+          console.log(this.students);
         })
         .catch(e => {
           console.log(e);
@@ -87,7 +89,7 @@ export default {
     },
 
     refreshList() {
-      this.retrieveStudents();
+      this.retrieveLotteryResult();
       this.currentStudent = null;
       this.currentIndex = -1;
     },
@@ -119,14 +121,14 @@ export default {
         });
     },
 
-    closeStudentsList() {
+    closeLotteryResult() {
       this.students = []
 
       this.$emit('close')
     }
   },
   mounted() {
-    this.retrieveStudents(this.activeAssignment.id);
+    this.retrieveLotteryResult(this.activeAssignment.id);
   }
 };
 </script>
