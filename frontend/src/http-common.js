@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "./store"
+import router from './router'
 
 const token = store.state.activeUser.accessToken;
 
@@ -14,7 +15,7 @@ const http = axios.create({
 
 http.interceptors.request.use (
   function (config) {
-    const token = store.state.activeUser.access_token;
+    const token = store.state.activeUser.accessToken;
     if (token) config.headers = {
       "Content-type": "application/json",
       "Accept": "application/json",
@@ -27,5 +28,13 @@ http.interceptors.request.use (
     return Promise.reject (error);
   }
 );
+
+http.interceptors.response.use((response) => {
+  return response
+}, function (error) {
+  //const originalRequest = error.config;
+  router.push('/login');
+  return Promise.reject(error);
+})
 
 export default http;
