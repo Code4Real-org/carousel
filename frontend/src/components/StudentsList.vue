@@ -30,6 +30,9 @@
         </li>
       </ul>
 
+      <br>
+      <upload-file :activeAssignment="activeAssignment"></upload-file>
+
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
         Remove All
       </button>
@@ -59,10 +62,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import StudentDataService from "../services/StudentDataService";
+import StudentDataService from "../services/StudentDataService"
+import UploadFile from "../components/UploadFile"
 
 export default {
   name: "students-list",
+  components: {
+    UploadFile
+  },
   data() {
     return {
       students: [],

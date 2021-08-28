@@ -11,14 +11,6 @@
        <h5>Configurations</h5> 
         <p>Maximum number of lottery entries each student can enter: {{ activeAssignment.maxEntries }}</p>
         <br>
-      <h5>Operations</h5>
-      <form @submit.prevent>
-        <button @click="doLottery(activeAssignment)" class="button">Conduct lottery</button>
-      </form>
-
-      <br>
-      <upload-file :activeAssignment="activeAssignment"></upload-file>
-
     </div>
   </div>
 </template>
@@ -27,13 +19,9 @@
 import { mapState } from 'vuex'
 import moment from 'moment'
 import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService"
-import UploadFile from "../components/UploadFile"
 
 export default {
   props: ['activeAssignment'],
-  components: {
-    UploadFile
-  },
   data() {
     return {
       description: '',
@@ -44,9 +32,6 @@ export default {
     ...mapState(['activeUser'])
   },
   methods: {
-    async doLottery(assignment) {
-      await TeacherAssignmentDataService.doLottery(assignment.id)
-    },
     closeAssignmentModal() {
       this.lotteryEntries = []
 

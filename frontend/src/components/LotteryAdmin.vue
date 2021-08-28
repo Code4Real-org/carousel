@@ -17,6 +17,13 @@
         </div>
       </div>
     </div>
+
+    <h5>Operations</h5>
+      <form @submit.prevent>
+        <button @click="doLottery(activeAssignment)" class="button">Conduct lottery</button>
+      </form>
+      <br><br>
+
     <div class="col-md-6">
       <h4>Students lottery result</h4>
       <ul class="list-group">
@@ -77,6 +84,9 @@ export default {
     ...mapState(['activeAssignment'])
   },
   methods: {
+    async doLottery(assignment) {
+      await TeacherAssignmentDataService.doLottery(assignment.id)
+    },
     retrieveLotteryResult(assignmentId) {
       TeacherAssignmentDataService.showLottery(assignmentId)
         .then(response => {
