@@ -3,26 +3,9 @@
     <div class="p-container">
       <a @click="$emit('close')">close</a>
 
-  <div class="list row">
-    <div class="col-md-8">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by name"
-          v-model="name"/>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
-            @click="searchName"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-      <br>
-      <upload-file :activeAssignment="activeAssignment"></upload-file>
-  </div>
-
       <h4>Students List</h4>
       <div>
-        <b-table striped hover sticky-header :items="students" :fields="fields"></b-table>
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields"></b-table>
       </div>
 
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
@@ -46,6 +29,10 @@
         <p>Please click on a Student...</p>
       </div>
     </div>
+
+  <div>
+    <h5>Import a student roster</h5>
+    <upload-file :activeAssignment="activeAssignment"></upload-file>
   </div>
 
   </div>

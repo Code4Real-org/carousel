@@ -24,24 +24,17 @@
       </form>
       <br><br>
 
-    <div class="col-md-6">
+    <div class="col-lg-8">
       <h4>Students lottery result</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(student, index) in students"
-          :key="index"
-          @click="setActiveStudent(student, index)"
-        >
-          {{ student.userId }}  -->  {{ student.poa? student.poa.id: "unassigned" }}
-        </li>
-      </ul>
+      <div>
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields"></b-table>
+      </div>
 
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
         Remove All
       </button>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-4">
       <div v-if="currentStudent">
         <h4>Student</h4>
         <div>
@@ -74,6 +67,7 @@ export default {
   name: "students-list",
   data() {
     return {
+      fields: ['userId', 'poa.id'],
       students: [],
       currentStudent: null,
       currentIndex: -1,
