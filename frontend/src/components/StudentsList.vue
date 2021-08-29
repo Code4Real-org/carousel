@@ -16,27 +16,19 @@
           </button>
         </div>
       </div>
-    </div>
-    <div class="col-md-6">
-      <h4>Students List</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
-          :class="{ active: index == currentIndex }"
-          v-for="(student, index) in students"
-          :key="index"
-          @click="setActiveStudent(student, index)"
-        >
-          {{ student.username }}
-        </li>
-      </ul>
-
       <br>
       <upload-file :activeAssignment="activeAssignment"></upload-file>
+  </div>
+
+      <h4>Students List</h4>
+      <div>
+        <b-table striped hover sticky-header :items="students" :fields="fields"></b-table>
+      </div>
 
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
         Remove All
       </button>
-    </div>
+
     <div class="col-md-6">
       <div v-if="currentStudent">
         <h4>Student</h4>
@@ -72,6 +64,7 @@ export default {
   },
   data() {
     return {
+      fields: ['firstName', 'lastName', 'username'],
       students: [],
       currentStudent: null,
       currentIndex: -1,
