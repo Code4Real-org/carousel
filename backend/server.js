@@ -50,7 +50,7 @@ async function initial() {
 
   // Root admin account
   user = await User.create({
-    id: 1,
+    userId: 1,
     username: "code4real",
     email: "code4real.org@gmail.com",
   });
@@ -58,7 +58,7 @@ async function initial() {
 
   // Teacher account for testing
   user = await User.create({
-    id: 2,
+    userId: 2,
     username: "brookvaleboy",
     email: "brookvaleboy@gmail.com",
   });
@@ -66,14 +66,14 @@ async function initial() {
 
   // Sample student account
   user = await User.create({
-    id: 3,
+    userId: 3,
     username: "flozhao",
     email: "florence.y.zhao@gmail.com",
   });
   await user.setRoles([3]);
 
   assignment = await Assignment.create({
-    id: 1,
+    assignmentId: 1,
     title: "Person of American Significance",
     description: "Choose a person of American significance to research and write an essay about. Each student must pick a unique person.",
     minEntries: 3,
