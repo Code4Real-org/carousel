@@ -5,7 +5,12 @@
 
       <h4>Students List</h4>
       <div>
-        <b-table striped hover sticky-header="600px" :items="students" :fields="fields"></b-table>
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields">
+          <!-- A virtual column -->
+          <template #cell(index)="data">
+            {{ data.index + 1 }}
+          </template>
+        </b-table>
       </div>
 
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
@@ -51,7 +56,7 @@ export default {
   },
   data() {
     return {
-      fields: ['firstName', 'lastName', 'username'],
+      fields: ['index', 'firstName', 'lastName', 'username'],
       students: [],
       currentStudent: null,
       currentIndex: -1,

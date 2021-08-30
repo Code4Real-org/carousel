@@ -27,7 +27,12 @@
     <div class="col-lg-8">
       <h4>Students lottery result</h4>
       <div>
-        <b-table striped hover sticky-header="600px" :items="students" :fields="fields"></b-table>
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields">
+          <!-- A virtual column -->
+          <template #cell(index)="data">
+            {{ data.index + 1 }}
+          </template>
+        </b-table>
       </div>
 
       <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
@@ -67,7 +72,7 @@ export default {
   name: "students-list",
   data() {
     return {
-      fields: ['userId', 'poa.id'],
+      fields: ['index', 'userId', 'poa.id'],
       students: [],
       currentStudent: null,
       currentIndex: -1,
