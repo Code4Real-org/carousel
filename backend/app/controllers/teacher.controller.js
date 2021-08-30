@@ -6,6 +6,7 @@ const Assignment = db.assignment;
 const UserAssignments = db.user_assignments;
 const Poas = db.poas;
 const poasController = require("../controllers/poas.controller");
+const common = require("../util/common.js")
 
 const Op = db.Sequelize.Op;
 
@@ -68,13 +69,19 @@ exports.doLottery = async (req, res) => {
       console.log(student.id);
     });
 
-    const studentNum = students.length;
+    //const studentNum = students.length;
+    /*
     for (let i = studentNum - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i+1));
       let temp = students[i];
       students[i] = students[j];
       students[j] = temp;
     }
+    */
+    for (let i = 0; i < 3; i++) {
+      common.shuffleOnce(students);
+    }
+
     console.log("Randomized student list: ");
     students.forEach(student => {
       console.log(student.id);
@@ -218,3 +225,4 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
