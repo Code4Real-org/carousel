@@ -1,7 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
   const Assignment = sequelize.define("assignments", {
-    id: {
+    assignmentId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     title: {

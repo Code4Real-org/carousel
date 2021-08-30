@@ -37,19 +37,42 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
+db.user_assignments.belongsTo(db.user, {
+  foreignKey: 'userId',
+  targetKey: 'userId',
+  //as: 'User'
+});
+db.user_assignments.belongsTo(db.assignment, {
+  foreignKey: 'assignmentId',
+  targetKey: 'assignmentId',
+  as: 'Assignment'
+});
 db.assignment.belongsToMany(db.user, {
   through: "user_assignments",
-  uniqueKey: "userAssignmentId"
+  foreignKey: 'assignmentId',
+  otherKey: "userId",
+  as: "Assigner"
+});
+db.assignment.belongsToMany(db.user, {
+  through: "user_assignments",
+  foreignKey: 'assignmentId',
+  otherKey: "userId",
+  as: "Assignee"
 });
 db.user.belongsToMany(db.assignment, {
   through: "user_assignments",
-  uniqueKey: "userAssignmentId"
+  foreignKey: 'userId',
+  as: "Assignment"
+});
+db.user.belongsToMany(db.assignment, {
+  through: "user_assignments",
+  foreignKey: 'userId',
+  as: "Assigned"
 });
 
 db.user_assignments.hasMany(db.lottery);
 db.user_assignments.hasOne(db.poas);
 db.poas.hasMany(db.lottery);
-//db.poas.hasOne(db.user);
 
 db.ROLES = ["admin", "teacher", "student"];
 

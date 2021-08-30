@@ -30,12 +30,12 @@ exports.signin = (req, res) => {
             return res.status(404).send({ message: "Role does not match." });
           }
 
-          var token = jwt.sign({ id: user.id }, config.secret, {
+          var token = jwt.sign({ id: user.userId }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
 
           res.status(200).send({
-            id: user.id,
+            id: user.userId,
             username: user.username,
             email: user.email,
             accessToken: token

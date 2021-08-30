@@ -45,7 +45,7 @@
           {{ currentStudent.poa? currentStudent.poa.firstName + ' ' + currentStudent.poa.lastName: '' }}
         </div>
 
-        <router-link :to="'/students/' + currentStudent.id" class="badge badge-warning">Edit</router-link>
+        <router-link :to="'/students/' + currentStudent.userId" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
         <br />
@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     async doLottery(assignment) {
-      await TeacherAssignmentDataService.doLottery(assignment.id)
+      await TeacherAssignmentDataService.doLottery(assignment.assignmentId)
     },
     retrieveLotteryResult(assignmentId) {
       TeacherAssignmentDataService.showLottery(assignmentId)
@@ -132,7 +132,7 @@ export default {
     }
   },
   mounted() {
-    this.retrieveLotteryResult(this.activeAssignment.id);
+    this.retrieveLotteryResult(this.activeAssignment.assignmentId);
   }
 };
 </script>

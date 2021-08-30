@@ -42,14 +42,14 @@ exports.findOneAssignment = (req, res) => {
 };
 
 
-// Retrieve all Assignments from the database.
+// Retrieve all students with the assignment.
 exports.findAll = async (req, res) => {
   const uid = req.userId; // always a teacher
   const assignmentId = parseInt(req.query.assignment);
 
   try {
     let assignment = await Assignment.findByPk(assignmentId);
-    let students = await assignment.getUsers();
+    let students = await assignment.getAssignee();
     for (let i = 0; i < students.length; i++) {
       let student = students[i];
       let isStudent = await student.hasRole(3);
@@ -103,12 +103,12 @@ exports.signin = (req, res) => {
       }
 
       if (user.hasRoles(3)) {
-        var token = jwt.sign({ id: user.id }, config.secret, {
+        var token = jwt.sign({ id: user.userId }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
 
         res.status(200).send({
-          id: user.id,
+          id: user.userId,
           username: user.username,
           email: user.email,
           accessToken: token

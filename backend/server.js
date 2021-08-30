@@ -79,7 +79,8 @@ async function initial() {
     minEntries: 3,
     maxEntries: 5
   });
-  await assignment.setUsers([2, 3]);
+  await assignment.addAssigner([2]);
+  await assignment.addAssignee([3]);
 
   poas1 = await Poas.create({
     id: 1,

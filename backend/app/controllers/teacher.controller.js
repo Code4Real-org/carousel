@@ -19,7 +19,7 @@ exports.findAllAssignments = (req, res) => {
 
   User.findByPk(uid)
     .then(user => {
-      user.getAssignments().then(data => {
+      user.getAssignment().then(data => {
         res.send(data);
       })
     })
@@ -54,7 +54,7 @@ exports.doLottery = async (req, res) => {
 
   try {
     let assignment = await Assignment.findByPk(assignmentId);
-    let students = await assignment.getUsers();
+    let students = await assignment.getAssignee();
     for (index = 0; index < students.length; index++) {
       let student = students[index];
       let isTeacher = await student.hasRole(2);
@@ -65,7 +65,7 @@ exports.doLottery = async (req, res) => {
     }
     console.log("Student list: ");
     students.forEach(student => {
-      console.log(student.id);
+      console.log(student.userId);
     });
 
     const studentNum = students.length;
@@ -77,7 +77,7 @@ exports.doLottery = async (req, res) => {
     }
     console.log("Randomized student list: ");
     students.forEach(student => {
-      console.log(student.id);
+      console.log(student.userId);
     });
 
     // Clear POAS assignments
@@ -89,7 +89,7 @@ exports.doLottery = async (req, res) => {
 
     for (let index = 0; index < students.length; index++) {
       let student = students[index];
-      let user_assignment = await UserAssignments.findOne({where: {userId: student.id, assignmentId: assignmentId}});
+      let user_assignment = await UserAssignments.findOne({where: {userId: student.userId, assignmentId: assignmentId}});
       let lotteries = await user_assignment.getLotteries({
         order: [
           ['preference', 'ASC']
@@ -108,13 +108,13 @@ exports.doLottery = async (req, res) => {
           user_assignment.poasMiddleName = poas.middleName;
           user_assignment.poasLastName = poas.lastName;
           poas.userAssignmentId = user_assignment.id;
-          console.log("Assign student: ", student.id, " to POAS: ", poas.id)
+          console.log("Assign student: ", student.userId, " to POAS: ", poas.id)
           break;
         }
       }
       user_assignment.save();
       if (!assigned) {
-        console.log("Unable to assign student: ", student.id);
+        console.log("Unable to assign student: ", student.userId);
       }
     }
 
@@ -139,18 +139,11 @@ exports.showLottery = async (req, res) => {
       }, order: [
         ['sequence', 'ASC']
       ], include: [
-        { model: Poas }
+        { model: Poas },
+        { model: User }
       ]
     });
-/*
-    for (userAssignment of userAssignments) {
-      let poas = await userAssignment.getPoa();
-      userAssignment.personId = poas.id;
-      userAssignment.poasFirstName = poas.firstName;
-      userAssignment.poasMiddleName = poas.middleName;
-      userAssignment.poasLastName = poas.lastName;
-    }
-    */
+
     res.send(userAssignments);
   } catch(err) {
     res.status(500).send({
@@ -202,12 +195,12 @@ exports.signin = (req, res) => {
       }
 
       if (user.hasRoles(2)) {
-        var token = jwt.sign({ id: user.id }, config.secret, {
+        var token = jwt.sign({ id: user.userId }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
 
         res.status(200).send({
-          id: user.id,
+          id: user.userId,
           username: user.username,
           email: user.email,
           accessToken: token

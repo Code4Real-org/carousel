@@ -51,7 +51,7 @@ exports.signin = (req, res) => {
         return res.status(404).send({ message: "User Not found." });
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
+      var token = jwt.sign({ id: user.userId }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
 
@@ -61,7 +61,7 @@ exports.signin = (req, res) => {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
         res.status(200).send({
-          id: user.id,
+          id: user.userId,
           username: user.username,
           email: user.email,
           roles: authorities,

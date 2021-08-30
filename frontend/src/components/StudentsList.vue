@@ -113,7 +113,7 @@ export default {
     }
   },
   mounted() {
-    this.retrieveStudents(this.activeAssignment.id);
+    this.retrieveStudents(this.activeAssignment.assignmentId);
   }
 };
 </script>
