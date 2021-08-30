@@ -5,7 +5,9 @@
 
       <h4>Students List</h4>
       <div>
-        <b-table striped hover sticky-header="600px" :items="students" :fields="fields">
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields" 
+          selectable
+          @row-selected="onStudentSelected" >
           <!-- A virtual column -->
           <template #cell(index)="data">
             {{ data.index + 1 }}
@@ -59,7 +61,6 @@ export default {
       fields: ['index', 'firstName', 'lastName', 'username'],
       students: [],
       currentStudent: null,
-      currentIndex: -1,
       name: ""
     };
   },
@@ -81,12 +82,10 @@ export default {
     refreshList() {
       this.retrieveStudents();
       this.currentStudent = null;
-      this.currentIndex = -1;
     },
 
-    setActiveStudent(student, index) {
-      this.currentStudent = student;
-      this.currentIndex = index;
+    onStudentSelected(items) {
+      this.currentStudent = items[0];
     },
 
     removeAllStudents() {

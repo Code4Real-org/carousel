@@ -90,7 +90,7 @@ export default {
       this.lotteryEntries.splice(index, 1);
     },
     async submitEntries(assignment) {
-      await LotteryDataService.create(assignment.id, this.lotteryEntries)
+      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries)
     },
     closeAssignmentModal() {
       this.lotteryEntries = []
@@ -100,7 +100,7 @@ export default {
     }
   },
   async mounted() {
-    const result = await LotteryDataService.getAll(this.activeAssignment.id)
+    const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId)
     this.lotteryEntries = result.data.lotteries
     this.poasStats = result.data.poasStats
     let count = this.lotteryEntries.length

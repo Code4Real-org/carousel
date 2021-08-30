@@ -9,7 +9,7 @@
       </div>
       <div class="col2">
         <div v-if="assignments.length">
-          <div v-for="assignment in assignments" :key="assignment.id" class="assignment">
+          <div v-for="assignment in assignments" :key="assignment.assignmentId" class="assignment">
             <h5>{{ assignment.title }}</h5>
             <span>{{ assignment.createdAt | formatDate }}</span>
             <ul>
@@ -65,7 +65,7 @@ export default {
         });
     },
     async editAssignment(assignment) {
-      const result = await LotteryDataService.getAll(assignment.id)
+      const result = await LotteryDataService.getAll(assignment.assignmentId)
       this.lotteryEntries = result.data
 
       this.activeAssignment = assignment
@@ -81,7 +81,7 @@ export default {
       })
     },
     async submitEntries(assignment) {
-      await LotteryDataService.create(assignment.id, this.lotteryEntries)
+      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries)
     },
     closeAssignmentModal() {
       this.lotteryEntries = []

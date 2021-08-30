@@ -1,3 +1,4 @@
+const {OAuth2Client} = require('google-auth-library');
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
@@ -40,36 +41,52 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
-  User.findOne({
-    where: {
-      email: req.body.email
-    }
-  })
-    .then(user => {
-      if (!user) {
-        return res.status(404).send({ message: "User Not found." });
-      }
+exports.signin = async (req, res) => {
+  let id_token = req.body.credential;  // Google
 
-      var token = jwt.sign({ id: user.userId }, config.secret, {
-        expiresIn: 86400 // 24 hours
-      });
-
-      var authorities = [];
-      user.getRoles().then(roles => {
-        for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        }
-        res.status(200).send({
-          id: user.userId,
-          username: user.username,
-          email: user.email,
-          roles: authorities,
-          accessToken: token
-        });
-      });
-    })
-    .catch(err => {
-      res.status(500).send({ message: err.message });
+  try {
+    const client = new OAuth2Client("921798240468-7ef6ep21omf9pv15m4ilpa07patqjeio.apps.googleusercontent.com");
+    const ticket = await client.verifyIdToken({
+      idToken: id_token,
+      audience: "921798240468-7ef6ep21omf9pv15m4ilpa07patqjeio.apps.googleusercontent.com",
     });
-};
+    const payload = ticket.getPayload();
+    const gmail = payload['email'];
+    const username = gmail.match(/^([^@]*)@/)[1];
+
+    let [user, created] = await User.findOrCreate({
+      where: {
+        email: gmail
+      },
+      defaults: {
+        username: username,
+        gid: payload['sub'],
+        firstName: payload['given_name'],
+        lastName: payload['family_name']
+      }
+    });
+
+    if (!user || created) {
+      return res.status(404).send({ message: "User not registered in the system." });
+    }
+
+    var token = jwt.sign({ id: user.userId }, config.secret, {
+      expiresIn: 86400 // 24 hours
+    });
+
+    var authorities = [];
+    let roles = await user.getRoles();
+    for (let i = 0; i < roles.length; i++) {
+      authorities.push("ROLE_" + roles[i].name.toUpperCase());
+    }
+    res.status(200).send({
+      id: user.userId,
+      username: user.username,
+      email: user.email,
+      roles: authorities,
+      accessToken: token
+    });
+  } catch(err) {
+    res.status(500).send({ message: err.message });
+  }
+}

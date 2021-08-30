@@ -4,25 +4,18 @@
       <a @click="$emit('close')">close</a>
 
   <div class="list row">
-    <div class="col-md-8">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by name"
-          v-model="name"/>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
-            @click="searchName"
-          >
-            Search
-          </button>
-        </div>
-      </div>
+    <div>
+      <step-progress :steps="lotterySteps" :current-step="0" icon-class="fa fa-check"
+        active-color="green" passive-color="grey"
+        :active-thickness="4" :passive-thickness="3" :line-thickness="5">
+      </step-progress>
     </div>
 
-    <h5>Operations</h5>
+    <h4>Lottery administration</h4>
       <form @submit.prevent>
         <button @click="doLottery(activeAssignment)" class="button">Conduct lottery</button>
       </form>
-      <br><br>
+      <br><br><br>
 
     <div class="col-lg-8">
       <h4>Students lottery result</h4>
@@ -31,6 +24,14 @@
           <!-- A virtual column -->
           <template #cell(index)="data">
             {{ data.index + 1 }}
+          </template>
+          <!-- A virtual composite column -->
+          <template #cell(student)="data">
+            {{ data.item.user.username }}
+          </template>
+          <!-- Another virtual composite column -->
+          <template #cell(poas)="data">
+            {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.lastName: '' }}
           </template>
         </b-table>
       </div>
@@ -68,15 +69,26 @@ import { mapState } from 'vuex'
 import StudentDataService from "../services/StudentDataService";
 import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService";
 
+import StepProgress from 'vue-step-progress';
+// import the css (OPTIONAL - you can provide your own design)
+import 'vue-step-progress/dist/main.css';
+
 export default {
-  name: "students-list",
+  name: "lottery-admin",
+  components: {
+    'step-progress': StepProgress
+  },
   data() {
     return {
-      fields: ['index', 'userId', 'poa.id'],
+      fields: [
+        'index', 
+        { key: 'student', label: 'Student Name' },
+        { key: 'poas', label: 'POAS Assigned' }
+      ],
       students: [],
       currentStudent: null,
       currentIndex: -1,
-      name: ""
+      lotterySteps: ['Open', 'Locked', "In progress", "Completed"]
     };
   },
   computed: {
@@ -113,17 +125,6 @@ export default {
         .then(response => {
           console.log(response.data);
           this.refreshList();
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    
-    searchName() {
-      StudentDataService.findByName(this.name)
-        .then(response => {
-          this.tutorials = response.data;
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
