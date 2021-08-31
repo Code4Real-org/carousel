@@ -2,7 +2,8 @@
   <div class="p-modal">
     <div class="p-container">
       <a @click="$emit('close')">close</a>
-
+    <div class="row">
+    <div class="col-lg-8">
       <h4>Students List</h4>
       <div>
         <b-table striped hover sticky-header="600px" :items="students" :fields="fields"
@@ -19,8 +20,8 @@
       <b-button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
         Remove All
       </b-button>
-
-    <div class="col-md-6">
+    </div>
+    <div class="col-lg-4">
       <div v-if="currentStudent">
         <h4>Student</h4>
         <div>
@@ -37,7 +38,7 @@
         <p>Please click on a Student...</p>
       </div>
     </div>
-
+  </div>
   <div>
     <h5>Import a student roster</h5>
     <upload-file :activeAssignment="activeAssignment"></upload-file>
