@@ -110,11 +110,6 @@ exports.doLottery = async (req, res) => {
         if (!poas.userAssignmentId) {
           assigned = true;
           user_assignment.setPoa(poas.id);
-          user_assignment.personId = poas.id;
-          user_assignment.poasFirstName = poas.firstName;
-          user_assignment.poasMiddleName = poas.middleName;
-          user_assignment.poasLastName = poas.lastName;
-          poas.userAssignmentId = user_assignment.id;
           console.log("Assign student: ", student.userId, " to POAS: ", poas.id)
           break;
         }

@@ -5,7 +5,8 @@
 
       <h4>Students List</h4>
       <div>
-        <b-table striped hover sticky-header="600px" :items="students" :fields="fields" 
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields"
+          :select-mode="selectMode"
           selectable
           @row-selected="onStudentSelected" >
           <!-- A virtual column -->
@@ -15,9 +16,9 @@
         </b-table>
       </div>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
+      <b-button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
         Remove All
-      </button>
+      </b-button>
 
     <div class="col-md-6">
       <div v-if="currentStudent">
@@ -59,9 +60,9 @@ export default {
   data() {
     return {
       fields: ['index', 'firstName', 'lastName', 'username'],
+      selectMode: 'single',
       students: [],
-      currentStudent: null,
-      name: ""
+      currentStudent: null
     };
   },
   computed: {
@@ -93,17 +94,6 @@ export default {
         .then(response => {
           console.log(response.data);
           this.refreshList();
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    
-    searchName() {
-      StudentDataService.findByName(this.name)
-        .then(response => {
-          this.tutorials = response.data;
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);

@@ -34,18 +34,6 @@ module.exports = (sequelize, Sequelize) => {
       },
       sequence: {
         type: Sequelize.INTEGER
-      },
-      personId: {
-        type: Sequelize.INTEGER
-      },
-      poasFirstName: {
-        type: Sequelize.STRING
-      },
-      poasMiddleName: {
-        type: Sequelize.STRING
-      },
-      poasLastName: {
-        type: Sequelize.STRING
       }
     });
   

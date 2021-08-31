@@ -3,7 +3,6 @@
     <div class="p-container">
       <a @click="$emit('close')">close</a>
 
-  <div class="list row">
     <div>
       <step-progress :steps="lotterySteps" :current-step="0" icon-class="fa fa-check"
         active-color="green" passive-color="grey"
@@ -11,16 +10,17 @@
       </step-progress>
     </div>
 
-    <h4>Lottery administration</h4>
       <form @submit.prevent>
         <button @click="doLottery(activeAssignment)" class="button">Conduct lottery</button>
       </form>
-      <br><br><br>
+      <br>
 
-    <div class="col-lg-8">
-      <h4>Students lottery result</h4>
-      <div>
-        <b-table striped hover sticky-header="600px" :items="students" :fields="fields">
+      <div b-col col lg="4">
+        <h5>Lottery result</h5>
+        <b-table striped hover sticky-header="600px" :items="students" :fields="fields"
+          :select-mode="selectMode"
+          selectable
+          @row-selected="onStudentSelected">
           <!-- A virtual column -->
           <template #cell(index)="data">
             {{ data.index + 1 }}
@@ -34,13 +34,12 @@
             {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.lastName: '' }}
           </template>
         </b-table>
-      </div>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllStudents">
-        Remove All
-      </button>
-    </div>
-    <div class="col-lg-4">
+        <button class="btn btn-sm btn-danger" @click="removeAllStudents">
+          Remove All
+        </button>
+      </div>
+    <div b-col col lg="4">
       <div v-if="currentStudent">
         <h4>Student</h4>
         <div>
@@ -58,8 +57,6 @@
         <p>Please click on a Student...</p>
       </div>
     </div>
-  </div>
-
   </div>
   </div>
 </template>
@@ -81,13 +78,13 @@ export default {
   data() {
     return {
       fields: [
-        'index', 
+        'index',
         { key: 'student', label: 'Student Name' },
         { key: 'poas', label: 'POAS Assigned' }
       ],
+      selectMode: 'single',
       students: [],
       currentStudent: null,
-      currentIndex: -1,
       lotterySteps: ['Open', 'Locked', "In progress", "Completed"]
     };
   },
@@ -112,12 +109,10 @@ export default {
     refreshList() {
       this.retrieveLotteryResult();
       this.currentStudent = null;
-      this.currentIndex = -1;
     },
 
-    setActiveStudent(student, index) {
-      this.currentStudent = student;
-      this.currentIndex = index;
+    onStudentSelected(items) {
+      this.currentStudent = items[0];
     },
 
     removeAllStudents() {
