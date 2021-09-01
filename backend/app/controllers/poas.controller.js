@@ -39,7 +39,7 @@ exports.findOrCreate = async (first, middle, last) => {
 
 
 exports.getCounts = async (userId, assignmentId, poasList) => {
-  let user_assignment = await UserAssignments.findOne({where: {userId: userId, assignmentId: assignmentId}});
+  let user_assignment = await UserAssignments.findOne({where: {studentId: userId, assignmentId: assignmentId}});
   let assignment = await Assignment.findByPk(user_assignment.assignmentId);
   let maxEntries = assignment.maxEntries;
   let poasStats = [];

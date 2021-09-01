@@ -47,7 +47,7 @@ exports.findAll = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
 
   try {
-    let user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
+    let user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});
     let lotteries = await user_assignment.getLotteries();
     let poasList = [];
 

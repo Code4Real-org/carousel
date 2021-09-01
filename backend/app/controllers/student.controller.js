@@ -13,7 +13,7 @@ exports.findAllAssignments = (req, res) => {
 
   User.findByPk(uid)
     .then(user => {
-      user.getAssignment().then(data => {
+      user.getAssigned().then(data => {
         res.send(data);
       })
     })

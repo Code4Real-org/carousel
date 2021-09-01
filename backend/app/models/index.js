@@ -50,23 +50,25 @@ db.user_assignments.belongsTo(db.assignment, {
 db.assignment.belongsToMany(db.user, {
   through: "user_assignments",
   foreignKey: 'assignmentId',
-  otherKey: "userId",
+  otherKey: "teacherId",
   as: "Assigner"
 });
 db.assignment.belongsToMany(db.user, {
   through: "user_assignments",
   foreignKey: 'assignmentId',
-  otherKey: "userId",
+  otherKey: "studentId",
   as: "Assignee"
 });
 db.user.belongsToMany(db.assignment, {
   through: "user_assignments",
-  foreignKey: 'userId',
+  foreignKey: 'teacherId',
+  otherKey: 'assignmentId',
   as: "Assignment"
 });
 db.user.belongsToMany(db.assignment, {
   through: "user_assignments",
-  foreignKey: 'userId',
+  foreignKey: 'studentId',
+  otherKey: 'assignmentId',
   as: "Assigned"
 });
 

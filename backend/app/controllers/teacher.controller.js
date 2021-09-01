@@ -64,28 +64,11 @@ exports.runLottery = async (req, res) => {
         students.splice(index, 1);
       }
     }
-    console.log("Student list: ");
-    students.forEach(student => {
-      console.log(student.userId);
-    });
 
-    //const studentNum = students.length;
-    /*
-    for (let i = studentNum - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i+1));
-      let temp = students[i];
-      students[i] = students[j];
-      students[j] = temp;
-    }
-    */
+    // Third time is the charm
     for (let i = 0; i < 3; i++) {
       common.shuffleOnce(students);
     }
-
-    console.log("Randomized student list: ");
-    students.forEach(student => {
-      console.log(student.userId);
-    });
 
     // Clear POAS assignments
     let userAssignmentList = await UserAssignments.findAll({where: {assignmentId: assignmentId}});
