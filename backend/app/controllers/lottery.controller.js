@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
 
   // Save Lottery in the database
   try {
-    user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
+    user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});
     let old_lotteries = await user_assignment.getLotteries();
     for (entry of old_lotteries) {
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
