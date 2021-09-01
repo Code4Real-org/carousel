@@ -38,25 +38,38 @@ db.user.belongsToMany(db.role, {
 });
 
 db.assignment.belongsToMany(db.user, {
-  through: "user_assignments",
+  through: {
+    model: "user_assignments",
+    scope: { owner: 'teacher'}
+  },
   foreignKey: 'assignmentId',
   otherKey: "teacherId",
   as: "Assigner"
 });
 db.assignment.belongsToMany(db.user, {
-  through: "user_assignments",
+  through: {
+    model: "user_assignments",
+    scope: { owner: 'student'}
+  },
   foreignKey: 'assignmentId',
   otherKey: "studentId",
   as: "Assignee"
 });
+
 db.user.belongsToMany(db.assignment, {
-  through: "user_assignments",
+  through: {
+    model: "user_assignments",
+    scope: { owner: 'teacher'}
+  },
   foreignKey: 'teacherId',
   otherKey: 'assignmentId',
   as: "Assignment"
 });
 db.user.belongsToMany(db.assignment, {
-  through: "user_assignments",
+  through: {
+    model: "user_assignments",
+    scope: { owner: 'student'}
+  },
   foreignKey: 'studentId',
   otherKey: 'assignmentId',
   as: "Assigned"
@@ -65,6 +78,17 @@ db.user.belongsToMany(db.assignment, {
 db.user_assignments.belongsTo(db.user, {
   foreignKey: 'studentId',
   as: 'Student'
+});
+
+db.assignment.hasMany(db.user_assignments, {
+  foreignKey: 'assignmentId',
+  scope: { owner: 'student'},
+  as: 'studentAssignments'
+});
+db.assignment.hasMany(db.user_assignments, {
+  foreignKey: 'assignmentId',
+  scope: { owner: 'teacher'},
+  as: 'teacherAssignments'
 });
 
 db.user_assignments.hasMany(db.lottery);

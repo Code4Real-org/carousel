@@ -32,6 +32,9 @@ module.exports = (sequelize, Sequelize) => {
         onUpdate: 'cascade',
         unique: 'unique-user-per-assignment'
       },
+      owner: {
+        type: Sequelize.STRING
+      },
       sequence: {
         type: Sequelize.INTEGER
       }
