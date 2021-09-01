@@ -13,9 +13,9 @@
                 <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
               </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
-              <input type="text" id="fname" v-model.lazy="entry.firstName" required>
-              <input type="text" id="mname" v-model.lazy="entry.middleName">
-              <input type="text" id="lname" v-model.lazy="entry.lastName" required>
+              <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required>
+              <input type="text" id="mname" v-model.trim.lazy="entry.middleName">
+              <input type="text" id="lname" v-model.trim.lazy="entry.lastName" required>
               <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference">{{count}}</label>
               <h5>What is the title of the (auto)biography?</h5>
               <input type="text" v-model.lazy="entry.biography" required>
