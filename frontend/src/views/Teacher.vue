@@ -48,7 +48,7 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService"
+import TeacherDataService from "../services/TeacherDataService"
 import AssignmentModal from '../components/AssignmentModal.vue'
 import StudentsList from '../components/StudentsList.vue'
 import LotteryAdmin from '../components/LotteryAdmin.vue'
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getAssignments() {
-      TeacherAssignmentDataService.getAll()
+      TeacherDataService.getAll()
         .then(response => {
           this.assignments = response.data;
           console.log(response.data);

@@ -49,7 +49,7 @@ exports.findOneAssignment = (req, res) => {
 };
 
 
-exports.doLottery = async (req, res) => {
+exports.runLottery = async (req, res) => {
   const uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
 
@@ -127,6 +127,40 @@ exports.doLottery = async (req, res) => {
         err.message || "Some error occurred while conducting lottery."
     });
   }
+};
+
+
+exports.resumeLottery = async (req, res) => {
+};
+
+
+exports.lockLottery = async (req, res) => {
+  const assignmentId = parseInt(req.query.assignment);
+  let assignment = await Assignment.findByPk(assignmentId);
+  if (assignment.state > 0) {
+    console.log("Lottery already locked");
+    res.status(409).send({message: "Lottery already locked!"});
+    return;
+  }
+
+  assignment.state = 1; // 1: locked state
+  assignment.save();
+  res.send(assignment);
+};
+
+
+exports.unlockLottery = async (req, res) => {
+  const assignmentId = parseInt(req.query.assignment);
+  let assignment = await Assignment.findByPk(assignmentId);
+  if (assignment.state == 0) {
+    console.log("Lottery already unlocked");
+    res.status(409).send({message: "Lottery already unlocked!"});
+    return;
+  }
+
+  assignment.state = 0; // 0: unlocked, open for submissions
+  assignment.save();
+  res.send(assignment);
 };
 
 

@@ -18,7 +18,6 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService"
 
 export default {
   props: ['activeAssignment'],

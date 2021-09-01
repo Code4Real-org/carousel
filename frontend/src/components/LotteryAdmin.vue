@@ -4,14 +4,30 @@
       <a @click="$emit('close')">close</a>
 
     <div>
-      <step-progress :steps="lotterySteps" :current-step="0" icon-class="fa fa-check"
+      <step-progress :steps="lotterySteps" :current-step="activeAssignment.state" icon-class="fa fa-check"
         active-color="green" passive-color="grey"
         :active-thickness="4" :passive-thickness="3" :line-thickness="5">
       </step-progress>
     </div>
-
+      <br>
       <form @submit.prevent>
-        <button @click="doLottery(activeAssignment)" class="button">Conduct lottery</button>
+        <div v-if="activeAssignment.state == 0">
+          <button @click="lockLottery(activeAssignment)" class="button">Lock lottery entries</button>
+        </div>
+        <div v-else-if="activeAssignment.state == 1">
+          <button @click="runLottery(activeAssignment)" class="button">Run lottery</button>
+          <button @click="unlockLottery(activeAssignment)" class="button">Reopen lottery</button>
+        </div>
+        <div v-else-if="activeAssignment.state == 2">
+          <button @click="resumeLottery(activeAssignment)" class="button">Resume lottery</button>
+          <button @click="runLottery(activeAssignment)" class="button">Rerun lottery</button>
+          <button @click="unlockLottery(activeAssignment)" class="button">Reopen lottery</button>
+        </div>
+        <div v-else-if="activeAssignment.state == 3">
+          <button @click="refreshList(activeAssignment)" class="button">Refresh results</button>
+        </div>
+        <div v-else>
+        </div>
       </form>
       <br>
 
@@ -64,7 +80,7 @@
 <script>
 import { mapState } from 'vuex'
 import StudentDataService from "../services/StudentDataService";
-import TeacherAssignmentDataService from "../services/TeacherAssignmentDataService";
+import TeacherDataService from "../services/TeacherDataService";
 
 import StepProgress from 'vue-step-progress';
 // import the css (OPTIONAL - you can provide your own design)
@@ -92,11 +108,28 @@ export default {
     ...mapState(['activeAssignment'])
   },
   methods: {
-    async doLottery(assignment) {
-      await TeacherAssignmentDataService.doLottery(assignment.assignmentId)
+    async lockLottery(assignment) {
+      const response = await TeacherDataService.lockLottery(assignment.assignmentId);
+      let updatedAssignment = response.data;
+      this.$store.dispatch('updateActiveAssignment', updatedAssignment);
     },
+
+    async unlockLottery(assignment) {
+      const response = await TeacherDataService.unlockLottery(assignment.assignmentId);
+      let updatedAssignment = response.data;
+      this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+    },
+
+    async runLottery(assignment) {
+      await TeacherDataService.runLottery(assignment.assignmentId);
+    },
+
+    async resumeLottery(assignment) {
+      await TeacherDataService.runLottery(assignment.assignmentId);
+    },
+
     retrieveLotteryResult(assignmentId) {
-      TeacherAssignmentDataService.showLottery(assignmentId)
+      TeacherDataService.showLottery(assignmentId)
         .then(response => {
           this.students = response.data;
           console.log(this.students);

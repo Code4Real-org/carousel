@@ -20,8 +20,17 @@ module.exports = function(app) {
   // Retrieve a single Assignment with id
   router.get("/assignments/:id", controller.findOneAssignment);
 
-  // Do a lottery
-  router.post("/lottery", controller.doLottery);
+  // Lock further lottery entry
+  router.post("/lottery/lock", controller.lockLottery);
+
+  // Reopen lottery entry
+  router.delete("/lottery/lock", controller.unlockLottery);
+
+  // Run a lottery
+  router.post("/lottery", controller.runLottery);
+
+  // Continue with a lottery in progress
+  router.put("/lottery", controller.resumeLottery);
 
   // Return lottery result
   router.get("/lottery", controller.showLottery);
