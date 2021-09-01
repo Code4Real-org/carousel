@@ -67,7 +67,7 @@ async function initial() {
   // Sample student account
   user = await User.create({
     userId: 3,
-    username: "flozhao",
+    username: "florence.y.zhao",
     email: "florence.y.zhao@gmail.com",
   });
   await user.setRoles([3]);

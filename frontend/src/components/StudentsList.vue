@@ -82,7 +82,7 @@ export default {
     },
 
     refreshList() {
-      this.retrieveStudents();
+      this.retrieveStudents(this.activeAssignment.assignmentId);
       this.currentStudent = null;
     },
 
