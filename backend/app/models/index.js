@@ -37,16 +37,6 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
-db.user_assignments.belongsTo(db.user, {
-  foreignKey: 'userId',
-  targetKey: 'userId',
-  //as: 'User'
-});
-db.user_assignments.belongsTo(db.assignment, {
-  foreignKey: 'assignmentId',
-  targetKey: 'assignmentId',
-  as: 'Assignment'
-});
 db.assignment.belongsToMany(db.user, {
   through: "user_assignments",
   foreignKey: 'assignmentId',
@@ -70,6 +60,11 @@ db.user.belongsToMany(db.assignment, {
   foreignKey: 'studentId',
   otherKey: 'assignmentId',
   as: "Assigned"
+});
+
+db.user_assignments.belongsTo(db.user, {
+  foreignKey: 'studentId',
+  as: 'Student'
 });
 
 db.user_assignments.hasMany(db.lottery);

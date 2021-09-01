@@ -56,37 +56,30 @@ exports.runLottery = async (req, res) => {
   try {
     let assignment = await Assignment.findByPk(assignmentId);
     let students = await assignment.getAssignee();
-    for (index = 0; index < students.length; index++) {
-      let student = students[index];
-      let isTeacher = await student.hasRole(2);
-      if (isTeacher) {
-        console.log("Removing user: ", student.id, " at ", index, " from the list");
-        students.splice(index, 1);
-      }
-    }
 
-    // Third time is the charm
-    for (let i = 0; i < 3; i++) {
-      common.shuffleOnce(students);
-    }
-
-    // Clear POAS assignments
+    // Reset POAS assignments
     let userAssignmentList = await UserAssignments.findAll({where: {assignmentId: assignmentId}});
     for (let userAssignment of userAssignmentList) {
       userAssignment.setPoa(null);
       userAssignment.sequence = 0;
     };
 
+    // Third time is the charm
+    for (let i = 0; i < 3; i++) {
+      common.shuffleOnce(students);
+    }
+
+    let isCompleted = true;
     for (let index = 0; index < students.length; index++) {
       let student = students[index];
-      let user_assignment = await UserAssignments.findOne({where: {userId: student.userId, assignmentId: assignmentId}});
+      let user_assignment = await UserAssignments.findOne({where: {studentId: student.userId, assignmentId: assignmentId}});
       let lotteries = await user_assignment.getLotteries({
         order: [
           ['preference', 'ASC']
         ]
       });
 
-      user_assignment.sequence = index + 1;
+      user_assignment.sequence = index + 1;   // order determined in lottery
       let assigned = false;
       for (let lottery of lotteries) {
         let poas = await Poas.findByPk(lottery.poaId);  // TODO: have to use the odd name for now
@@ -99,11 +92,14 @@ exports.runLottery = async (req, res) => {
       }
       user_assignment.save();
       if (!assigned) {
+        isCompleted = false;
         console.log("Unable to assign student: ", student.userId);
       }
     }
 
-    res.send({message: "Lottery done!"});
+    if (isCompleted) assignment.state = 3;  // 3: completed state
+    else assignment.state = 2;  // 2: in progress
+    res.send(assignment);
   } catch(err) {
     res.status(500).send({
       message:
@@ -159,7 +155,7 @@ exports.showLottery = async (req, res) => {
         ['sequence', 'ASC']
       ], include: [
         { model: Poas },
-        { model: User }
+        { model: User, as: 'Student' }
       ]
     });
 

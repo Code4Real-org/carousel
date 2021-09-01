@@ -43,7 +43,7 @@
           </template>
           <!-- A virtual composite column -->
           <template #cell(student)="data">
-            {{ data.item.user.username }}
+            {{ data.item.Student.username }}
           </template>
           <!-- Another virtual composite column -->
           <template #cell(poas)="data">
@@ -121,11 +121,16 @@ export default {
     },
 
     async runLottery(assignment) {
-      await TeacherDataService.runLottery(assignment.assignmentId);
+      const response = await TeacherDataService.runLottery(assignment.assignmentId);
+      let updatedAssignment = response.data;
+      this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+      this.refreshList();
     },
 
     async resumeLottery(assignment) {
-      await TeacherDataService.runLottery(assignment.assignmentId);
+      const response = await TeacherDataService.runLottery(assignment.assignmentId);
+      let updatedAssignment = response.data;
+      this.$store.dispatch('updateActiveAssignment', updatedAssignment);
     },
 
     retrieveLotteryResult(assignmentId) {
@@ -140,7 +145,7 @@ export default {
     },
 
     refreshList() {
-      this.retrieveLotteryResult();
+      this.retrieveLotteryResult(this.activeAssignment.assignmentId);
       this.currentStudent = null;
     },
 
