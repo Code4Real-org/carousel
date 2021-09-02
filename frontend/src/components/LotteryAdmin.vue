@@ -15,12 +15,12 @@
           <button @click="lockLottery(activeAssignment)" class="button">Lock lottery entries</button>
         </div>
         <div v-else-if="activeAssignment.state == 1">
-          <button @click="runLottery(activeAssignment)" class="button">Run lottery</button>
+          <button @click="runLottery(activeAssignment)" class="button">Run lottery</button> &nbsp;&nbsp;
           <button @click="unlockLottery(activeAssignment)" class="button">Reopen lottery</button>
         </div>
         <div v-else-if="activeAssignment.state == 2">
-          <button @click="resumeLottery(activeAssignment)" class="button">Resume lottery</button>
-          <button @click="runLottery(activeAssignment)" class="button">Rerun lottery</button>
+          <button @click="resumeLottery(activeAssignment)" class="button">Resume lottery</button> &nbsp;&nbsp;
+          <button @click="runLottery(activeAssignment)" class="button">Rerun lottery</button> &nbsp;&nbsp;
           <button @click="unlockLottery(activeAssignment)" class="button">Reopen lottery</button>
         </div>
         <div v-else-if="activeAssignment.state == 3">
@@ -128,9 +128,10 @@ export default {
     },
 
     async resumeLottery(assignment) {
-      const response = await TeacherDataService.runLottery(assignment.assignmentId);
+      const response = await TeacherDataService.resumeLottery(assignment.assignmentId);
       let updatedAssignment = response.data;
       this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+      this.refreshList();
     },
 
     retrieveLotteryResult(assignmentId) {

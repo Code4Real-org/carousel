@@ -30,7 +30,7 @@ module.exports = function(app) {
   router.post("/lottery", controller.runLottery);
 
   // Continue with a lottery in progress
-  router.put("/lottery", controller.resumeLottery);
+  router.put("/lottery", controller.runLottery);
 
   // Return lottery result
   router.get("/lottery", controller.showLottery);

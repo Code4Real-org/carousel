@@ -55,50 +55,64 @@ exports.runLottery = async (req, res) => {
 
   try {
     let assignment = await Assignment.findByPk(assignmentId);
-    let students = await assignment.getAssignee();
+    let studentAssignments = [];
 
-    // Reset POAS assignments
-    let userAssignmentList = await UserAssignments.findAll({where: {assignmentId: assignmentId}});
-    for (let userAssignment of userAssignmentList) {
-      userAssignment.setPoa(null);
-      userAssignment.sequence = 0;
-    };
-
-    // Third time is the charm
-    for (let i = 0; i < 3; i++) {
-      common.shuffleOnce(students);
+    if (req.method == 'POST') {
+      // Reset POAS assignments only when starting to run a new lottery
+      studentAssignments = await assignment.getStudentAssignments();
+      for (let studentAssignment of studentAssignments) {
+        studentAssignment.setPoa(null);
+        studentAssignment.sequence = 0;
+      }
+      // Third time is the charm
+      for (let i = 0; i < 3; i++) {
+        common.shuffleOnce(studentAssignments);
+      }
+      // record the order determined by lottery
+      studentAssignments.forEach((studentAssignment, index) => {
+        studentAssignment.sequence = index + 1;
+        studentAssignment.save();
+      });
+    } else {
+      studentAssignments = await assignment.getStudentAssignments({
+        order: [
+          ['sequence', 'ASC']
+        ]
+      });
     }
 
     let isCompleted = true;
-    for (let index = 0; index < students.length; index++) {
-      let student = students[index];
-      let user_assignment = await UserAssignments.findOne({where: {studentId: student.userId, assignmentId: assignmentId}});
-      let lotteries = await user_assignment.getLotteries({
+    for (let index = 0; index < studentAssignments.length; index++) {
+      let studentAssignment = studentAssignments[index];
+
+      let assigned = await studentAssignment.getPoa();
+      if (assigned) continue;   // already assigned
+
+      assigned = false;
+      let lotteries = await studentAssignment.getLotteries({
         order: [
           ['preference', 'ASC']
         ]
       });
-
-      user_assignment.sequence = index + 1;   // order determined in lottery
-      let assigned = false;
       for (let lottery of lotteries) {
-        let poas = await Poas.findByPk(lottery.poaId);  // TODO: have to use the odd name for now
+        let poas = await lottery.getPoa();  // TODO: have to use the odd name for now
         if (!poas.userAssignmentId) {
           assigned = true;
-          user_assignment.setPoa(poas.id);
-          console.log("Assign student: ", student.userId, " to POAS: ", poas.id)
+          studentAssignment.setPoa(poas.id);
+          studentAssignment.save();
+          console.log("Assign student: ", studentAssignment.studentId, " to POAS: ", poas.id)
           break;
         }
       }
-      user_assignment.save();
       if (!assigned) {
         isCompleted = false;
-        console.log("Unable to assign student: ", student.userId);
+        console.log("Unable to assign student: ", studentAssignment.studentId);
       }
     }
 
     if (isCompleted) assignment.state = 3;  // 3: completed state
     else assignment.state = 2;  // 2: in progress
+    assignment.save();
     res.send(assignment);
   } catch(err) {
     res.status(500).send({
@@ -106,10 +120,6 @@ exports.runLottery = async (req, res) => {
         err.message || "Some error occurred while conducting lottery."
     });
   }
-};
-
-
-exports.resumeLottery = async (req, res) => {
 };
 
 
