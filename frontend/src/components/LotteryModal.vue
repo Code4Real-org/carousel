@@ -13,6 +13,9 @@
                 <div v-if="!isLocked">
                   <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
                 </div>
+                <div v-else-if="(index + 1 == poasAssigned)">
+                  <b>assigned</b>
+                </div>
               </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
               <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required :disabled="isLocked">
@@ -48,7 +51,7 @@ export default {
       showAssignmentModal: false,
       lotteryEntries: [],
       poasStats: [],
-      preferenceChosen: 0
+      poasAssigned: 0
     }
   },
   computed: {
@@ -100,7 +103,7 @@ export default {
   async mounted() {
     //const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId)
     const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
-    this.preferenceChosen = result.data.preferenceChosen;
+    this.poasAssigned = result.data.poasAssigned;
     this.lotteryEntries = result.data.lotteries;
     this.poasStats = result.data.poasStats;
     let count = this.lotteryEntries.length;
