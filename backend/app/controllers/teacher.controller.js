@@ -63,6 +63,7 @@ exports.runLottery = async (req, res) => {
       for (let studentAssignment of studentAssignments) {
         studentAssignment.setPoa(null);
         studentAssignment.sequence = 0;
+        studentAssignment.preferenceChosen = 0; // unassigned
       }
       // Third time is the charm
       for (let i = 0; i < 3; i++) {
@@ -94,11 +95,13 @@ exports.runLottery = async (req, res) => {
           ['preference', 'ASC']
         ]
       });
-      for (let lottery of lotteries) {
+      for (let index = 0; index < lotteries.length; index++) {
+        let lottery = lotteries[index];
         let poas = await lottery.getPoa();  // TODO: have to use the odd name for now
         if (!poas.userAssignmentId) {
           assigned = true;
           studentAssignment.setPoa(poas.id);
+          studentAssignment.preferenceChosen = index + 1;
           studentAssignment.save();
           console.log("Assign student: ", studentAssignment.studentId, " to POAS: ", poas.id)
           break;

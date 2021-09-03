@@ -37,6 +37,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       sequence: {
         type: Sequelize.INTEGER
+      },
+      preferenceChosen: {
+        type: Sequelize.INTEGER
       }
     });
   

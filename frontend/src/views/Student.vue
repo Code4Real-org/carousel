@@ -13,12 +13,12 @@
             <h5>{{ assignment.title }}</h5>
             <span>{{ assignment.createdAt | formatDate }}</span>
             <ul>
-              <li><a @click="editAssignment(assignment)">Edit full assignment</a></li>
+              <li><a @click="editLottery(assignment)">Lottery</a></li>
             </ul>
           </div>
         </div>
         <div v-else>
-          <p class="no-results">There are currently no posts</p>
+          <p class="no-results">There is no assignmenti yet.</p>
         </div>
       </div>
     </section>
@@ -34,8 +34,7 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import StudentAssignmentDataService from "../services/StudentAssignmentDataService"
-import LotteryDataService from "../services/LotteryDataService"
+import AssignmentDataService from "../services/AssignmentDataService"
 import LotteryModal from '../components/LotteryModal.vue'
 
 export default {
@@ -47,7 +46,6 @@ export default {
       assignments: [],
       showAssignmentModal: false,
       activeAssignment: {},
-      lotteryEntries: []
     }
   },
   computed: {
@@ -55,7 +53,7 @@ export default {
   },
   methods: {
     getAssignments() {
-      StudentAssignmentDataService.getAll()
+      AssignmentDataService.getAll()
         .then(response => {
           this.assignments = response.data;
           console.log(response.data);
@@ -64,27 +62,11 @@ export default {
           console.log(e);
         });
     },
-    async editAssignment(assignment) {
-      const result = await LotteryDataService.getAll(assignment.assignmentId)
-      this.lotteryEntries = result.data
-
+    async editLottery(assignment) {
       this.activeAssignment = assignment
       this.showAssignmentModal = true
     },
-    addEntry() {
-      this.lotteryEntries.push({
-        firstName:'',
-        middleName:'',
-        lastName:'',
-        biography: '',
-        statement:''
-      })
-    },
-    async submitEntries(assignment) {
-      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries)
-    },
     closeAssignmentModal() {
-      this.lotteryEntries = []
       this.showAssignmentModal = false
     }
   },

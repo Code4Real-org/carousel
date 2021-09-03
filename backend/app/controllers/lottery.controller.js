@@ -48,9 +48,13 @@ exports.findAll = async (req, res) => {
 
   try {
     let user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});
-    let lotteries = await user_assignment.getLotteries();
-    let poasList = [];
 
+    let lotteries = await user_assignment.getLotteries({
+      order: [
+        ['preference', 'ASC']
+      ]
+    });
+    let poasList = [];
     for (lottery of lotteries) {
       let poas = await Poas.findByPk(lottery.poaId);  // have to use the odd name
       poasList.push(poas.id);
@@ -60,7 +64,7 @@ exports.findAll = async (req, res) => {
     }
 
     let poasStats = await poasController.getCounts(uid, assignmentId, poasList);
-    res.send({lotteries: lotteries, poasStats: poasStats});
+    res.send({lotteries: lotteries, poasStats: poasStats, poasAssigned: user_assignment.preferenceChosen});
   } catch(err) {
     res.status(500).send({
       message:

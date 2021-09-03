@@ -7,26 +7,30 @@
             <span>{{ activeAssignment.createdAt | formatDate }}</span>
             <p>{{ activeAssignment.description }}</p>
           </div>
-          <form @submit.prevent>
+          <b-form @submit.prevent>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
               <h4>{{index + 1}}.
-                <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
+                <div v-if="!isLocked">
+                  <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
+                </div>
               </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
-              <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required>
-              <input type="text" id="mname" v-model.trim.lazy="entry.middleName">
-              <input type="text" id="lname" v-model.trim.lazy="entry.lastName" required>
+              <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required :disabled="isLocked">
+              <input type="text" id="mname" v-model.trim.lazy="entry.middleName" :disabled="isLocked">
+              <input type="text" id="lname" v-model.trim.lazy="entry.lastName" required :disabled="isLocked">
               <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference">{{count}}</label>
               <h5>What is the title of the (auto)biography?</h5>
-              <input type="text" v-model.lazy="entry.biography" required>
+              <input type="text" v-model.lazy="entry.biography" required :disabled="isLocked">
               <h5>Your statement of significance for your choice:</h5>
-              <input type="text" v-model.lazy="entry.statement" required>
+              <input type="text" v-model.lazy="entry.statement" required :disabled="isLocked">
               <p>{{ entry.content }}</p>
             </div>
-          </form>
+          </b-form>
           <br>
-          <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
-          <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Submit</button>
+          <div v-if="!isLocked">
+            <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
+            <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Submit</button>
+          </div>
           <br>
         </div>
       </div>
@@ -35,17 +39,16 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-import StudentAssignmentDataService from "../services/StudentAssignmentDataService"
 import LotteryDataService from "../services/LotteryDataService"
 
 export default {
   props: ['activeAssignment'],
   data() {
     return {
-      assignments: [],
       showAssignmentModal: false,
       lotteryEntries: [],
-      poasStats: []
+      poasStats: [],
+      preferenceChosen: 0
     }
   },
   computed: {
@@ -63,19 +66,14 @@ export default {
         if (entry.statement.length <= 1) return true;
       }
       return false;
+    },
+    isLocked: function() {
+      let state = this.activeAssignment.state;
+      let preference = this.preferenceChosen;
+      return (state > 0 && !(state == 2 && preference));
     }
   },
   methods: {
-    getAssignments() {
-      StudentAssignmentDataService.getAll()
-        .then(response => {
-          this.assignments = response.data;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
     addEntry() {
       this.lotteryEntries.push({
         firstName:'',
@@ -100,15 +98,16 @@ export default {
     }
   },
   async mounted() {
-    const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId)
-    this.lotteryEntries = result.data.lotteries
-    this.poasStats = result.data.poasStats
-    let count = this.lotteryEntries.length
+    //const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId)
+    const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
+    this.preferenceChosen = result.data.preferenceChosen;
+    this.lotteryEntries = result.data.lotteries;
+    this.poasStats = result.data.poasStats;
+    let count = this.lotteryEntries.length;
     while (count < this.activeAssignment.minEntries) {
-      this.addEntry()
-      count++
+      this.addEntry();
+      count++;
     }
-
   },
   filters: {
     formatDate(val) {
