@@ -85,10 +85,11 @@ export default {
         biography: '',
         statement:'',
         preference: this.lotteryEntries.length + 1
-      })
+      });
     },
     delEntry(index) {
       this.lotteryEntries.splice(index, 1);
+      this.poasStats.splice(index, 1);
     },
     async submitEntries(assignment) {
       await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries)
