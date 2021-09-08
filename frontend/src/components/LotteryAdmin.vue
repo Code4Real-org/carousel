@@ -50,10 +50,6 @@
             {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.lastName: '' }}
           </template>
         </b-table>
-
-        <button class="btn btn-sm btn-danger" @click="removeAllStudents">
-          Remove All
-        </button>
       </div>
     <div b-col col lg="4">
       <div v-if="currentStudent">
@@ -79,7 +75,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import StudentDataService from "../services/StudentDataService";
 import TeacherDataService from "../services/TeacherDataService";
 
 import StepProgress from 'vue-step-progress';
@@ -152,17 +147,6 @@ export default {
 
     onStudentSelected(items) {
       this.currentStudent = items[0];
-    },
-
-    removeAllStudents() {
-      StudentDataService.deleteAll()
-        .then(response => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch(e => {
-          console.log(e);
-        });
     },
 
     closeLotteryResult() {
