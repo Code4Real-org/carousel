@@ -67,6 +67,28 @@ exports.findAll = async (req, res) => {
 };
 
 
+// Delete all students under the assignment.
+exports.deleteAll = async (req, res) => {
+  const uid = req.userId; // always a teacher
+  const assignmentId = parseInt(req.query.assignment);
+
+  try {
+    let assignment = await Assignment.findByPk(assignmentId);
+    let students = await assignment.getAssignee();
+    for (let i = 0; i < students.length; i++) {
+      let student = students[i];
+      student.destroy();
+    }
+    res.send([]);
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving students."
+    });
+  }
+};
+
+
 exports.signup = (req, res) => {
   // Save User to Database
   User.findOrCreate({

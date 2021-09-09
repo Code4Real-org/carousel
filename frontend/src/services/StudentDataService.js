@@ -21,8 +21,8 @@ class StudentDataService {
     return http.delete(`/student/${id}`);
   }
 
-  deleteAll() {
-    return http.delete(`/student`);
+  deleteAll(assignmentId) {
+    return http.delete(`/student?assignment=${assignmentId}`);
   }
 
   findByTitle(title) {

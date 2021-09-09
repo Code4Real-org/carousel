@@ -31,7 +31,7 @@
           <label><strong>Gmail:</strong></label> {{ currentStudent.gid }}
         </div>
 
-        <router-link :to="'/students/' + currentStudent.id" class="badge badge-warning">Edit</router-link>
+        <router-link :to="'/students/' + currentStudent.userId" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
         <br />
@@ -39,10 +39,15 @@
       </div>
     </div>
   </div>
-  <div>
-    <h5>Import a student roster</h5>
-    <upload-file :activeAssignment="activeAssignment"></upload-file>
-  </div>
+
+    <br>
+    <b-button class="m-3 btn btn-sm" @click="importStudents()">Import students</b-button>
+
+  <!-- students import modal -->
+    <transition name="fade">
+      <students-import v-if="showStudentsImport" :activeAssignment="this.activeAssignment" @close="closeStudentsImport()">
+      </students-import>
+    </transition>
 
   </div>
   </div>
@@ -51,19 +56,20 @@
 <script>
 import { mapState } from 'vuex'
 import StudentDataService from "../services/StudentDataService"
-import UploadFile from "../components/UploadFile"
+import StudentsImport from '../components/StudentsImport'
 
 export default {
   name: "students-list",
   components: {
-    UploadFile
+    StudentsImport
   },
   data() {
     return {
       fields: ['index', 'firstName', 'lastName', 'username'],
       selectMode: 'single',
       students: [],
-      currentStudent: null
+      currentStudent: null,
+      showStudentsImport: false
     };
   },
   computed: {
@@ -91,7 +97,7 @@ export default {
     },
 
     removeAllStudents() {
-      StudentDataService.deleteAll()
+      StudentDataService.deleteAll(this.activeAssignment.assignmentId)
         .then(response => {
           console.log(response.data);
           this.refreshList();
@@ -101,10 +107,15 @@ export default {
         });
     },
 
-    closeStudentsList() {
-      this.students = []
+    importStudents() {
+      console.log("Importing student list ...");
+      this.showStudentsImport = true;
+    },
 
-      this.$emit('close')
+    closeStudentsImport() {
+      this.refreshList();
+
+      this.showStudentsImport = false;
     }
   },
   mounted() {

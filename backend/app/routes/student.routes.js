@@ -29,5 +29,14 @@ module.exports = function(app) {
     controller.signup
   );
 
+  app.delete(
+    "/api/student",
+    [
+        authJwt.verifyToken,
+        authJwt.isTeacher
+    ],
+    controller.deleteAll
+  );
+
   app.post("/api/student/signin", controller.signin);
 };

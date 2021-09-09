@@ -91,11 +91,10 @@ db.assignment.hasMany(db.user_assignments, {
   as: 'teacherAssignments'
 });
 
-db.user_assignments.hasMany(db.lottery);
+db.user_assignments.hasMany(db.lottery, { onDelete: 'CASCADE' });
 db.lottery.belongsTo(db.user_assignments);
 
 db.user_assignments.hasOne(db.poas);
-db.poas.belongsTo
 
 db.poas.hasMany(db.lottery);
 db.lottery.belongsTo(db.poas);
