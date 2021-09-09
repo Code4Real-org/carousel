@@ -98,10 +98,10 @@ exports.runLottery = async (req, res) => {
         let lottery = lotteries[index2];
         let poas = await lottery.getPoa();  // TODO: have to use the odd name for now
         if (!poas.userAssignmentId) {
-          assigned = index + 1;
-          studentAssignment.setPoa(poas.id);
+          assigned = index2 + 1;
+          await studentAssignment.setPoa(poas.id);
           studentAssignment.preferenceChosen = index2 + 1;
-          studentAssignment.save();
+          await studentAssignment.save();
           console.log("Assign student: ", studentAssignment.studentId, " to POAS: ", poas.id)
           break;
         }
