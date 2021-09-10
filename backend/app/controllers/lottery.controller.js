@@ -4,6 +4,7 @@ const UserAssignments = db.user_assignments;
 const Lottery = db.lottery;
 const Poas = db.poas;
 const poasController = require("../controllers/poas.controller");
+const paController = require("../controllers/poas_assignment.controller");
 
 
 // Create and Save a new Lottery
@@ -20,7 +21,7 @@ exports.create = async (req, res) => {
     let old_lotteries = await user_assignment.getLotteries();
     for (entry of old_lotteries) {
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
-      await poas.decrement('count', {by: 1});
+      await paController.delLottery(assignmentId, poas, entry.preference, entry);
       await entry.destroy({ force: true });
     };
 
@@ -28,7 +29,7 @@ exports.create = async (req, res) => {
       let lottery = await Lottery.create(entry);
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
       await poas.addLottery(lottery.id);
-      await poas.increment('count', {by: 1});
+      await paController.addLottery(assignmentId, poas, lottery.preference, lottery);
       await user_assignment.addLottery(lottery.id);
     };
     res.status(200).send({message: "Done!"});

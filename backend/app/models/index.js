@@ -25,6 +25,7 @@ db.assignment = require("../models/assignment.model.js")(sequelize, Sequelize);
 db.user_assignments = require("../models/user_assignments.model.js")(sequelize, Sequelize);
 db.lottery = require("../models/lottery.model.js")(sequelize, Sequelize);
 db.poas = require("../models/poas.model.js")(sequelize, Sequelize);
+db.poas_assignment = require("../models/poas_assignment.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -93,6 +94,9 @@ db.assignment.hasMany(db.user_assignments, {
 
 db.user_assignments.hasMany(db.lottery, { onDelete: 'CASCADE' });
 db.lottery.belongsTo(db.user_assignments);
+
+db.poas_assignment.hasMany(db.lottery, { onDelete: 'CASCADE' });
+db.lottery.belongsTo(db.poas_assignment);
 
 db.user_assignments.hasOne(db.poas);
 

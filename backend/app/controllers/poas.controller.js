@@ -1,6 +1,7 @@
 const db = require("../models");
 const Assignment = db.assignment;
 const UserAssignments = db.user_assignments;
+const PoasAssignment = db.poas_assignment;
 const Lottery = db.lottery;
 const Poas = db.poas;
 
@@ -45,23 +46,23 @@ exports.getCounts = async (userId, assignmentId, poasList) => {
   let poasStats = [];
 
   try {
-    for (let poaId of poasList) {
+    for (let poasId of poasList) {
       let counts = [];
 
       for (let i = 1; i <= maxEntries; i++) {
-        let result = await Lottery.findAll({
-          attributes: [
-            [db.sequelize.fn('COUNT', db.sequelize.col('preference')), 'count_per_preference']
-          ],
+        let lotteryCount = 0;
+
+        let pa = await PoasAssignment.findOne({
           where: {
-            userAssignmentId: user_assignment.id,
-            poaId: poaId,
+            assignmentId: assignment.assignmentId,
+            poasId: poasId,
             preference: i
-          },
-          raw: true
+          }
         });
 
-        lotteryCount = result[0].count_per_preference;
+        if (pa) {
+          lotteryCount = await pa.countLotteries();
+        }
         counts.push(lotteryCount);
       }
 
