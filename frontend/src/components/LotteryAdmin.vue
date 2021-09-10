@@ -55,19 +55,9 @@
     <div b-col col lg="4">
       <div v-if="currentStudent">
         <transition name="fade">
-          <lottery-modal v-if="currentStudent" :student="currentStudent" @close="closeStudentLotteryModal()">
+          <lottery-modal :student="currentStudent.studentId" @close="closeStudentLotteryModal()">
           </lottery-modal>
         </transition>
-        <h4>Student</h4>
-        <div>
-          <label><strong>Name:</strong></label> {{ currentStudent.userId }}
-        </div>
-        <div>
-          <label><strong>POAS:</strong></label> 
-          {{ currentStudent.poa? currentStudent.poa.firstName + ' ' + currentStudent.poa.lastName: '' }}
-        </div>
-
-        <router-link :to="'/students/' + currentStudent.userId" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
         <br />

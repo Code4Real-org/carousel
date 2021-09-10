@@ -116,7 +116,7 @@ export default {
   async mounted() {
     let result = [];
     if (this.student) {
-      result = await LotteryDataService.getAll(this.activeAssignment.assignmentId, this.student.id);
+      result = await LotteryDataService.getAll(this.activeAssignment.assignmentId, this.student);
     } else {
       result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
     }
