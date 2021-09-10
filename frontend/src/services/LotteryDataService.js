@@ -1,8 +1,12 @@
 import http from "../http-common";
 
 class LotteryDataService {
-  getAll(assignmentId) {
-    return http.get(`/lotteries?assignment=${assignmentId}`);
+  getAll(assignmentId, student) {
+    if (student) {
+      return http.get(`/lotteries?assignment=${assignmentId}&student=${student}`);
+    } else {
+      return http.get(`/lotteries?assignment=${assignmentId}`);
+    }
   }
 
   get(id) {

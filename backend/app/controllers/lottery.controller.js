@@ -9,11 +9,16 @@ const paController = require("../controllers/poas_assignment.controller");
 
 // Create and Save a new Lottery
 exports.create = async (req, res) => {
-  const uid = req.userId;
+  let uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
 
   // Create a Lottery
   const lotteries = req.body;
+
+  if (req.query.student) {
+    // TODO: check
+    uid = parseInt(req.query.student);
+  }
 
   // Save Lottery in the database
   try {
@@ -44,8 +49,13 @@ exports.create = async (req, res) => {
 
 // Retrieve all Lotteries from the database.
 exports.findAll = async (req, res) => {
-  const uid = req.userId;
+  let uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
+
+  if (req.query.student) {
+    // TODO: check
+    uid = parseInt(req.query.student);
+  }
 
   try {
     let user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});

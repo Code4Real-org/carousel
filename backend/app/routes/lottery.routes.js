@@ -23,6 +23,6 @@ module.exports = app => {
   // Delete all Lotteries
   router.delete("/", lotteries.deleteAll);
 
-  // ToDo: Assuming for student use, need to provide for teachers too
-  app.use('/api/lotteries', authJwt.verifyToken, authJwt.isStudent, router);
+  // For both students and the teacher
+  app.use('/api/lotteries', authJwt.verifyToken, authJwt.isTeacherOrStudent, router);
 };

@@ -47,12 +47,17 @@
           </template>
           <!-- Another virtual composite column -->
           <template #cell(poas)="data">
-            {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.lastName: '' }}
+            {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.lastName :
+              data.item.lotteries.length + ' entries' }}
           </template>
         </b-table>
       </div>
     <div b-col col lg="4">
       <div v-if="currentStudent">
+        <transition name="fade">
+          <lottery-modal v-if="currentStudent" :student="currentStudent" @close="closeStudentLotteryModal()">
+          </lottery-modal>
+        </transition>
         <h4>Student</h4>
         <div>
           <label><strong>Name:</strong></label> {{ currentStudent.userId }}
@@ -75,7 +80,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import TeacherDataService from "../services/TeacherDataService";
+import TeacherDataService from "../services/TeacherDataService"
+import LotteryModal from '../components/LotteryModal.vue'
 
 import StepProgress from 'vue-step-progress';
 // import the css (OPTIONAL - you can provide your own design)
@@ -84,6 +90,7 @@ import 'vue-step-progress/dist/main.css';
 export default {
   name: "lottery-admin",
   components: {
+    'lottery-modal': LotteryModal,
     'step-progress': StepProgress
   },
   data() {
@@ -147,6 +154,10 @@ export default {
 
     onStudentSelected(items) {
       this.currentStudent = items[0];
+    },
+
+    closeStudentLotteryModal() {
+      this.currentStudent = null;
     },
 
     closeLotteryResult() {

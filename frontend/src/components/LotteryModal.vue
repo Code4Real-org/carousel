@@ -45,7 +45,7 @@ import moment from 'moment'
 import LotteryDataService from "../services/LotteryDataService"
 
 export default {
-  props: ['activeAssignment'],
+  props: ['student'],
   data() {
     return {
       showAssignmentModal: false,
@@ -55,7 +55,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeUser']),
+    ...mapState(['activeUser', 'activeAssignment']),
     isMaxEntries: function() {
       return this.lotteryEntries.length >= this.activeAssignment.maxEntries
     },
@@ -114,8 +114,12 @@ export default {
     }
   },
   async mounted() {
-    //const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId)
-    const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
+    let result = [];
+    if (this.student) {
+      result = await LotteryDataService.getAll(this.activeAssignment.assignmentId, this.student.id);
+    } else {
+      result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
+    }
     this.refresh(result);
   },
   filters: {

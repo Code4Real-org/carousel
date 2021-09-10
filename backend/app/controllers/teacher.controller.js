@@ -3,9 +3,8 @@ const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
-const UserAssignments = db.user_assignments;
+const Lottery = db.lottery;
 const Poas = db.poas;
-const poasController = require("../controllers/poas.controller");
 const common = require("../util/common.js")
 
 const Op = db.Sequelize.Op;
@@ -166,6 +165,7 @@ exports.showLottery = async (req, res) => {
         ['sequence', 'ASC']
       ], include: [
         { model: Poas },
+        { model: Lottery, as: 'lotteries' },
         { model: User, as: 'Student' }
       ]
     });
