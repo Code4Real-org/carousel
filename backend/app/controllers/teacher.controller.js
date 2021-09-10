@@ -158,12 +158,11 @@ exports.unlockLottery = async (req, res) => {
 exports.showLottery = async (req, res) => {
   const uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
+  const assignment = await Assignment.findByPk(assignmentId);
 
   try {
-    let userAssignments = await UserAssignments.findAll({ where: {
-        assignmentId: assignmentId,
-        sequence: { [Op.gt]: 0 }
-      }, order: [
+    let userAssignments = await assignment.getStudentAssignments({
+      order: [
         ['sequence', 'ASC']
       ], include: [
         { model: Poas },
