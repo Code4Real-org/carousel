@@ -4,55 +4,23 @@
     <section>
       <div class="col1">
         <h1>Carousel</h1>
-        <p>Welcome to the "merry-go-around" web app for K-12 schools.</p>
+        <p>Welcome to the web-based lottery system for school assignments.</p>
+        <br>
         <p>This application facilitates teachers and students to conduct a lottery in assigning class project topics.</p>
-        <p>Made by <a href="https://code4real.org/" target="_blank">Code4Real</a>.</p>
+        <br>
+        <p>Made in open source by <a href="https://code4real.org/" target="_blank">Code4Real</a>.</p>
       </div>
 
       <div :class="{ 'signup-form': !showLoginForm }" class="col2">
         <h1>Welcome</h1>
-          <p>Please sign in with your Google account for school use.</p>
-          <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
-          <p>
+          <p>Please sign in with your Google account.</p>
           <br>
-        <form v-if="showLoginForm" @submit.prevent>
-          <div>
-            <label for="email1">Email</label>
-            <input v-model.trim="loginForm.email" type="text" placeholder="you@email.com" id="email1" />
-          </div>
-          <div>
-            <label for="password1">Password</label>
-            <input v-model.trim="loginForm.password" type="password" placeholder="******" id="password1" />
-          </div>
-          <button @click="login()" class="button">Log In</button>
-          <div class="extras">
-            <a @click="togglePasswordReset()">Forgot Password</a>
-            <a @click="toggleForm()">Create an Account</a>
-          </div>
-        </form>
-        <form v-else @submit.prevent>
-          <h1>Get Started</h1>
-          <div>
-            <label for="name">Name</label>
-            <input v-model.trim="signupForm.name" type="text" placeholder="Savvy Apps" id="name" />
-          </div>
-          <div>
-            <label for="title">Title</label>
-            <input v-model.trim="signupForm.title" type="text" placeholder="Company" id="title" />
-          </div>
-          <div>
-            <label for="email2">Email</label>
-            <input v-model.trim="signupForm.email" type="text" placeholder="you@email.com" id="email2" />
-          </div>
-          <div>
-            <label for="password2">Password</label>
-            <input v-model.trim="signupForm.password" type="password" placeholder="min 6 characters" id="password2" />
-          </div>
-          <button @click="signup()" class="button">Sign Up</button>
-          <div class="extras">
-            <a @click="toggleForm()">Back to Log In</a>
-          </div>
-        </form>
+          <p>For teachers: please use your Google account added to the system by the administrator.</p>
+          <br>
+          <p>For students: please use your school Google account.</p>
+          <br>
+          <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
+          <br>
       </div>
     </section>
   </div>
