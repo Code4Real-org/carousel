@@ -6,10 +6,12 @@
       <span>{{ activeAssignment.createdAt | formatDate }}</span>
        <br><br>
        <h5>Description</h5>
-        <textarea v-model.trim="description" rows="3" cols="80"></textarea>
-        <br><br>
+        <br>
+        <textarea v-model.trim="description" rows="5" cols="80"></textarea>
+        <br><br><br>
        <h5>Configurations</h5> 
         <p>Maximum number of lottery entries each student can enter: {{ activeAssignment.maxEntries }}</p>
+        <p>Minimum number of lottery entries each student must submit: {{ activeAssignment.minEntries }}</p>
         <br>
     </div>
   </div>
