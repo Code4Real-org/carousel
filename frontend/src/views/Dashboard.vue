@@ -1,29 +1,25 @@
 <template>
   <div>
-    <!-- <button v-google-signin-button="clientId" class="google-signin-button" data-onsuccess="onSignIn" data-scope="https://www.googleapis.com/auth/userinfo.profile">Register With Google</button> -->
-  <button v-if="!authenticated" @click="login">Login</button>
-  <div v-if="authenticated">
-  <button @click="logout">Logout</button>
-  <h1>Hi {{ firstName }}!</h1>
-  </div>
-  <div class="teacher">Teacher (Temp Pic)
+  <router-link to="/teacher">
+  <div class="teacher">Teacher
     <div class="teacher_picture">
       <img src="https://i.pinimg.com/564x/9e/6f/f7/9e6ff7da87f11056c7cff3e2f525b9b9.jpg"/>
     </div>
   </div>
-  <div class="student">Student (Temp Pic)
+  </router-link>
+  <router-link to="/student">
+  <div class="student">Student
     <div class="student_picture">
         <img src="https://i.pinimg.com/originals/9b/33/42/9b3342ee4de416e533a5de91d388feb3.jpg"/>
     </div>
   </div>
+  </router-link>
   </div>
 </template>
 
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-<script>
-</script>
 <script>
 import Firebase from '../firebase.js';
 export default {
