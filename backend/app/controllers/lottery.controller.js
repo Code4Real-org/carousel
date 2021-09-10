@@ -32,7 +32,7 @@ exports.create = async (req, res) => {
       await paController.addLottery(assignmentId, poas, lottery.preference, lottery);
       await user_assignment.addLottery(lottery.id);
     };
-    res.status(200).send({message: "Done!"});
+    res.status(200).send(lotteries);
   } catch(err) {
     res.status(500).send({
       message:

@@ -91,8 +91,20 @@ export default {
       this.lotteryEntries.splice(index, 1);
       this.poasStats.splice(index, 1);
     },
+    refresh(result) {
+      this.poasAssigned = result.data.poasAssigned;
+      this.lotteryEntries = result.data.lotteries;
+      this.poasStats = result.data.poasStats;
+      let count = this.lotteryEntries.length;
+      while (count < this.activeAssignment.minEntries) {
+        this.addEntry();
+        count++;
+      }
+    },
     async submitEntries(assignment) {
-      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries)
+      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries);
+      const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
+      this.refresh(result);
     },
     closeAssignmentModal() {
       this.lotteryEntries = []
@@ -104,14 +116,7 @@ export default {
   async mounted() {
     //const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId)
     const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
-    this.poasAssigned = result.data.poasAssigned;
-    this.lotteryEntries = result.data.lotteries;
-    this.poasStats = result.data.poasStats;
-    let count = this.lotteryEntries.length;
-    while (count < this.activeAssignment.minEntries) {
-      this.addEntry();
-      count++;
-    }
+    this.refresh(result);
   },
   filters: {
     formatDate(val) {
