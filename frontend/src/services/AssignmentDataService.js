@@ -6,7 +6,7 @@ class StudentAssignmentDataService {
   }
 
   get(id) {
-    return http.get(`/student/assignments/${id}`);
+    return http.get(`/assignments/${id}`);
   }
 
   create(data) {

@@ -64,6 +64,7 @@ export default {
     },
     async editLottery(assignment) {
       this.activeAssignment = assignment
+      this.$store.dispatch('updateActiveAssignment', assignment)
       this.showAssignmentModal = true
     },
     closeAssignmentModal() {

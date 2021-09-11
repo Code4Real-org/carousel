@@ -1,11 +1,11 @@
 const db = require("../models");
 const User = db.user;
 const UserAssignments = db.user_assignments;
+const Assignment = db.assignment;
 const Lottery = db.lottery;
 const Poas = db.poas;
 const poasController = require("../controllers/poas.controller");
 const paController = require("../controllers/poas_assignment.controller");
-
 
 // Create and Save a new Lottery
 exports.create = async (req, res) => {
@@ -22,7 +22,16 @@ exports.create = async (req, res) => {
 
   // Save Lottery in the database
   try {
+    const assignment = await Assignment.findByPk(assignmentId);
     user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});
+    // check if lottery is open for the student
+    if (assignment.state != 0 && !((assignment.state == 2) && !user_assignment.hasPoa()) ) {
+      res.status(403).send({
+        message: "Lottery entry is locked."
+      });
+      return;
+    }
+
     let old_lotteries = await user_assignment.getLotteries();
     for (entry of old_lotteries) {
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);

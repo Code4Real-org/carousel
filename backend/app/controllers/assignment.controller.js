@@ -1,5 +1,5 @@
 const db = require("../models");
-const Assignment = db.assignments;
+const Assignment = db.assignment;
 const Op = db.Sequelize.Op;
 
 
@@ -31,6 +31,22 @@ exports.create = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the Assignment."
+      });
+    });
+};
+
+
+// Find a single Assignment with an id
+exports.findOne = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  Assignment.findByPk(id)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Assignment with id=" + id
       });
     });
 };

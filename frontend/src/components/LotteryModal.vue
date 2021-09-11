@@ -42,6 +42,7 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
+import AssignmentDataService from "../services/AssignmentDataService"
 import LotteryDataService from "../services/LotteryDataService"
 
 export default {
@@ -114,6 +115,9 @@ export default {
     }
   },
   async mounted() {
+    const response = await AssignmentDataService.get(this.activeAssignment.assignmentId);
+    this.$store.dispatch('updateActiveAssignment', response.data);
+
     let result = [];
     if (this.student) {
       result = await LotteryDataService.getAll(this.activeAssignment.assignmentId, this.student);

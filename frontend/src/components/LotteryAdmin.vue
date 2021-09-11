@@ -70,6 +70,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import AssignmentDataService from "../services/AssignmentDataService"
 import TeacherDataService from "../services/TeacherDataService"
 import LotteryModal from '../components/LotteryModal.vue'
 
@@ -156,7 +157,10 @@ export default {
       this.$emit('close')
     }
   },
-  mounted() {
+  async mounted() {
+    const response = await AssignmentDataService.get(this.activeAssignment.assignmentId);
+    this.$store.dispatch('updateActiveAssignment', response.data);
+
     this.retrieveLotteryResult(this.activeAssignment.assignmentId);
   }
 };
