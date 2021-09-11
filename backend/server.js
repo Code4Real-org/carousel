@@ -59,18 +59,18 @@ async function initial() {
   // Teacher account for testing
   user = await User.create({
     userId: 2,
-    username: "brookvaleboy",
-    email: "brookvaleboy@gmail.com",
-  });
-  await user.setRoles([2]);
-
-  // Sample student account
-  user = await User.create({
-    userId: 3,
     username: "florence.y.zhao",
     email: "florence.y.zhao@gmail.com",
   });
-  await user.setRoles([3]);
+  await user.setRoles([2]);
+
+  // Sample teacher account
+  user = await User.create({
+    userId: 3,
+    username: "carousel4schools",
+    email: "carousel4schools@gmail.com",
+  });
+  await user.setRoles([2]);
 
   assignment = await Assignment.create({
     assignmentId: 1,
@@ -81,8 +81,9 @@ async function initial() {
     state: 0  // default: open
   });
   await assignment.addAssigner([2]);
-  await assignment.addAssignee([3]);
+  await assignment.addAssigner([3]);
 
+  /*
   poas1 = await Poas.create({
     id: 1,
     firstName: "Ray",
@@ -118,6 +119,7 @@ async function initial() {
     poaId: 2,
     userAssignmentId: 2
   });
+  */
 };
 
 // simple route

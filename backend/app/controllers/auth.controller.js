@@ -54,7 +54,7 @@ exports.signin = async (req, res) => {
     const gmail = payload['email'];
     const username = gmail.match(/^([^@]*)@/)[1];
 
-    let [user, created] = await User.findOrCreate({
+    let user = await User.findOne({
       where: {
         email: gmail
       },
@@ -66,7 +66,7 @@ exports.signin = async (req, res) => {
       }
     });
 
-    if (!user || created) {
+    if (!user) {
       return res.status(404).send({ message: "User not registered in the system." });
     }
 
