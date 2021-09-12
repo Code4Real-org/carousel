@@ -1,4 +1,5 @@
 const db = require("../models");
+const Op = db.Sequelize.Op;
 const Assignment = db.assignment;
 const UserAssignments = db.user_assignments;
 const PoasAssignment = db.poas_assignment;
@@ -35,6 +36,40 @@ exports.findOrCreate = async (first, middle, last) => {
     return(poas);
   } catch(err) {
     console.log(err.message || "Some error occurred while getting a POAS.");
+  }
+};
+
+
+// Retrieve all Lotteries from the database.
+exports.findAll = async (req, res) => {
+  let uid = req.userId;
+  const assignmentId = parseInt(req.query.assignment);
+
+  if (req.query.student) {
+    // TODO: check
+    uid = parseInt(req.query.student);
+  }
+
+  try {
+    let poasList = [];
+    if (req.query.assigned) {
+      poasList = await Poas.findAll({
+        where: {
+          userAssignmentId: {
+            [Op.ne]: null
+          }
+        }
+      })
+    } else {
+      poasList = await Poas.findAll();
+    }
+
+    res.send(poasList);
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving POAS list."
+    });
   }
 };
 

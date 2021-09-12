@@ -14,6 +14,7 @@
             <span>{{ assignment.createdAt | formatDate }}</span>
             <ul>
               <li><a @click="editLottery(assignment)">Lottery</a></li>
+              <li><a @click="listPoas(assignment)">POAS</a></li>
             </ul>
           </div>
         </div>
@@ -28,6 +29,11 @@
       <lottery-modal v-if="showAssignmentModal" :activeAssignment="this.activeAssignment" @close="closeAssignmentModal()">
       </lottery-modal>
     </transition>
+
+    <transition name="fade">
+      <poas-modal v-if="showPoasModal" @close="closePoasModal()">
+      </poas-modal>
+    </transition>
   </div>
 </template>
 
@@ -36,15 +42,18 @@ import { mapState } from 'vuex'
 import moment from 'moment'
 import AssignmentDataService from "../services/AssignmentDataService"
 import LotteryModal from '../components/LotteryModal.vue'
+import PoasModal from '../components/PoasList.vue'
 
 export default {
   components: {
-    LotteryModal
+    LotteryModal,
+    PoasModal
   },
   data() {
     return {
       assignments: [],
       showAssignmentModal: false,
+      showPoasModal: false,
       activeAssignment: {},
     }
   },
@@ -67,8 +76,16 @@ export default {
       this.$store.dispatch('updateActiveAssignment', assignment)
       this.showAssignmentModal = true
     },
+    async listPoas(assignment) {
+      this.activeAssignment = assignment
+      this.$store.dispatch('updateActiveAssignment', assignment)
+      this.showPoasModal = true
+    },
     closeAssignmentModal() {
       this.showAssignmentModal = false
+    },
+    closePoasModal() {
+      this.showPoasModal = false
     }
   },
   mounted() {

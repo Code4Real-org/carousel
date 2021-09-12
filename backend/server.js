@@ -135,6 +135,7 @@ require("./app/routes/teacher.routes")(app);
 require("./app/routes/student.routes")(app);
 require("./app/routes/assignment.routes")(app);
 require("./app/routes/lottery.routes")(app);
+require("./app/routes/poas.routes")(app);
 require("./app/routes/file.routes")(app);
 
 // set port, listen for requests
