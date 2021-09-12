@@ -14,7 +14,7 @@
                   <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
                 </div>
                 <div v-else-if="(index + 1 == poasAssigned)">
-                  <b>assigned</b>
+                  <p id="assigned">assigned</p>
                 </div>
               </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
@@ -141,3 +141,19 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+/* Navbar container */
+#assigned {
+  overflow: hidden;
+  background-color: #417a63;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  
+  font-family: 'Montserrat', sans-serif;  
+}
+
+
+</style>
