@@ -21,7 +21,7 @@
               <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required :disabled="isLocked">
               <input type="text" id="mname" v-model.trim.lazy="entry.middleName" :disabled="isLocked">
               <input type="text" id="lname" v-model.trim.lazy="entry.lastName" required :disabled="isLocked">
-              <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference">{{count}}</label>
+              <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:100px> Choice {{preference+1}}: {{count}}</label>
               <h5>What is the title of the (auto)biography?</h5>
               <input type="text" v-model.lazy="entry.biography" required :disabled="isLocked">
               <h5>Your statement of significance for your choice:</h5>
