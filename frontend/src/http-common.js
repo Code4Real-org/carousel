@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from "./store"
 import router from './router'
+import VueSimpleAlert from "vue-simple-alert";
 
 const token = store.state.activeUser.accessToken;
 
@@ -32,7 +33,8 @@ http.interceptors.request.use (
 http.interceptors.response.use((response) => {
   return response
 }, function (error) {
-  //const originalRequest = error.config;
+  VueSimpleAlert.alert("Authentication error. Please login again.");
+
   router.push('/login');
   return Promise.reject(error);
 })
