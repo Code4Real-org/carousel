@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
     statement: {
       type: Sequelize.STRING
     },
+    assigned: {
+      type: Sequelize.INTEGER
+    },
     preference: {
       type: Sequelize.INTEGER
     }

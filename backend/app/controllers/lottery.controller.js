@@ -24,8 +24,9 @@ exports.create = async (req, res) => {
   try {
     const assignment = await Assignment.findByPk(assignmentId);
     user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});
+    const poas = await user_assignment.getPoa();
     // check if lottery is open for the student
-    if (assignment.state != 0 && !((assignment.state == 2) && !user_assignment.hasPoa()) ) {
+    if (assignment.state != 0 && !((assignment.state == 2) && !poas) ) {
       res.status(403).send({
         message: "Lottery entry is locked."
       });
@@ -45,6 +46,10 @@ exports.create = async (req, res) => {
       await poas.addLottery(lottery.id);
       await paController.addLottery(assignmentId, poas, lottery.preference, lottery);
       await user_assignment.addLottery(lottery.id);
+      await poas.save();
+      await user_assignment.save();
+      lottery.assigned = 0;
+      await lottery.save();
     };
     res.status(200).send(lotteries);
   } catch(err) {

@@ -60,10 +60,18 @@ exports.runLottery = async (req, res) => {
       // Reset POAS assignments only when starting to run a new lottery
       studentAssignments = await assignment.getStudentAssignments();
       for (let studentAssignment of studentAssignments) {
+        const lotteries = await studentAssignment.getLotteries();
+        for (let index = 0; index < lotteries.length; index++) {
+          const lottery = lotteries[index];
+          lottery.assigned = 0;
+          await lottery.save();
+        }
         await studentAssignment.setPoa(null);
         studentAssignment.sequence = 0;
         studentAssignment.preferenceChosen = 0; // unassigned
+        await studentAssignment.save();
       }
+
       // Third time is the charm
       for (let i = 0; i < 3; i++) {
         common.shuffleOnce(studentAssignments);
@@ -100,7 +108,9 @@ exports.runLottery = async (req, res) => {
           assigned = index2 + 1;
           await studentAssignment.setPoa(poas.id);
           studentAssignment.preferenceChosen = index2 + 1;
+          lottery.assigned = studentAssignment.preferenceChosen;
           await studentAssignment.save();
+          await lottery.save();
           console.log("Assign student: ", studentAssignment.studentId, " to POAS: ", poas.id)
           break;
         }

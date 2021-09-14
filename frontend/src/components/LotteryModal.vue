@@ -73,8 +73,8 @@ export default {
     },
     isLocked: function() {
       let state = this.activeAssignment.state;
-      let preference = this.preferenceChosen;
-      return (state > 0 && !(state == 2 && preference));
+      let poasAssigned = this.poasAssigned;
+      return (state > 0 && !(state == 2 && poasAssigned == 0));
     }
   },
   methods: {
