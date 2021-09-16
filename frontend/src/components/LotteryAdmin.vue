@@ -11,6 +11,8 @@
     </div>
       <br>
       <form @submit.prevent>
+        <b-row>
+          <b-col lg="8">
         <div v-if="activeAssignment.state == 0">
           <button @click="lockLottery(activeAssignment)" class="button">Lock lottery entries</button>
         </div>
@@ -20,14 +22,18 @@
         </div>
         <div v-else-if="activeAssignment.state == 2">
           <button @click="resumeLottery(activeAssignment)" class="button">Resume lottery</button> &nbsp;&nbsp;
-          <button @click="runLottery(activeAssignment)" class="button">Rerun lottery</button> &nbsp;&nbsp;
           <button @click="unlockLottery(activeAssignment)" class="button">Reopen lottery</button>
         </div>
         <div v-else-if="activeAssignment.state == 3">
-          <button @click="refreshList(activeAssignment)" class="button">Refresh results</button>
+          <button @click="unlockLottery(activeAssignment)" class="button">Reopen lottery</button>
         </div>
         <div v-else>
         </div>
+        </b-col>
+        <b-col lg="4">
+        <button @click="refreshList(activeAssignment)" class="button">Refresh</button>
+        </b-col>
+        </b-row>
       </form>
       <br>
 
