@@ -33,7 +33,7 @@ http.interceptors.request.use (
 http.interceptors.response.use((response) => {
   return response
 }, function (error) {
-  VueSimpleAlert.alert("Authentication error. Please login again.");
+  VueSimpleAlert.alert("Authentication is required. Please login first.");
 
   router.push('/login');
   return Promise.reject(error);
