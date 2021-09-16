@@ -7,6 +7,7 @@
       <h4>POAS Already Taken</h4>
       <div>
         <b-table striped hover sticky-header="600px" :items="poases" :fields="fields"
+          sort-icon-left
           :select-mode="selectMode"
           selectable
           @row-selected="onPoasSelected" >
@@ -44,7 +45,12 @@ export default {
   name: "poases-list",
   data() {
     return {
-      fields: ['index', 'firstName', 'middleName', 'lastName'],
+      fields: [
+        'index',
+        { key: 'firstName', sortable: true},
+        'middleName',
+        { key: 'lastName', sortable: true}
+      ],
       selectMode: 'single',
       poases: [],
       currentPoas: null
