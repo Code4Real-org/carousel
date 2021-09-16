@@ -97,14 +97,18 @@ export default {
     },
 
     removeAllStudents() {
-      StudentDataService.deleteAll(this.activeAssignment.assignmentId)
-        .then(response => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      this.$confirm("All registered students will be removed from this assignment.", "Are you sure?", 'warning').then(() => {
+        StudentDataService.deleteAll(this.activeAssignment.assignmentId)
+          .then(response => {
+            console.log(response.data);
+            this.refreshList();
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }).catch(err => {
+        console.log(err);
+      });
     },
 
     importStudents() {
