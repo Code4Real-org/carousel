@@ -114,9 +114,13 @@ export default {
     },
 
     async unlockLottery(assignment) {
-      const response = await TeacherDataService.unlockLottery(assignment.assignmentId);
-      let updatedAssignment = response.data;
-      this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+      this.$confirm("All assigned POAS will be lost.", "Are you sure?", 'warning').then(async() => {
+        const response = await TeacherDataService.unlockLottery(assignment.assignmentId);
+        let updatedAssignment = response.data;
+        this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+      }).catch(err => {
+        console.log(err);
+      });
     },
 
     async runLottery(assignment) {
