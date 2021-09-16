@@ -17,7 +17,7 @@
       <input type="file" ref="file" @change="selectFile" />
     </label>
 
-    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload(activeAssignment)">
+    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload()">
       Upload
     </button>
 
@@ -27,10 +27,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import UploadService from "../services/UploadFileService";
+
 export default {
   name: "upload-file",
-  props: ['activeAssignment'],
   data() {
     return {
       selectedFiles: undefined,
@@ -40,14 +41,17 @@ export default {
       fileInfos: []
     };
   },
+  computed: {
+    ...mapState(['activeAssignment'])
+  },
   methods: {
     selectFile() {
       this.selectedFiles = this.$refs.file.files;
     },
-    upload(assignment) {
+    upload() {
       this.progress = 0;
       this.currentFile = this.selectedFiles.item(0);
-      UploadService.upload(this.currentFile, assignment.id, event => {
+      UploadService.upload(this.currentFile, this.activeAssignment.assignmentId, event => {
         this.progress = Math.round((100 * event.loaded) / event.total);
       })
         .then(response => {

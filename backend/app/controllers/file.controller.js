@@ -8,6 +8,8 @@ const User = db.user;
 const Role = db.role;
 
 const upload = async (req, res) => {
+  const assignmentId = parseInt(req.query.assignment);
+
   try {
     await uploadFile(req, res);
 
@@ -34,7 +36,7 @@ const upload = async (req, res) => {
         .then(([user, created]) => {
           console.log("Setting role for student");
           user.setRoles([3]);
-          user.setAssigned([1]); // TODO: no hardcode
+          user.setAssigned([assignmentId]);
         })
         .catch(err => {
           console.log("Error in processing email address");
