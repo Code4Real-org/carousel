@@ -40,6 +40,8 @@
       <div b-col col lg="4">
         <h5>Lottery result</h5>
         <b-table striped hover sticky-header="600px" :items="students" :fields="fields"
+          :busy.sync="isBusy"
+          sort-icon-left
           :select-mode="selectMode"
           selectable
           @row-selected="onStudentSelected">
@@ -49,11 +51,12 @@
           </template>
           <!-- A virtual composite column -->
           <template #cell(student)="data">
-            {{ data.item.Student.username }}
+            {{ data.item.Student.lastName? data.item.Student.firstName + ' ' + data.item.Student.lastName :
+              data.item.Student.username }}
           </template>
           <!-- Another virtual composite column -->
           <template #cell(poas)="data">
-            {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.lastName :
+            {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.middleName + ' ' + data.item.poa.lastName :
               data.item.lotteries.length + ' entries' }}
           </template>
         </b-table>
@@ -94,10 +97,19 @@ export default {
     return {
       fields: [
         'index',
-        { key: 'student', label: 'Student Name' },
-        { key: 'poas', label: 'POAS Assigned' }
+        { key: 'student', label: 'Student Name', sortable: true,
+          sortByFormatted: (value, key, item) => {
+            return `${item.Student.lastName}`
+          }
+        },
+        { key: 'poas', label: 'POAS Assigned', sortable: true,
+          sortByFormatted: (value, key, item) => {
+            return item.poa?`${item.poa.lastName}`:``
+          }
+        }
       ],
       selectMode: 'single',
+      isBusy: false,
       students: [],
       currentStudent: null,
       lotterySteps: ['Open', 'Locked', "In progress", "Completed"]
@@ -115,25 +127,32 @@ export default {
 
     async unlockLottery(assignment) {
       this.$confirm("All assigned POAS will be lost.", "Are you sure?", 'warning').then(async() => {
+        this.isBusy = true;
         const response = await TeacherDataService.unlockLottery(assignment.assignmentId);
         let updatedAssignment = response.data;
         this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+        this.refreshList();
+        this.isBusy = false;
       }).catch(err => {
         console.log(err);
       });
     },
 
     async runLottery(assignment) {
+      this.isBusy = true;
       const response = await TeacherDataService.runLottery(assignment.assignmentId);
       let updatedAssignment = response.data;
       this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+      this.isBusy = false;
       this.refreshList();
     },
 
     async resumeLottery(assignment) {
+      this.isBusy = true;
       const response = await TeacherDataService.resumeLottery(assignment.assignmentId);
       let updatedAssignment = response.data;
       this.$store.dispatch('updateActiveAssignment', updatedAssignment);
+      this.isBusy = false;
       this.refreshList();
     },
 
@@ -149,7 +168,9 @@ export default {
     },
 
     refreshList() {
+      this.isBusy = true;
       this.retrieveLotteryResult(this.activeAssignment.assignmentId);
+      this.isBusy = false;
       this.currentStudent = null;
     },
 
