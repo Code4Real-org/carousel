@@ -79,7 +79,7 @@ export default {
       return false;
     },
     isLocked: function() {
-      if (this.activeUser.id != this.student) {
+      if ( (this.student != null) && (this.activeUser.id != this.student) ) {
         // should be a teacher, so do not lock it
         return false;
       }
