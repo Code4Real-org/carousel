@@ -31,8 +31,15 @@
           </b-form>
           <br>
           <div v-if="!isLocked">
+          <b-row>
+          <b-col>
             <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
-            <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Submit</button>
+          </b-col>
+          &nbsp;&nbsp;
+          <b-col>
+            <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Save</button>
+          </b-col>
+          </b-row>
           </div>
           <br>
         </div>
@@ -72,6 +79,11 @@ export default {
       return false;
     },
     isLocked: function() {
+      if (this.activeUser.id != this.student) {
+        // should be a teacher, so do not lock it
+        return false;
+      }
+
       let state = this.activeAssignment.state;
       let poasAssigned = this.poasAssigned;
       return (state > 0 && !(state == 2 && poasAssigned == 0));
@@ -103,8 +115,8 @@ export default {
       }
     },
     async submitEntries(assignment) {
-      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries);
-      const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId);
+      await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries, this.student);
+      const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId, this.student);
       this.refresh(result);
     },
     closeAssignmentModal() {

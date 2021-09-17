@@ -13,8 +13,12 @@ class LotteryDataService {
     return http.get(`/lotteries/${id}`);
   }
 
-  create(assignmentId, data) {
-    return http.post(`/lotteries?assignment=${assignmentId}`, data);
+  create(assignmentId, data, student) {
+    if (student) {
+      return http.post(`/lotteries?assignment=${assignmentId}&student=${student}`, data);
+    } else {
+      return http.post(`/lotteries?assignment=${assignmentId}`, data);
+    }
   }
 
   update(id, data) {

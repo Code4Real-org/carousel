@@ -10,6 +10,7 @@ const paController = require("../controllers/poas_assignment.controller");
 // Create and Save a new Lottery
 exports.create = async (req, res) => {
   let uid = req.userId;
+  let studentId = 0;
   const assignmentId = parseInt(req.query.assignment);
 
   // Create a Lottery
@@ -17,16 +18,28 @@ exports.create = async (req, res) => {
 
   if (req.query.student) {
     // TODO: check
-    uid = parseInt(req.query.student);
+    studentId = parseInt(req.query.student);
+  } else {
+    studentId = uid;
   }
 
   // Save Lottery in the database
   try {
     const assignment = await Assignment.findByPk(assignmentId);
-    user_assignment = await UserAssignments.findOne({where: {studentId: uid, assignmentId: assignmentId}});
+    user_assignment = await UserAssignments.findOne({where: {studentId: studentId, assignmentId: assignmentId}});
     const poas = await user_assignment.getPoa();
+    const user = await User.findByPk(uid);
+    let isTeacher = false;
+
+    const roles = await user.getRoles();
+    for (let i = 0; i < roles.length; i++) {
+       if (roles[i].name === "teacher") {
+         isTeacher = true;
+         break;
+       }
+    }
     // check if lottery is open for the student
-    if (assignment.state != 0 && !((assignment.state == 2) && !poas) ) {
+    if (!isTeacher && assignment.state != 0 && !((assignment.state == 2) && !poas) ) {
       res.status(403).send({
         message: "Lottery entry is locked."
       });
@@ -39,6 +52,9 @@ exports.create = async (req, res) => {
       await paController.delLottery(assignmentId, poas, entry.preference, entry);
       await entry.destroy({ force: true });
     };
+    await user_assignment.setPoa(null);
+    user_assignment.preferenceChosen = 0;
+    await user_assignment.save();
 
     for (entry of lotteries) {
       let lottery = await Lottery.create(entry);
