@@ -14,14 +14,14 @@
                   <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
                 </div>
                 <div v-else-if="(index + 1 == poasAssigned)">
-                  <b>assigned</b>
+                  <p id="assigned">assigned</p>
                 </div>
               </h4>
               <h5>Your choice of POAS (first, middle and last name):</h5>
               <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required :disabled="isLocked">
               <input type="text" id="mname" v-model.trim.lazy="entry.middleName" :disabled="isLocked">
               <input type="text" id="lname" v-model.trim.lazy="entry.lastName" required :disabled="isLocked">
-              <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference">{{count}}</label>
+              <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:100px> Choice {{preference+1}}: {{count}}</label>
               <h5>What is the title of the (auto)biography?</h5>
               <input type="text" v-model.lazy="entry.biography" required :disabled="isLocked">
               <h5>Your statement of significance for your choice:</h5>
@@ -153,3 +153,19 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+/* Navbar container */
+#assigned {
+  overflow: hidden;
+  background-color: #417a63;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  
+  font-family: 'Montserrat', sans-serif;  
+}
+
+
+</style>
