@@ -48,6 +48,25 @@ exports.findOneAssignment = (req, res) => {
 };
 
 
+async function resetLottery(assignment) {
+  let studentAssignments = await assignment.getStudentAssignments();
+  for (let studentAssignment of studentAssignments) {
+    const lotteries = await studentAssignment.getLotteries();
+    for (let index = 0; index < lotteries.length; index++) {
+      const lottery = lotteries[index];
+      lottery.assigned = 0;
+      await lottery.save();
+     }
+     await studentAssignment.setPoa(null);
+     studentAssignment.sequence = 0;
+     studentAssignment.preferenceChosen = 0; // unassigned
+     await studentAssignment.save();
+  }
+
+  return studentAssignments;
+};
+
+
 exports.runLottery = async (req, res) => {
   const uid = req.userId;
   const assignmentId = parseInt(req.query.assignment);
@@ -58,19 +77,7 @@ exports.runLottery = async (req, res) => {
 
     if (req.method == 'POST') {
       // Reset POAS assignments only when starting to run a new lottery
-      studentAssignments = await assignment.getStudentAssignments();
-      for (let studentAssignment of studentAssignments) {
-        const lotteries = await studentAssignment.getLotteries();
-        for (let index = 0; index < lotteries.length; index++) {
-          const lottery = lotteries[index];
-          lottery.assigned = 0;
-          await lottery.save();
-        }
-        await studentAssignment.setPoa(null);
-        studentAssignment.sequence = 0;
-        studentAssignment.preferenceChosen = 0; // unassigned
-        await studentAssignment.save();
-      }
+      studentAssignments = await resetLottery(assignment);
 
       // Third time is the charm
       for (let i = 0; i < 3; i++) {
@@ -152,9 +159,10 @@ exports.lockLottery = async (req, res) => {
 exports.unlockLottery = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
   let assignment = await Assignment.findByPk(assignmentId);
+  await resetLottery(assignment);
   if (assignment.state == 0) {
     console.log("Lottery already unlocked");
-    res.status(409).send({message: "Lottery already unlocked!"});
+    res.status(200).send({message: "Lottery already unlocked!"});
     return;
   }
 
