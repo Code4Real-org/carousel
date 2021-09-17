@@ -28,7 +28,7 @@
           <label><strong>Name:</strong></label> {{ currentStudent.username }}
         </div>
         <div>
-          <label><strong>Gmail:</strong></label> {{ currentStudent.gid }}
+          <label><strong>Gid:</strong></label> {{ currentStudent.gid }}
         </div>
 
         <router-link :to="'/students/' + currentStudent.userId" class="badge badge-warning">Edit</router-link>
