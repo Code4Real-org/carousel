@@ -2,16 +2,17 @@
   <div class="p-modal">
     <div class="p-container">
       <a @click="$emit('close')">close</a>
-      <h3>{{ activeAssignment.title }}</h3>
-      <span>{{ activeAssignment.createdAt | formatDate }}</span>
+      <h3>{{ assignment.title }}</h3>
+      <span>{{ assignment.createdAt | formatDate }}</span>
        <br><br>
        <h5>Description</h5>
         <br>
-        <textarea v-model.trim="description" rows="5" cols="80"></textarea>
+        <button @click = "updateAssignment">Update</button>
+        <textarea type="text" id="description" v-model.trim="assignment.description" required rows="5" cols="80"></textarea>
         <br><br><br>
        <h5>Configurations</h5> 
-        <p>Maximum number of lottery entries each student can enter: {{ activeAssignment.maxEntries }}</p>
-        <p>Minimum number of lottery entries each student must submit: {{ activeAssignment.minEntries }}</p>
+        <p>Maximum number of lottery entries each student can enter: {{ assignment.maxEntries }}</p>
+        <p>Minimum number of lottery entries each student must submit: {{ assignment.minEntries }}</p>
         <br>
     </div>
   </div>
@@ -20,27 +21,48 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
+import AssignmentDataService from "../services/AssignmentDataService";
 
 export default {
-  props: ['activeAssignment'],
   data() {
     return {
-      description: '',
-      lotteryEntries: []
+      assignment: {}
     }
   },
   computed: {
-    ...mapState(['activeUser'])
+    ...mapState(['activeUser', 'activeAssignment'])
   },
   methods: {
     closeAssignmentModal() {
-      this.lotteryEntries = []
-
       this.$emit('close')
-    }
-  },
+    },
+
+    updateAssignment() {
+      var data = {
+        title: this.assignment.title,
+        description: this.assignment.description
+      };
+
+      AssignmentDataService.update(this.assignment.assignmentId, data)
+        .then(response => {
+          console.log(response.data);
+          AssignmentDataService.getOne(this.assignment.assignmentId)
+            .then(response => {
+              this.assignment = response.data;
+              this.$store.dispatch('updateActiveAssignment', response.data);
+              console.log(response.data);
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+  },  
   async mounted() {
-    this.description = this.activeAssignment.description
+    this.assignment = this.activeAssignment
   },
   filters: {
     formatDate(val) {
