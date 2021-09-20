@@ -11,6 +11,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
+    normalizedName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     count: {
       type: Sequelize.INTEGER
     }

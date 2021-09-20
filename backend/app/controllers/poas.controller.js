@@ -29,10 +29,24 @@ exports.create = async (req, res) => {
 
 // Retrieve or create a new POAS entry in the database.
 exports.findOrCreate = async (first, middle, last) => {
+  first = first.trim();
+  middle = middle? middle.trim() : '';
+  last = last.trim();
+
+  const mi = (middle == '')? '' : middle[0];
+  const fn = first.replace(/[.-\s]+/g, '');
+  const ln = last.replace(/[.-\s]+/g, '');
+  let normalized = fn.toLowerCase() + '-' + mi.toLowerCase() + '-' + ln.toLowerCase();
   try {
-    let poas = await Poas.findOne({where: {firstName: first, middleName: middle, lastName: last}});
+    let poas = await Poas.findOne({where: { normalizedName: normalized }});
     if (poas == null) {
-      poas = await Poas.create({firstName: first, middleName: middle, lastName: last, count: 0});
+      poas = await Poas.create({
+        normalizedName: normalized,
+        firstName: first,
+        middleName: middle,
+        lastName: last,
+        count: 0
+      });
     }
     return(poas);
   } catch(err) {
