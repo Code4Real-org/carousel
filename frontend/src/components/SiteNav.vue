@@ -3,6 +3,7 @@
     <section>
       <div class="col1">
         <router-link to="/">
+          <img thumbnail fluid src="./../assets/logo.png" height="40px" alt="Logo">
           <h3>Carousel</h3>
         </router-link>
         <ul class="inline">
