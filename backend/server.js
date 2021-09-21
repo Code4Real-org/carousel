@@ -138,6 +138,11 @@ require("./app/routes/lottery.routes")(app);
 require("./app/routes/poas.routes")(app);
 require("./app/routes/file.routes")(app);
 
+process.on('uncaughtException', err => {
+  console.error('There was an uncaught error', err)
+  //process.exit(1) //mandatory (as per the Node.js docs)
+})
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
