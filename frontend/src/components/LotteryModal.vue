@@ -9,24 +9,21 @@
           </div>
           <b-form @submit.prevent>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
-              <h4>{{index + 1}}.
-                <div v-if="!isLocked">
-                  <button :disabled="delDisabled" @click="delEntry(index)">delete</button>
-                </div>
-                <div v-else-if="(index + 1 == poasAssigned)">
-                  <p id="assigned">assigned</p>
-                </div>
-              </h4>
-              <h5>Your choice of POAS (first, middle and last name):</h5>
-              <input type="text" id="fname" v-model.trim.lazy="entry.firstName" required :disabled="isLocked">
-              <input type="text" id="mname" v-model.trim.lazy="entry.middleName" :disabled="isLocked">
-              <input type="text" id="lname" v-model.trim.lazy="entry.lastName" required :disabled="isLocked">
-              <label id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:100px> Choice {{preference+1}}: {{count}}</label>
+              <h5>{{index + 1}}. Your choice of POAS (first, middle and last name):
+                <button v-if="!isLocked" :disabled="delDisabled" @click="delEntry(index)">delete</button>
+                <label v-else-if="(index + 1 == poasAssigned)" id="assigned">assigned</label>
+              </h5>
+              <input type="text" placeholder="First name" id="fname" v-model.trim.lazy="entry.firstName" required maxlength="64" :disabled="isLocked">
+              <input type="text" placeholder="Middle name" id="mname" v-model.trim.lazy="entry.middleName" required maxlength="32" :disabled="isLocked">
+              <input type="text" placeholder="Last name" id="lname" v-model.trim.lazy="entry.lastName" required maxlength="64" :disabled="isLocked">
+              <label v-if="poasStats[index] && poasStats[index][0] == -1" id="counter" width:50px><b><i>taken</i></b></label>
+              <label v-else id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:100px> Choice {{preference+1}}: {{count}}</label>
+              <br><br>
               <h5>What is the title of the (auto)biography?</h5>
-              <input type="text" v-model.lazy="entry.biography" required :disabled="isLocked">
+              <input type="textarea" v-model.lazy="entry.biography" required maxlength="100" :disabled="isLocked">
               <h5>Your statement of significance for your choice:</h5>
-              <input type="text" v-model.lazy="entry.statement" required :disabled="isLocked">
-              <p>{{ entry.content }}</p>
+              <b-textarea rows="1" max-rows="2" v-model.lazy="entry.statement" required maxlength="250" :disabled="isLocked">
+              </b-textarea>
             </div>
           </b-form>
           <br>
@@ -166,6 +163,5 @@ export default {
   
   font-family: 'Montserrat', sans-serif;  
 }
-
 
 </style>
