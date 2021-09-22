@@ -25,13 +25,11 @@
       <div v-if="currentStudent">
         <h4>Student</h4>
         <div>
-          <label><strong>Name:</strong></label> {{ currentStudent.username }}
+          <label><strong>Name:</strong> {{ currentStudent.firstName }} {{ currentStudent.lastName }}</label>
         </div>
         <div>
-          <label><strong>Gid:</strong></label> {{ currentStudent.gid }}
+          <label><strong>Gmail:</strong> {{ currentStudent.email }}</label>
         </div>
-
-        <router-link :to="'/students/' + currentStudent.userId" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
         <br />

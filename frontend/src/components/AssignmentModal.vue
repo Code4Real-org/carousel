@@ -7,13 +7,13 @@
        <br><br>
        <h5>Description</h5>
         <br>
-        <button @click = "updateAssignment">Update</button>
         <textarea type="text" id="description" v-model.trim="assignment.description" required rows="5" cols="80"></textarea>
         <br><br><br>
        <h5>Configurations</h5> 
         <p>Maximum number of lottery entries each student can enter: {{ assignment.maxEntries }}</p>
         <p>Minimum number of lottery entries each student must submit: {{ assignment.minEntries }}</p>
-        <br>
+        <br><br>
+        <button @click = "updateAssignment">Update</button>
     </div>
   </div>
 </template>

@@ -19,9 +19,9 @@
               <label v-if="poasStats[index] && poasStats[index][0] == -1" id="counter" width:50px><b><i>taken</i></b></label>
               <label v-else id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:100px> Choice {{preference+1}}: {{count}}</label>
               <br><br>
-              <h5>What is the title of the (auto)biography?</h5>
+              <h5>What is the title of the (auto)biography? (limit of 100 characters)</h5>
               <input type="textarea" v-model.lazy="entry.biography" required maxlength="100" :disabled="isLocked">
-              <h5>Your statement of significance for your choice:</h5>
+              <h5>Your statement of significance for your choice: (limit of 250 characters)</h5>
               <b-textarea rows="1" max-rows="2" v-model.lazy="entry.statement" required maxlength="250" :disabled="isLocked">
               </b-textarea>
             </div>
@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       showAssignmentModal: false,
+      saving: false,
       lotteryEntries: [],
       poasStats: [],
       poasAssigned: 0
@@ -68,6 +69,9 @@ export default {
       return this.lotteryEntries.length <= this.activeAssignment.minEntries
     },
     submitDisabled: function() {
+      if (this.saving) {
+        return true;
+      }
       for (let entry of this.lotteryEntries) {
         if (!entry.firstName || !entry.lastName) return true;
         if (entry.biography.length <= 1) return true;
@@ -112,9 +116,11 @@ export default {
       }
     },
     async submitEntries(assignment) {
+      this.saving = true;
       await LotteryDataService.create(assignment.assignmentId, this.lotteryEntries, this.student);
       const result = await LotteryDataService.getAll(this.activeAssignment.assignmentId, this.student);
       this.refresh(result);
+      this.saving = false;
     },
     closeAssignmentModal() {
       this.lotteryEntries = []
