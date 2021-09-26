@@ -32,7 +32,7 @@
         </div>
       </div>
       <div v-else>
-        <br />
+        <br>
         <p>Please click on a Student...</p>
       </div>
     </div>

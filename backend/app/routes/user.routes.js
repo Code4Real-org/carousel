@@ -16,13 +16,13 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isStudent],
     controller.studentBoard
   );
-
+/*
   app.get(
     "/api/teacher",
     [authJwt.verifyToken, authJwt.isTeacher],
     controller.teacherBoard
   );
-
+*/
   app.get(
     "/api/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
