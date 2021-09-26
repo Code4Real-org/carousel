@@ -1,7 +1,7 @@
 <template>
   <div class="p-modal">
     <div class="p-container">
-      <a @click="$emit('close')">close</a>
+      <a id="closebutton" @click="$emit('close')">close</a>
 
     <div>
       <step-progress :steps="lotterySteps" :current-step="activeAssignment.state" icon-class="fa fa-check"
@@ -202,5 +202,12 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+
+#closebutton{
+  font-size: 1.5em;
+  display: block;
+  vertical-align: right;
+  text-align: right;
 }
 </style>
