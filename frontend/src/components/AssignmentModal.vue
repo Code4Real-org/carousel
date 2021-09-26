@@ -1,7 +1,7 @@
 <template>
   <div class="p-modal">
     <div class="p-container">
-      <a @click="$emit('close')">close</a>
+      <a id="closebutton" @click="$emit('close')">close</a>
       <h3>{{ assignment.title }}</h3>
       <span>{{ assignment.createdAt | formatDate }}</span>
        <br><br>
@@ -84,3 +84,27 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+/* Navbar container */
+#assigned {
+  overflow: hidden;
+  background-color: #417a63;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  
+  font-family: 'Montserrat', sans-serif;  
+}
+
+
+
+#closebutton{
+  font-size: 1.5em;
+  display: block;
+  vertical-align: right;
+  text-align: right;
+}
+
+</style>
