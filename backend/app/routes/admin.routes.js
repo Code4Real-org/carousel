@@ -17,7 +17,7 @@ module.exports = function(app) {
   const router = express.Router();
 
   // Retrieve all Teachers
-  router.get("/", teacherController.findAll);
+  router.get("/teacher", teacherController.findAll);
 
-  app.use("/api/teacher", authJwt.verifyToken, authJwt.isAdmin, router);
+  app.use("/api/admin", authJwt.verifyToken, authJwt.isAdmin, router);
 };
