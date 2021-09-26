@@ -18,9 +18,7 @@
        <vue-numeric-input  v-model="assignment.maxEntries" :min="3" :max="5" :step="1"></vue-numeric-input>
        </label>
        <br>
-        <p>Minimum lottery entries: {{ assignment.minEntries }}</p>
-        <p>Maximum lottery entries: {{ assignment.maxEntries }}</p>
-        <br><br>
+       <br>
       <button @click = "updateAssignment">Update</button>
     </div>
   </div>
