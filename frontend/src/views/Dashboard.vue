@@ -1,14 +1,14 @@
 <template>
   <div>
   <router-link to="/teacher">
-  <div class="teacher">Teacher
+  <div class="teacher"><h3>Teacher</h3>
     <div class="teacher_picture">
       <img src="https://i.pinimg.com/564x/9e/6f/f7/9e6ff7da87f11056c7cff3e2f525b9b9.jpg"/>
     </div>
   </div>
   </router-link>
   <router-link to="/student">
-  <div class="student">Student
+  <div class="student"><h3>Student</h3>
     <div class="student_picture">
         <img src="https://i.pinimg.com/originals/9b/33/42/9b3342ee4de416e533a5de91d388feb3.jpg"/>
     </div>

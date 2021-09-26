@@ -9,21 +9,33 @@
         <br>
         <textarea type="text" id="description" v-model.trim="assignment.description" required rows="5" cols="80"></textarea>
         <br><br><br>
-       <h5>Configurations</h5> 
-        <p>Maximum number of lottery entries each student can enter: {{ assignment.maxEntries }}</p>
-        <p>Minimum number of lottery entries each student must submit: {{ assignment.minEntries }}</p>
+       <h5>Configurations</h5>
+       <label>Minimum number of lottery entries each student must submit: 
+       <vue-numeric-input  v-model="assignment.minEntries" :min="1" :max="3" :step="1"></vue-numeric-input>
+       </label>
+       <br>
+       <label>Maximum number of lottery entries each student can enter: 
+       <vue-numeric-input  v-model="assignment.maxEntries" :min="3" :max="5" :step="1"></vue-numeric-input>
+       </label>
+       <br>
+        <p>Minimum lottery entries: {{ assignment.minEntries }}</p>
+        <p>Maximum lottery entries: {{ assignment.maxEntries }}</p>
         <br><br>
-        <button @click = "updateAssignment">Update</button>
+      <button @click = "updateAssignment">Update</button>
     </div>
   </div>
 </template>
 
 <script>
+import VueNumericInput from 'vue-numeric-input';
 import { mapState } from 'vuex'
 import moment from 'moment'
 import AssignmentDataService from "../services/AssignmentDataService";
 
 export default {
+  components: {
+    VueNumericInput
+  },
   data() {
     return {
       assignment: {}
@@ -38,12 +50,7 @@ export default {
     },
 
     updateAssignment() {
-      var data = {
-        title: this.assignment.title,
-        description: this.assignment.description
-      };
-
-      AssignmentDataService.update(this.assignment.assignmentId, data)
+      AssignmentDataService.update(this.assignment.assignmentId, this.assignment)
         .then(response => {
           console.log(response.data);
           AssignmentDataService.getOne(this.assignment.assignmentId)
