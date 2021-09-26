@@ -1,4 +1,6 @@
+const express = require("express");
 const { authJwt } = require("../middleware");
+const teacherController = require("../controllers/teacher.controller");
 const controller = require("../controllers/admin.controller");
 
 module.exports = function(app) {
@@ -11,4 +13,11 @@ module.exports = function(app) {
   });
 
   app.post("/api/admin/signin", controller.signin);
+
+  const router = express.Router();
+
+  // Retrieve all Teachers
+  router.get("/teacher", teacherController.findAll);
+
+  app.use("/api/admin", authJwt.verifyToken, authJwt.isAdmin, router);
 };

@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     activeUser: {},
     userProfile: {},
     activeAssignment: {},
+    activeSchool: {},
     assignments: [],
     posts: []
   },
@@ -53,6 +54,9 @@ const store = new Vuex.Store({
           break;
         case "ROLE_TEACHER":
           router.push('/teacher');
+          break;
+        case "ROLE_ADMIN":
+          router.push('/admin');
           break;
         default:
           router.push('/');

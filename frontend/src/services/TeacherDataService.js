@@ -5,6 +5,11 @@ class TeacherDataService {
     return http.get("/teacher/assignments");
   }
 
+  // ToDo: getAll needs to be moved to AssignmentDataService, getAllTeachers should use getAll
+  getAllTeachers(id) {
+    return http.get(`/admin/teacher?school=${id}`);
+  }
+
   get(id) {
     return http.get(`/teacher/assignments/${id}`);
   }

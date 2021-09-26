@@ -27,7 +27,7 @@
 
     <!-- full assignment modal -->
     <transition name="fade">
-      <assignment-modal v-if="showAssignmentModal" :activeAssignment="this.activeAssignment" @close="closeAssignmentModal()">
+      <assignment-modal v-if="showAssignmentModal" @close="closeAssignmentModal()">
       </assignment-modal>
     </transition>
 

@@ -57,7 +57,7 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   Assignment.update(req.body, {
-    where: { id: id }
+    where: { assignmentId: id }
   })
     .then(num => {
       if (num == 1) {

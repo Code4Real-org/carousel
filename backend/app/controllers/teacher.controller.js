@@ -13,6 +13,29 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { poas } = require("../models");
 
+// Retrieve all teachers from a given school.
+exports.findAll = async (req, res) => {
+  const uid = req.userId; // always an admin
+  const schoolId = parseInt(req.query.school);
+
+  try {
+    let teachers = await User.findAll();
+    for (let i = 0; i < teachers.length; i++) {
+      let teacher = teachers[i];
+      let isTeacher= await teacher.hasRole(2);
+      if (!isTeacher) {
+        teachers.splice(i, 1);
+      }
+    }
+    res.send(teachers);
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving teachers."
+    });
+  }
+};
+
 // Retrieve all Assignments from the database.
 exports.findAllAssignments = (req, res) => {
   const uid = req.userId;

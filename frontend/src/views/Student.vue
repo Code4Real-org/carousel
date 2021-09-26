@@ -4,7 +4,7 @@
       <div class="col1">
         <div class="profile">
           <h5>{{ activeUser.email }}</h5>
-          <p>{{ activeUser.username }}</p>
+          <p>{{ activeUser.firstName }} {{ activeUser.lastName }}</p>
         </div>
       </div>
       <div class="col2">

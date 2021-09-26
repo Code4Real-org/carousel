@@ -46,6 +46,15 @@ const routes = [
       }
     },
     {
+      path: "/admin",
+      alias: "/admin/dashboard",
+      name: "admin-dashboard",
+      component: () => import("../views/Admin"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: "/student/form",
       name: "student-form",
       component: () => import("../components/StudentForm"),
