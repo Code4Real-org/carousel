@@ -27,7 +27,7 @@ const upload = async (req, res) => {
       const email = addrs.parseOneAddress(line);
       console.log("Name: ", email.name, "Address: ", email.address, "Local: ", email.local);
       User.findOrCreate({
-        where: { gid: email.address },
+        where: { email: email.address },
         defaults: {
           username: email.local,
           email: email.address

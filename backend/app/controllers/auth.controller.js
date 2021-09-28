@@ -70,7 +70,7 @@ exports.signin = async (req, res) => {
       return res.status(404).send({ message: "User not registered in the system." });
     }
 
-    if (!user.lastName) {
+    if (!user.gid) {
       // Fill out the user info if it's not already there
       user.firstName = payload['given_name'];
       user.lastName = payload['family_name'];
