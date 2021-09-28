@@ -28,7 +28,7 @@
         </b-table>
       </div>
 
-      <b-button class="m-3 btn btn-sm btn-danger" @click="removeAllTeachers" :disabled="true">
+      <b-button class="m-3 btn btn-sm btn-danger" @click="removeAllTeachers">
         Remove All
       </b-button>
     </div>

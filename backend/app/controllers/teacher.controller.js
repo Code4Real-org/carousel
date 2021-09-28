@@ -43,18 +43,18 @@ exports.deleteAll = async (req, res) => {
   const schoolId = parseInt(req.query.school);
 
   try {
-    let teachers = await User.destroy({
-      include: [
-        { model: Role, where: {
-          name: 'teacher'
-        } } 
-      ] 
-    });
+    const role = await Role.findOne({ where: { name: 'teacher' } });
+
+    let teachers = await role.getUsers();
+    for (let  i = 0; i < teachers.length; i++) {
+      let teacher = teachers[i];
+      teacher.destroy();
+    }
     res.send(null);
   } catch(err) {
     res.status(500).send({
       message:
-        err.message || "Some error occurred while retrieving teachers."
+        err.message || "Some error occurred while deleting teachers."
     });
   }
 };
