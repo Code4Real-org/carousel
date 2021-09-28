@@ -33,9 +33,9 @@ http.interceptors.request.use (
 http.interceptors.response.use((response) => {
   return response
 }, function (error) {
-  VueSimpleAlert.alert("Authentication is required. Please login first.");
+  VueSimpleAlert.alert("Something went wrong at the server. Please login first and try again.");
 
-  router.push('/login');
+  router.push('/');
   return Promise.reject(error);
 })
 
