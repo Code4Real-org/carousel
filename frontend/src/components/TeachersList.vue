@@ -5,6 +5,17 @@
     <div class="row">
     <div class="col-lg-8">
       <h4>Teachers List</h4>
+      <b-row>
+      <b-col>
+      <b-form @submit.prevent>
+        <input type="text" placeholder="teacher's email" id="email" v-model.trim.lazy="email" required maxlength="64"> 
+      </b-form>
+      </b-col>
+      <b-col>
+        <button @click="addTeacher()">Add</button>
+      </b-col>
+      </b-row>
+      
       <div>
         <b-table striped hover sticky-header="600px" :items="teachers" :fields="fields"
           :select-mode="selectMode"
@@ -17,7 +28,7 @@
         </b-table>
       </div>
 
-      <b-button class="m-3 btn btn-sm btn-danger" @click="removeAllTeachers">
+      <b-button class="m-3 btn btn-sm btn-danger" @click="removeAllTeachers" :disabled="true">
         Remove All
       </b-button>
     </div>
@@ -54,6 +65,7 @@ export default {
     return {
       fields: ['index', 'firstName', 'lastName', 'username'],
       selectMode: 'single',
+      email: "",
       teachers: [],
       currentTeacher: null
     };
@@ -83,11 +95,11 @@ export default {
     },
 
     removeAllTeachers() {
-      this.$confirm("All registered teachers will be removed from this assignment.", "Are you sure?", 'warning').then(() => {
-        TeacherDataService.deleteAll()
+      this.$confirm("All registered teachers will be removed from this school.", "Are you sure?", 'warning').then(() => {
+        TeacherDataService.deleteAllTeachers(1)
           .then(response => {
             console.log(response.data);
-            this.refreshList();
+            this.teachers = [];
           })
           .catch(e => {
             console.log(e);
@@ -95,6 +107,25 @@ export default {
       }).catch(err => {
         console.log(err);
       });
+    },
+
+    addTeacher() {
+      let data = {
+        email: this.email
+      };
+
+      // ToDo: hard coded to AHS
+      TeacherDataService.addTeacher(1, data)
+        .then(response => {
+          let teacher = response.data;
+          if (teacher) {
+            this.teachers.push(teacher);
+          }
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   },
   mounted() {

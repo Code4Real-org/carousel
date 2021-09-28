@@ -5,6 +5,7 @@ const Role = db.role;
 const Assignment = db.assignment;
 const Lottery = db.lottery;
 const Poas = db.poas;
+const addrs = require("email-addresses");
 const common = require("../util/common.js")
 
 const Op = db.Sequelize.Op;
@@ -34,6 +35,62 @@ exports.findAll = async (req, res) => {
         err.message || "Some error occurred while retrieving teachers."
     });
   }
+};
+
+// Delete all teachers from a given school
+exports.deleteAll = async (req, res) => {
+  const uid = req.userId; // always an admin
+  const schoolId = parseInt(req.query.school);
+
+  try {
+    let teachers = await User.destroy({
+      include: [
+        { model: Role, where: {
+          name: 'teacher'
+        } } 
+      ] 
+    });
+    res.send(null);
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving teachers."
+    });
+  }
+};
+
+// Add Teacher
+exports.create = async (req, res) => {
+  const uid = req.userId; // always an admin
+  const schoolId = parseInt(req.query.school);
+
+  try {
+    let email = addrs.parseOneAddress(req.body.email);
+    [ user, created ] = await User.findOrCreate({
+      where: { email: email.address },
+      defaults: {
+        username: email.local,
+        email: email.address
+      }
+    });
+
+    if (created) {
+      console.log("Setting role for teacher");
+      user.setRoles([2]);
+      // ToDo: Hard code to the only assignment
+      user.setAssignment([1]);
+      res.send(user);
+    } else {
+      res.send(null);
+    }
+  } catch(err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while creating a teacher."
+    });
+  }
+
+
 };
 
 // Retrieve all Assignments from the database.

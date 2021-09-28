@@ -19,5 +19,11 @@ module.exports = function(app) {
   // Retrieve all Teachers
   router.get("/teacher", teacherController.findAll);
 
+  // Add a Teacher
+  router.post("/teacher", teacherController.create);
+
+  // Delete all Teachers
+  router.delete("/teacher", teacherController.deleteAll);
+
   app.use("/api/admin", authJwt.verifyToken, authJwt.isAdmin, router);
 };
