@@ -96,7 +96,7 @@ const store = new Vuex.Store({
       await fb.auth.signOut()
 
       // clear user data from state
-      commit('setUserProfile', {})
+      commit('setActiveUser', {})
 
       // redirect to login view
       router.push('/login')
