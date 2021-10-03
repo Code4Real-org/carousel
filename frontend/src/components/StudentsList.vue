@@ -63,7 +63,7 @@ export default {
   },
   data() {
     return {
-      fields: ['index', 'firstName', 'lastName', 'username'],
+      fields: ['index', 'firstName', 'lastName', 'username', 'period'],
       selectMode: 'single',
       students: [],
       currentStudent: null,

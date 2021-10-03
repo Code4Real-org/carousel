@@ -12,14 +12,24 @@
         {{ progress }}%
       </div>
     </div>
+    
 
     <label class="btn btn-default">
       <input type="file" ref="file" @change="selectFile" />
     </label>
 
-    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload()">
+   
+
+    <br>
+      <label for="per">Period number (between 1 and 6):</label>
+      <input type="number" id="per" name="per" min="1" max="6" value="1">
+
+
+       <button class="btn btn-success" :disabled="!selectedFiles" @click="upload()">
       Upload
     </button>
+
+  
 
     <div class="alert alert-light" role="alert">{{ message }}</div>
 
@@ -36,6 +46,7 @@ export default {
     return {
       selectedFiles: undefined,
       currentFile: undefined,
+      period: undefined,
       progress: 0,
       message: "",
       fileInfos: []
@@ -50,13 +61,15 @@ export default {
     },
     upload() {
       this.progress = 0;
+      this.period = document.getElementById('per').value;
       this.currentFile = this.selectedFiles.item(0);
-      UploadService.upload(this.currentFile, this.activeAssignment.assignmentId, event => {
+      UploadService.upload(this.period, this.currentFile, this.activeAssignment.assignmentId, event => {
         this.progress = Math.round((100 * event.loaded) / event.total);
       })
         .then(response => {
           this.message = response.data.message;
           console.log(this.message);
+          console.log(this.period);
         })
         .catch(() => {
           this.progress = 0;

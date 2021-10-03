@@ -1,7 +1,7 @@
 import http from "../http-common";
 
 class UploadFileService {
-  upload(file, assignmentId, onUploadProgress) {
+  upload(period, file, assignmentId, onUploadProgress) {
     let formData = new FormData();
 
     formData.append("file", file);
