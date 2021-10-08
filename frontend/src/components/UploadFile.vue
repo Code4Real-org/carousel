@@ -17,9 +17,15 @@
       <input type="file" ref="file" @change="selectFile" />
     </label>
 
+    <label>Class Period: 
+       <vue-numeric-input  v-model="classPeriod" :min="1" :max="6" :step="1"></vue-numeric-input>
+    </label>
+
     <button class="btn btn-success" :disabled="!selectedFiles" @click="upload()">
       Upload
     </button>
+
+
 
     <div class="alert alert-light" role="alert">{{ message }}</div>
 
@@ -28,14 +34,19 @@
 
 <script>
 import { mapState } from 'vuex';
+import VueNumericInput from 'vue-numeric-input';
 import UploadService from "../services/UploadFileService";
 
 export default {
   name: "upload-file",
+  components: {
+    VueNumericInput
+  },
   data() {
     return {
       selectedFiles: undefined,
       currentFile: undefined,
+      classPeriod: 1,
       progress: 0,
       message: "",
       fileInfos: []
@@ -51,7 +62,7 @@ export default {
     upload() {
       this.progress = 0;
       this.currentFile = this.selectedFiles.item(0);
-      UploadService.upload(this.currentFile, this.activeAssignment.assignmentId, event => {
+      UploadService.upload(this.currentFile, this.activeAssignment.assignmentId, this.classPeriod, event => {
         this.progress = Math.round((100 * event.loaded) / event.total);
       })
         .then(response => {

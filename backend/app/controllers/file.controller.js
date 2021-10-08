@@ -9,6 +9,7 @@ const Role = db.role;
 
 const upload = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
+  const classPeriod= parseInt(req.query.period);
 
   try {
     await uploadFile(req, res);

@@ -35,6 +35,9 @@ module.exports = (sequelize, Sequelize) => {
       owner: {
         type: Sequelize.STRING
       },
+      period: {
+        type: Sequelize.INTEGER
+      },
       sequence: {
         type: Sequelize.INTEGER
       },
