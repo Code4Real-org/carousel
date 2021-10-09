@@ -6,6 +6,7 @@ const addrs = require("email-addresses");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+const UserAssignment = db.user_assignments;
 
 const upload = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
@@ -18,6 +19,12 @@ const upload = async (req, res) => {
       return res.status(400).send({ message: "Please upload a file!" });
     }
 
+    const teacherAssignment = await UserAssignment.findOne({ where:
+      {
+        assignmentId: assignmentId,
+        teacherId: req.userId
+      }
+    });
     const filename = __basedir + "/uploads/" + req.file.originalname;
     const readInterface = readline.createInterface({
       input: fs.createReadStream(filename),
@@ -37,7 +44,14 @@ const upload = async (req, res) => {
         .then(([user, created]) => {
           console.log("Setting role for student");
           user.setRoles([3]);
-          user.setAssigned([assignmentId]);
+          user.setAssigned(assignmentId).then(async studentAssignments => {
+            const studentAssignment = studentAssignments[0][0];
+            await studentAssignment.setClassTeacher(teacherAssignment.id);
+            studentAssignment.period = classPeriod;
+            studentAssignment.save();
+          }).catch(err => {
+            console.log("Error setting student assignment");
+          });
         })
         .catch(err => {
           console.log("Error in processing email address");
