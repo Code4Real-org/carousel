@@ -14,6 +14,18 @@
           <template #cell(index)="data">
             {{ data.index + 1 }}
           </template>
+          <!-- A virtual column -->
+          <template #cell(firstName)="data">
+            {{ data.item.Student.firstName? data.item.Student.firstName : '' }}
+          </template>
+          <!-- A virtual column -->
+          <template #cell(lastName)="data">
+            {{ data.item.Student.lastName? data.item.Student.lastName : ''}}
+          </template>
+          <!-- A virtual column -->
+          <template #cell(username)="data">
+            {{ data.item.Student.username? data.item.Student.username : ''}}
+          </template>
         </b-table>
       </div>
 
@@ -55,6 +67,9 @@
 import { mapState } from 'vuex'
 import StudentDataService from "../services/StudentDataService"
 import StudentsImport from '../components/StudentsImport'
+import AssignmentDataService from "../services/AssignmentDataService"
+import TeacherDataService from "../services/TeacherDataService"
+import LotteryModal from '../components/LotteryModal.vue'
 
 export default {
   name: "students-list",
@@ -63,7 +78,16 @@ export default {
   },
   data() {
     return {
-      fields: ['index', 'firstName', 'lastName', 'username'],
+      fields: ['index', 
+        { key: 'firstName', label: 'First Name' }, 
+        { key: 'lastName', label: 'Last Name' }, 
+        { key: 'username', label: 'User Name' },
+        { key: 'period', label: 'Period', sortable: true,
+          sortByFormatted: (value, key, item) => {
+            return `${item.period}`
+          }
+        }
+      ],
       selectMode: 'single',
       students: [],
       currentStudent: null,
