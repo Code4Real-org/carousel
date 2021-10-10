@@ -11,7 +11,7 @@
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
               <h5>{{index + 1}}. Your choice of POAS (first, middle and last name):
                 <button v-if="!isLocked" :disabled="delDisabled" @click="delEntry(index)">delete</button>
-                <label v-else-if="(index + 1 == poasAssigned)" id="assigned">assigned</label>
+                <label v-if="(index + 1 == poasAssigned)" id="assigned">assigned</label>
               </h5>
               <input type="text" placeholder="First name" id="fname" v-model.trim.lazy="entry.firstName" required maxlength="64" :disabled="isLocked">
               <input type="text" placeholder="Middle name" id="mname" v-model.trim.lazy="entry.middleName" required maxlength="32" :disabled="isLocked">
