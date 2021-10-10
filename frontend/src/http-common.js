@@ -33,7 +33,7 @@ http.interceptors.request.use (
 http.interceptors.response.use((response) => {
   return response
 }, function (error) {
-  VueSimpleAlert.alert("Something went wrong at the server. Please login first and try again.");
+  VueSimpleAlert.alert("Please access the correct dashboard.");
 
   router.push('/');
   return Promise.reject(error);

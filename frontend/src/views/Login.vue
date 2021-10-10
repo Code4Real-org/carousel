@@ -66,8 +66,9 @@ export default {
       this.$store.dispatch('glogin', googleUser);
     },
     onFailure(error) {
-      console.log("Google signin failed: " + error)
+      console.log("Google sign in failed: " + error)
       this.$alert("Hello Vue Simple Alert.");
+      
     },
     toggleForm() {
       this.showLoginForm = !this.showLoginForm

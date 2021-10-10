@@ -49,22 +49,14 @@ exports.findAll = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
 
   try {
-    const studentAssignments = await UserAssignment.findAll({ 
-      where: {
-        assignmentId: assignmentId,
-        owner: 'student'
-      } 
+    const assignment = await Assignment.findByPk(assignmentId);
+    const studentAssignments = await assignment.getStudentAssignments({
+      include: [
+        { model: User, as: 'Student' },
+        { model: UserAssignment, as: 'ClassTeacher', where: { teacherId: uid } }
+      ]
     });
-    let students = [];
-    for (let index in  studentAssignments) {
-      const studentAssignment = studentAssignments[index];
-      const teacherAssignment = await UserAssignment.findByPk(studentAssignment.teacher);
-      if (teacherAssignment.teacherId != uid) continue;
-      let student = await User.findByPk(studentAssignment.studentId);
-      student['period'] = studentAssignment.period;
-      students.push(student);
-    }
-    res.send(students);
+    res.send(studentAssignments);
   } catch(err) {
     res.status(500).send({
       message:
