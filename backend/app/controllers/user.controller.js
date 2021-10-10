@@ -8,7 +8,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.gid) {
     res.status(400).send({
-      message: "User can not be empty!"
+      message: "User cannot be empty!"
     });
     return;
   }
