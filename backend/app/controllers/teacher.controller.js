@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
+const UserAssignment = db.user_assignments;
 const Lottery = db.lottery;
 const Poas = db.poas;
 const addrs = require("email-addresses");
@@ -264,7 +265,8 @@ exports.showLottery = async (req, res) => {
       ], include: [
         { model: Poas },
         { model: Lottery, as: 'lotteries' },
-        { model: User, as: 'Student' }
+        { model: User, as: 'Student' },
+        { model: UserAssignment, as: 'ClassTeacher', include: [ { model: User, as: 'Teacher' } ]}
       ]
     });
 

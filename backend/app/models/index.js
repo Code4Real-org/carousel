@@ -81,6 +81,11 @@ db.user_assignments.belongsTo(db.user, {
   as: 'Student'
 });
 
+db.user_assignments.belongsTo(db.user, {
+  foreignKey: 'teacherId',
+  as: 'Teacher'
+});
+
 db.user_assignments.belongsTo(db.user_assignments, {
   foreignKey: 'teacher',
   as: 'ClassTeacher'
