@@ -49,6 +49,10 @@
           <template #cell(index)="data">
             {{ data.index + 1 }}
           </template>
+          <!-- Another virtual composite column -->
+          <template #cell(teacher)="data">
+            {{ data.item.ClassTeacher.Teacher? data.item.ClassTeacher.Teacher.lastName : ''}}
+          </template>
           <!-- A virtual composite column -->
           <template #cell(student)="data">
             {{ data.item.Student.lastName? data.item.Student.firstName + ' ' + data.item.Student.lastName :
@@ -97,9 +101,19 @@ export default {
     return {
       fields: [
         'index',
-        { key: 'student', label: 'Student Name', sortable: true,
+         { key: 'student', label: 'Student Name', sortable: true,
           sortByFormatted: (value, key, item) => {
             return `${item.Student.lastName}`
+          }
+        },
+        { key: 'teacher', label: 'Teacher', sortable: true,
+          sortByFormatted: (value, key, item) => {
+            return `${item.ClassTeacher.Teacher.lastName}`
+          }
+        },
+        { key: 'period', label: 'Period', sortable: true,
+          sortByFormatted: (value, key, item) => {
+            return `${item.period}`
           }
         },
         { key: 'poas', label: 'POAS Assigned', sortable: true,

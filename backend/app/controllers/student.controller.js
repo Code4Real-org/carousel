@@ -2,6 +2,7 @@ const db = require("../models");
 const User = db.user;
 const Role = db.role;
 const Assignment = db.assignment;
+const UserAssignment = db.user_assignments;
 
 const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
@@ -48,14 +49,20 @@ exports.findAll = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
 
   try {
-    let assignment = await Assignment.findByPk(assignmentId);
-    let students = await assignment.getAssignee();
-    for (let i = 0; i < students.length; i++) {
-      let student = students[i];
-      let isStudent = await student.hasRole(3);
-      if (!isStudent) {
-        students.splice(i, 1);
-      }
+    const studentAssignments = await UserAssignment.findAll({ 
+      where: {
+        assignmentId: assignmentId,
+        owner: 'student'
+      } 
+    });
+    let students = [];
+    for (let index in  studentAssignments) {
+      const studentAssignment = studentAssignments[index];
+      const teacherAssignment = await UserAssignment.findByPk(studentAssignment.teacher);
+      if (teacherAssignment.teacherId != uid) continue;
+      let student = await User.findByPk(studentAssignment.studentId);
+      student['period'] = studentAssignment.period;
+      students.push(student);
     }
     res.send(students);
   } catch(err) {
