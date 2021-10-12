@@ -45,6 +45,9 @@
           :select-mode="selectMode"
           selectable
           @row-selected="onStudentSelected">
+          <template v-slot:head(show_details)="data">
+            <b-button @click="toggleDetails()" size="sm">{{ detailShowing? 'Hide All Details' : 'Show All Details' }} </b-button>
+          </template>
           <!-- A virtual column -->
           <template #cell(index)="data">
             {{ data.index + 1 }}
@@ -63,8 +66,29 @@
             {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.middleName + ' ' + data.item.poa.lastName :
               data.item.lotteries.length + ' entries' }}
           </template>
+          <!-- Another virtual composite column -->
+          <template #cell(show_details)="row">
+            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+              {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+            </b-button>
+          </template>
+
+          <template #row-details="row">
+            <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"><b>Biography:</b></b-col>
+                <b-col>{{ row.item.preferenceChosen? row.item.lotteries[row.item.preferenceChosen - 1].biography : '' }}</b-col>
+              </b-row>
+
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"><b>Significance:</b></b-col>
+                <b-col>{{ row.item.preferenceChosen? row.item.lotteries[row.item.preferenceChosen - 1].statement : ''  }}</b-col>
+              </b-row>
+            </b-card>
+          </template>
         </b-table>
       </div>
+
     <div b-col col lg="4">
       <div v-if="currentStudent">
         <transition name="fade">
@@ -120,12 +144,13 @@ export default {
           sortByFormatted: (value, key, item) => {
             return item.poa?`${item.poa.lastName}`:``
           }
-        }
+        }, 'show_details'
       ],
       selectMode: 'single',
       isBusy: false,
       students: [],
       currentStudent: null,
+      detailShowing: false,
       lotterySteps: ['Open', 'Locked', "In progress", "Completed"]
     };
   },
@@ -174,6 +199,7 @@ export default {
       TeacherDataService.showLottery(assignmentId)
         .then(response => {
           this.students = response.data;
+          this.detailShowing = false;
           console.log(this.students);
         })
         .catch(e => {
@@ -196,10 +222,26 @@ export default {
       this.currentStudent = null;
     },
 
-    closeLotteryResult() {
-      this.students = []
+    toggleDetails() {
+      if (this.detailShowing) {
+        this.collapseAll();
+        this.detailShowing = false;
+      } else {
+        this.expandAll();
+        this.detailShowing = true;
+      }
+    },
 
-      this.$emit('close')
+    expandAll() {
+      for(const item of this.students) {
+        this.$set(item, '_showDetails', true)
+      }
+    },
+
+    collapseAll() {
+      for(const item of this.students) {
+        this.$set(item, '_showDetails', false)
+      }
     }
   },
   async mounted() {
@@ -216,6 +258,15 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+
+.mb-2 {
+  max-width: 500px;
+}
+
+.mr-2 {
+  max-width: 1000px;
+  max-height: 500px;
 }
 
 #closebutton{
