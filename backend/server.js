@@ -75,7 +75,7 @@ async function initial() {
   assignment = await Assignment.create({
     assignmentId: 1,
     title: "Person of American Significance",
-    description: "Choose a person of American significance to research and write an essay about. Each student must pick a unique person.",
+    description: "Choose 3-5 individuals who have had significant impact on the United States, who you would be interested in researching and writing about. No two students currently enrolled in APENG will focus on the same Person of American Significance.",
     minEntries: 3,
     maxEntries: 5,
     state: 0  // default: open
