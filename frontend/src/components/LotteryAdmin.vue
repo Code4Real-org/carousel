@@ -38,13 +38,37 @@
       <br>
 
       <div b-col col lg="4">
-        <h5>Lottery result</h5>
+        <b-row>
+          <b-col md="2">
+          <h5>Lottery result</h5>
+          </b-col>
+          <b-col md="2">
+          <button v-on:click = "copyToClipboard('select_txt')">Click To Copy</button>
+          </b-col>
+          <b-col md="4">
+          <b-input-group size="sm">
+            <b-form-input
+              id="filter-input"
+              v-model="filter"
+              type="search"
+              placeholder="Type to filter by teacher's last name"
+            ></b-form-input>
+
+            <b-input-group-append>
+              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+            </b-input-group-append>
+          </b-input-group>
+          </b-col>
+        </b-row>
         <b-table striped hover sticky-header="600px" :items="students" :fields="fields"
           :busy.sync="isBusy"
           sort-icon-left
           :select-mode="selectMode"
           selectable
-          @row-selected="onStudentSelected">
+          @row-selected="onStudentSelected"
+          :filter="filter"
+          :filter-included-fields="filterOn"
+          id="select_txt">
           <template v-slot:head(show_details)="data">
             <b-button @click="toggleDetails()" size="sm">{{ detailShowing? 'Hide All Details' : 'Show All Details' }} </b-button>
           </template>
@@ -125,12 +149,15 @@ export default {
     return {
       fields: [
         'index',
-         { key: 'student', label: 'Student Name', sortable: true,
+        { key: 'student', label: 'Student Name', sortable: true,
           sortByFormatted: (value, key, item) => {
             return `${item.Student.lastName}`
           }
         },
         { key: 'teacher', label: 'Teacher', sortable: true,
+           filterByFormatted: (value, key, item) => {
+            return `${item.ClassTeacher.Teacher.lastName}`
+          },
           sortByFormatted: (value, key, item) => {
             return `${item.ClassTeacher.Teacher.lastName}`
           }
@@ -151,6 +178,8 @@ export default {
       students: [],
       currentStudent: null,
       detailShowing: false,
+      filter: null,
+      filterOn: ['teacher'],
       lotterySteps: ['Open', 'Locked', "In progress", "Completed"]
     };
   },
@@ -242,6 +271,17 @@ export default {
       for(const item of this.students) {
         this.$set(item, '_showDetails', false)
       }
+    },
+
+    copyToClipboard(containerid){
+      var range = document.createRange();
+      let containerNode = document.getElementById(containerid); //// this part
+      range.selectNode(containerNode); //// this part
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+      alert("data copied");
     }
   },
   async mounted() {
