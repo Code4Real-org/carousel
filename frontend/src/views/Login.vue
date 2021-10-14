@@ -6,7 +6,7 @@
         <h1>Carousel</h1>
         <p>Welcome to the web-based lottery system for school assignments.</p>
         <br>
-        <p>This application facilitates teachers and students to conduct a lottery in assigning class project topics.</p>
+        <p>This application facilitates assigning class project topics by conducting a fair lottery.</p>
         <br>
         <p>Made in open source by <a href="https://code4real.org/" target="_blank">Code4Real</a>.</p>
       </div>
