@@ -38,13 +38,40 @@
       <br>
 
       <div b-col col lg="4">
-        <h5>Lottery result</h5>
+        <b-row>
+          <b-col md="2">
+          <h5>Lottery result</h5>
+          </b-col>
+          <b-col md="2">
+          <button v-on:click = "copyToClipboard('select_txt')">Click To Copy</button>
+          </b-col>
+          <b-col md="4">
+          <b-input-group size="sm">
+            <b-form-input
+              id="filter-input"
+              v-model="filter"
+              type="search"
+              placeholder="Type to filter by teacher's last name"
+            ></b-form-input>
+
+            <b-input-group-append>
+              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+            </b-input-group-append>
+          </b-input-group>
+          </b-col>
+        </b-row>
         <b-table striped hover sticky-header="600px" :items="students" :fields="fields"
           :busy.sync="isBusy"
           sort-icon-left
           :select-mode="selectMode"
           selectable
-          @row-selected="onStudentSelected">
+          @row-selected="onStudentSelected"
+          :filter="filter"
+          :filter-included-fields="filterOn"
+          id="select_txt">
+          <template v-slot:head(show_details)="data">
+            <b-button @click="toggleDetails()" size="sm">{{ detailShowing? 'Hide All Details' : 'Show All Details' }} </b-button>
+          </template>
           <!-- A virtual column -->
           <template #cell(index)="data">
             {{ data.index + 1 }}
@@ -63,8 +90,29 @@
             {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.middleName + ' ' + data.item.poa.lastName :
               data.item.lotteries.length + ' entries' }}
           </template>
+          <!-- Another virtual composite column -->
+          <template #cell(show_details)="row">
+            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+              {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+            </b-button>
+          </template>
+
+          <template #row-details="row">
+            <b-card>
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"><b>Biography:</b></b-col>
+                <b-col>{{ row.item.preferenceChosen? row.item.lotteries[row.item.preferenceChosen - 1].biography : '' }}</b-col>
+              </b-row>
+
+              <b-row class="mb-2">
+                <b-col sm="3" class="text-sm-right"><b>Significance:</b></b-col>
+                <b-col>{{ row.item.preferenceChosen? row.item.lotteries[row.item.preferenceChosen - 1].statement : ''  }}</b-col>
+              </b-row>
+            </b-card>
+          </template>
         </b-table>
       </div>
+
     <div b-col col lg="4">
       <div v-if="currentStudent">
         <transition name="fade">
@@ -101,12 +149,15 @@ export default {
     return {
       fields: [
         'index',
-         { key: 'student', label: 'Student Name', sortable: true,
+        { key: 'student', label: 'Student Name', sortable: true,
           sortByFormatted: (value, key, item) => {
             return `${item.Student.lastName}`
           }
         },
         { key: 'teacher', label: 'Teacher', sortable: true,
+           filterByFormatted: (value, key, item) => {
+            return `${item.ClassTeacher.Teacher.lastName}`
+          },
           sortByFormatted: (value, key, item) => {
             return `${item.ClassTeacher.Teacher.lastName}`
           }
@@ -120,12 +171,15 @@ export default {
           sortByFormatted: (value, key, item) => {
             return item.poa?`${item.poa.lastName}`:``
           }
-        }
+        }, 'show_details'
       ],
       selectMode: 'single',
       isBusy: false,
       students: [],
       currentStudent: null,
+      detailShowing: false,
+      filter: null,
+      filterOn: ['teacher'],
       lotterySteps: ['Open', 'Locked', "In progress", "Completed"]
     };
   },
@@ -174,6 +228,7 @@ export default {
       TeacherDataService.showLottery(assignmentId)
         .then(response => {
           this.students = response.data;
+          this.detailShowing = false;
           console.log(this.students);
         })
         .catch(e => {
@@ -196,10 +251,37 @@ export default {
       this.currentStudent = null;
     },
 
-    closeLotteryResult() {
-      this.students = []
+    toggleDetails() {
+      if (this.detailShowing) {
+        this.collapseAll();
+        this.detailShowing = false;
+      } else {
+        this.expandAll();
+        this.detailShowing = true;
+      }
+    },
 
-      this.$emit('close')
+    expandAll() {
+      for(const item of this.students) {
+        this.$set(item, '_showDetails', true)
+      }
+    },
+
+    collapseAll() {
+      for(const item of this.students) {
+        this.$set(item, '_showDetails', false)
+      }
+    },
+
+    copyToClipboard(containerid){
+      var range = document.createRange();
+      let containerNode = document.getElementById(containerid); //// this part
+      range.selectNode(containerNode); //// this part
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+      alert("data copied");
     }
   },
   async mounted() {
@@ -216,6 +298,15 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+
+.mb-2 {
+  max-width: 500px;
+}
+
+.mr-2 {
+  max-width: 1000px;
+  max-height: 500px;
 }
 
 #closebutton{

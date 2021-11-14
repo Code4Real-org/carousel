@@ -56,11 +56,13 @@ exports.create = async (req, res) => {
     user_assignment.preferenceChosen = 0;
     await user_assignment.save();
 
-    for (entry of lotteries) {
+    for (let i = 0; i < lotteries.length; i++) {
+      const entry = lotteries[i];
+      entry.preference = i + 1;
       let lottery = await Lottery.create(entry);
       let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
       await poas.addLottery(lottery.id);
-      await paController.addLottery(assignmentId, poas, lottery.preference, lottery);
+      await paController.addLottery(assignmentId, poas, entry.preference, lottery);
       await user_assignment.addLottery(lottery.id);
       await poas.save();
       await user_assignment.save();

@@ -36,9 +36,30 @@ exports.findOrCreate = async (first, middle, last) => {
   const mi = (middle == '')? '' : middle[0];
   const fn = first.replace(/[.-\s]+/g, '');
   const ln = last.replace(/[.-\s]+/g, '');
-  let normalized = fn.toLowerCase() + '-' + mi.toLowerCase() + '-' + ln.toLowerCase();
+  //let normalized = fn.toLowerCase() + '-' + mi.toLowerCase() + '-' + ln.toLowerCase();
+  let normalized = fn.toLowerCase() + '-' + '-' + ln.toLowerCase();
   try {
-    let poas = await Poas.findOne({where: { normalizedName: normalized }});
+    let poases = await Poas.findAll({where: { normalizedName: normalized }});
+    let poas = null;
+    const len = poases.length;
+
+    for (let i = 0; i < len; i++) {
+      p = poases[i];
+      if (!p.middleName || p.middleName == '') {
+        poas = p;
+        if (middle == '') break;  // both have no middle name
+      } else {
+        if (p.middleName[0].toLowerCase() == mi.toLowerCase()) {
+          // matching middle name
+          poas = p;
+          break;
+        }
+        if (mi == '') {
+          poas = p; // ToDo: must be an error, problematic for George (H/W) Bushes
+        }
+      }
+    }
+    // no entry found
     if (poas == null) {
       poas = await Poas.create({
         normalizedName: normalized,
@@ -48,6 +69,7 @@ exports.findOrCreate = async (first, middle, last) => {
         count: 0
       });
     }
+
     return(poas);
   } catch(err) {
     console.log(err.message || "Some error occurred while getting a POAS.");

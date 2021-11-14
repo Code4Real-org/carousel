@@ -104,6 +104,10 @@ export default {
     delEntry(index) {
       this.lotteryEntries.splice(index, 1);
       this.poasStats.splice(index, 1);
+      const len = this.lotteryEntries.length;
+      for (let  i = index; i < len; i++) {
+        this.lotteryEntries[i].preference = this.lotteryEntries[i].preference - 1;
+      }
     },
     refresh(result) {
       this.poasAssigned = result.data.poasAssigned;

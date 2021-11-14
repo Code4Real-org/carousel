@@ -72,11 +72,15 @@ exports.deleteAll = async (req, res) => {
   const assignmentId = parseInt(req.query.assignment);
 
   try {
-    let assignment = await Assignment.findByPk(assignmentId);
-    let students = await assignment.getAssignee();
-    for (let i = 0; i < students.length; i++) {
-      let student = students[i];
-      student.destroy();
+    const assignment = await Assignment.findByPk(assignmentId);
+    const studentAssignments = await assignment.getStudentAssignments({
+      include: [
+        { model: UserAssignment, as: 'ClassTeacher', where: { teacherId: uid } }
+      ]
+    });
+    for (let i = 0; i < studentAssignments.length; i++) {
+      let studentAssignment = studentAssignments[i];
+      studentAssignment.destroy();
     }
     res.send([]);
   } catch(err) {
