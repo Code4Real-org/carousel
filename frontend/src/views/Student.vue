@@ -19,7 +19,7 @@
           </div>
         </div>
         <div v-else>
-          <p class="no-results">There is no assignmenti yet.</p>
+          <p class="no-results">There is no assignment yet.</p>
         </div>
       </div>
     </section>
