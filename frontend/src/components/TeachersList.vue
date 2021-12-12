@@ -1,7 +1,7 @@
 <template>
   <div class="p-modal">
     <div class="p-container">
-      <a @click="$emit('close')">close</a>
+      <a @click="$emit('close')" id="closebutton">close</a>
     <div class="row">
     <div class="col-lg-8">
       <h4>Teachers List</h4>
@@ -12,7 +12,7 @@
       </b-form>
       </b-col>
       <b-col>
-        <button @click="addTeacher()">Add</button>
+        <b-button @click="addTeacher()">Add</b-button>
       </b-col>
       </b-row>
       
@@ -140,5 +140,12 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+
+#closebutton{
+  font-size: 1.5em;
+  display: block;
+  vertical-align: right;
+  text-align: right;
 }
 </style>
