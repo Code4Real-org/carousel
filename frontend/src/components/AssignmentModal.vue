@@ -19,7 +19,7 @@
        </label>
        <br>
        <br>
-      <button @click = "updateAssignment">Update</button>
+      <b-button @click = "updateAssignment">Update</b-button>
     </div>
   </div>
 </template>

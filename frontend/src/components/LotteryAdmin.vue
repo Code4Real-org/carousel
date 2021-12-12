@@ -43,7 +43,7 @@
           <h5>Lottery result</h5>
           </b-col>
           <b-col md="2">
-          <button v-on:click = "copyToClipboard('select_txt')">Click To Copy</button>
+          <b-button class="m-3 btn btn-sm" v-on:click = "copyToClipboard('select_txt')">Click To Copy</b-button>
           </b-col>
           <b-col md="4">
           <b-input-group size="sm">

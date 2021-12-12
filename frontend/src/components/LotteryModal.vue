@@ -10,7 +10,7 @@
           <b-form @submit.prevent>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
               <h5>{{index + 1}}. Your choice of POAS (first, middle and last name):
-                <button v-if="!isLocked" :disabled="delDisabled" @click="delEntry(index)">delete</button>
+                <b-button v-if="!isLocked" :disabled="delDisabled" class="m-3 btn btn-sm" @click="delEntry(index)">delete</b-button>
                 <label v-if="(index + 1 == poasAssigned)" id="assigned">assigned</label>
               </h5>
               <input type="text" placeholder="First name" id="fname" v-model.trim.lazy="entry.firstName" required maxlength="64" :disabled="isLocked">
@@ -30,11 +30,11 @@
           <div v-if="!isLocked">
           <b-row>
           <b-col>
-            <button :disabled="isMaxEntries" @click="addEntry">Add an entry</button>
+            <b-button :disabled="isMaxEntries" @click="addEntry">Add an entry</b-button>
           </b-col>
           &nbsp;&nbsp;
           <b-col>
-            <button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Save</button>
+            <b-button :disabled="submitDisabled" @click="submitEntries(activeAssignment)">Save</b-button>
           </b-col>
           </b-row>
           </div>
