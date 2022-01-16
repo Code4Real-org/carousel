@@ -127,5 +127,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .col1{
+    background-color: blue;
+  }
+  .col2{
+    background-color: red;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 5%;
+    margin-bottom: 5%; 
+  }
+  section{
+    background-color: green;
+    display: block;
+  }
 
 </style>

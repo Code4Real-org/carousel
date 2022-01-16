@@ -18,7 +18,6 @@
       <input type="file" ref="file" @change="selectFile" />
     </label>
 
-<<<<<<< HEAD
    
 
     <br>
@@ -31,17 +30,6 @@
     </button>
 
   
-=======
-    <label>Class Period: 
-       <vue-numeric-input  v-model="classPeriod" :min="1" :max="6" :step="1"></vue-numeric-input>
-    </label>
-
-    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload()">
-      Upload
-    </button>
-
-
->>>>>>> 9985d86fd971d8aea877b5b3a8a1fa33528469e9
 
     <div class="alert alert-light" role="alert">{{ message }}</div>
 
@@ -62,11 +50,7 @@ export default {
     return {
       selectedFiles: undefined,
       currentFile: undefined,
-<<<<<<< HEAD
-      period: undefined,
-=======
       classPeriod: 1,
->>>>>>> 9985d86fd971d8aea877b5b3a8a1fa33528469e9
       progress: 0,
       message: "",
       fileInfos: []
@@ -83,11 +67,7 @@ export default {
       this.progress = 0;
       this.period = document.getElementById('per').value;
       this.currentFile = this.selectedFiles.item(0);
-<<<<<<< HEAD
-      UploadService.upload(this.period, this.currentFile, this.activeAssignment.assignmentId, event => {
-=======
       UploadService.upload(this.currentFile, this.activeAssignment.assignmentId, this.classPeriod, event => {
->>>>>>> 9985d86fd971d8aea877b5b3a8a1fa33528469e9
         this.progress = Math.round((100 * event.loaded) / event.total);
       })
         .then(response => {
