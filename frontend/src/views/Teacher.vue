@@ -12,11 +12,13 @@
           <div v-for="assignment in assignments" :key="assignment.id" class="assignment">
             <h5>{{ assignment.title }}</h5>
             <span>{{ assignment.createdAt | formatDate }}</span>
-            <ul>
-              <li><a @click="editAssignment(assignment)">Edit</a></li>
-              <li><a @click="manageStudents(assignment)">Students</a></li>
-              <li><a @click="adminLottery(assignment)">Lottery</a></li>
-            </ul>
+            <!--<ul> -->
+            <v-card class = "f">
+              <a @click="editAssignment(assignment)"><div class = "ic"> Edit <div width = "70px" height = "70px" class = "rounded-circle bg-white"><img thumbnail fluid src="./../assets/edit.png" height="40px" alt="Edit"></div> </div></a>
+              <a @click="manageStudents(assignment)"><div class = "ic"> Students <img thumbnail fluid src="./../assets/student.png" height="40px" class = "rounded-circle bg-white" alt="Student"></div></a>
+              <a @click="adminLottery(assignment)"><div class = "ic">Lottery <img thumbnail fluid src="./../assets/lottery.png" height="40px" class = "rounded-circle bg-white" alt="Lottery"></div></a>
+            </v-card>
+            <!--</ul>-->
           </div>
         </div>
         <div v-else>
