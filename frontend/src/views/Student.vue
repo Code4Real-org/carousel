@@ -7,20 +7,23 @@
           <p>{{ activeUser.firstName }} {{ activeUser.lastName }}</p>
         </div>
       </div>
+
       <div class="col2">
         <div v-if="assignments.length">
           <div v-for="assignment in assignments" :key="assignment.assignmentId" class="assignment">
             <h5>{{ assignment.title }}</h5>
             <span>{{ assignment.createdAt | formatDate }}</span>
-            <ul>
-              <li><a @click="editLottery(assignment)">Lottery</a></li>
-              <li><a @click="listPoas(assignment)">POAS</a></li>
-            </ul>
+            <v-card class = "f">
+              <a @click="editLottery(assignment)"><div class = "ic">Lottery <img thumbnail fluid src="./../assets/lottery.png" height="40px" class = "rounded-circle bg-white" alt="Lottery"></div></a>
+              <a @click="listPoas(assignment)"><div class = "ic"> POAS <img thumbnail fluid src="./../assets/student.png" height="40px" class = "rounded-circle bg-white" alt="Student"></div></a>
+            </v-card>
           </div>
         </div>
+
         <div v-else>
           <p class="no-results">There is no assignment yet.</p>
         </div>
+
       </div>
     </section>
 
