@@ -1,5 +1,5 @@
 module.exports = {
-  HOST: "carousel.code4real.org",
+  HOST: "localhost",
   USER: "code4real",
   PASSWORD: "teamc4r",
   DB: "carousel",
