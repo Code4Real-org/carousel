@@ -15,7 +15,7 @@
             <span>{{ assignment.createdAt | formatDate }}</span>
             <v-card class = "f">
               <a @click="editLottery(assignment)"><div class = "ic">Lottery <img thumbnail fluid src="./../assets/lottery.png" height="40px" class = "rounded-circle bg-white" alt="Lottery"></div></a>
-              <a @click="listPoas(assignment)"><div class = "ic"> POAS <img thumbnail fluid src="./../assets/student.png" height="40px" class = "rounded-circle bg-white" alt="Student"></div></a>
+              <a @click="listPoas(assignment)"><div class = "ic"> POAS <img thumbnail fluid src="./../assets/POAS.png" height="40px" class = "rounded-circle bg-white" alt="Student"></div></a>
             </v-card>
           </div>
         </div>
