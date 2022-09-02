@@ -9,15 +9,16 @@
           </div>
           <b-form @submit.prevent>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
-              <h5>{{index + 1}}. Your choice of POAS (first, middle and last name):
+              <h5>{{index + 1}}. Your choice of POAS (commonly known name):
                 <button v-if="!isLocked" :disabled="delDisabled" @click="delEntry(index)">delete</button>
                 <label v-if="(index + 1 == poasAssigned)" id="assigned">assigned</label>
               </h5>
-              <input type="text" placeholder="First name" id="fname" v-model.trim.lazy="entry.firstName" required maxlength="64" :disabled="isLocked">
-              <input type="text" placeholder="Middle name" id="mname" v-model.trim.lazy="entry.middleName" required maxlength="32" :disabled="isLocked">
-              <input type="text" placeholder="Last name" id="lname" v-model.trim.lazy="entry.lastName" required maxlength="64" :disabled="isLocked">
+              <input type="text" placeholder="name" id="name" v-model.trim.lazy="entry.name" required maxlength="100" :disabled="isLocked">
+              <!--<input type="text" placeholder="Middle name" id="mname" v-model.trim.lazy="entry.middleName" required maxlength="32" :disabled="isLocked">
+              <input type="text" placeholder="Last name" id="lname" v-model.trim.lazy="entry.lastName" required maxlength="64" :disabled="isLocked">-->
               <label v-if="poasStats[index] && poasStats[index][0] == -1" id="counter" width:50px><b><i>taken</i></b></label>
               <label v-else id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:150px> Opt. {{preference+1}}: {{count}}</label>
+              <p v-if="entry.wikiDescription"> {{entry.wikiDescription}}... </p>
               <br><br>
               <h5>What is the title of the (auto)biography? (limit of 100 characters)</h5>
               <input type="textarea" v-model.lazy="entry.biography" required maxlength="100" :disabled="isLocked">
@@ -57,7 +58,7 @@ export default {
       saving: false,
       lotteryEntries: [],
       poasStats: [],
-      poasAssigned: 0
+      poasAssigned: 0,
     }
   },
   computed: {
@@ -73,7 +74,7 @@ export default {
         return true;
       }
       for (let entry of this.lotteryEntries) {
-        if (!entry.firstName || !entry.lastName) return true;
+        if (!entry.name) return true;
         if (entry.biography.length <= 1) return true;
         if (entry.statement.length <= 1) return true;
       }
@@ -93,9 +94,10 @@ export default {
   methods: {
     addEntry() {
       this.lotteryEntries.push({
-        firstName:'',
-        middleName:'',
-        lastName:'',
+        name:'',
+        //middleName:'',
+        //lastName:'',
+        wikiDescription: '',
         biography: '',
         statement:'',
         preference: this.lotteryEntries.length + 1

@@ -1,14 +1,25 @@
 module.exports = (sequelize, Sequelize) => {
   const Lottery = sequelize.define("lotteries", {
-    firstName: {
+    name: {
       type: Sequelize.STRING
     },
+    wikiLink: {
+      type: Sequelize.STRING,
+    },
+    wikiPageID: {
+      type: Sequelize.INTEGER
+    },
+    wikiDescription: {
+      type: Sequelize.STRING
+    },
+    /*
     middleName: {
       type: Sequelize.STRING
     },
     lastName: {
       type: Sequelize.STRING
     },
+    */
     biography: {
       type: Sequelize.STRING
     },

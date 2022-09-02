@@ -1,10 +1,19 @@
 module.exports = (sequelize, Sequelize) => {
   const Poas = sequelize.define("poas", {
-    firstName: {
+    name: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    middleName: {
+    wikiLink: {
+      type: Sequelize.STRING,
+    },
+    wikiPageID: {
+      type: Sequelize.INTEGER
+    },
+    wikiDescription: {
+      type: Sequelize.STRING
+    },
+    /*middleName: {
       type: Sequelize.STRING
     },
     lastName: {
@@ -14,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
     normalizedName: {
       type: Sequelize.STRING,
       allowNull: false
-    },
+    },*/
     count: {
       type: Sequelize.INTEGER
     }

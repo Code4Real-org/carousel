@@ -48,7 +48,7 @@ exports.create = async (req, res) => {
 
     let old_lotteries = await user_assignment.getLotteries();
     for (entry of old_lotteries) {
-      let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
+      let poas = await poasController.findOrCreate(entry.name);
       await paController.delLottery(assignmentId, poas, entry.preference, entry);
       await entry.destroy({ force: true });
     };
@@ -56,11 +56,15 @@ exports.create = async (req, res) => {
     user_assignment.preferenceChosen = 0;
     await user_assignment.save();
 
+    let new_lotteries = [];
+
     for (let i = 0; i < lotteries.length; i++) {
       const entry = lotteries[i];
       entry.preference = i + 1;
+      let poas = await poasController.findOrCreate(entry.name);
+      entry.wikiPageID = poas.wikiPageID;
+      entry.wikiDescription = poas.wikiDescription;
       let lottery = await Lottery.create(entry);
-      let poas = await poasController.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
       await poas.addLottery(lottery.id);
       await paController.addLottery(assignmentId, poas, entry.preference, lottery);
       await user_assignment.addLottery(lottery.id);
@@ -68,9 +72,11 @@ exports.create = async (req, res) => {
       await user_assignment.save();
       lottery.assigned = 0;
       await lottery.save();
+      new_lotteries.push(lottery);
     };
-    res.status(200).send(lotteries);
+    res.status(200).send(new_lotteries);
   } catch(err) {
+      console.log(err);
     res.status(500).send({
       message:
         err.message || "Some error occurred while creating the Lottery."
@@ -101,9 +107,11 @@ exports.findAll = async (req, res) => {
     for (lottery of lotteries) {
       let poas = await Poas.findByPk(lottery.poaId);  // have to use the odd name
       poasList.push(poas.id);
-      lottery.firstName = poas.firstName;
-      lottery.middleName = poas.middleName;
-      lottery.lastName = poas.lastName;
+      lottery.name = poas.name;
+      lottery.wikiPageID = poas.wikiPageID;
+      lottery.wikiDescription = poas.wikiDescription;
+      //lottery.middleName = poas.middleName;
+      //lottery.lastName = poas.lastName;
     }
 
     let poasStats = await poasController.getCounts(uid, assignmentId, poasList);

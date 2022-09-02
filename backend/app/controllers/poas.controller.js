@@ -6,6 +6,7 @@ const UserAssignments = db.user_assignments;
 const PoasAssignment = db.poas_assignment;
 const Lottery = db.lottery;
 const Poas = db.poas;
+const wiki = require('wikijs').default;
 
 
 // Create and Save a new POAS entry
@@ -19,7 +20,7 @@ exports.create = async (req, res) => {
   try {
     user_assignment = await UserAssignments.findOne({where: {userId: uid, assignmentId: assignmentId}});
 
-    let poas = await this.findOrCreate(entry.firstName, entry.middleName, entry.lastName);
+    let poas = await this.findOrCreate(entry.name);
     return poas;
   } catch(err) {
     console.log(err.message || "Some error occurred while creating the POAS.");
@@ -28,21 +29,36 @@ exports.create = async (req, res) => {
 
 
 // Retrieve or create a new POAS entry in the database.
-exports.findOrCreate = async (first, middle, last) => {
-  first = first.trim();
-  middle = middle? middle.trim() : '';
-  last = last.trim();
+exports.findOrCreate = async (name) => {
+  const results = await wiki().page(name);
+  const summary = await results.summary();
+  const pDescription = summary.substring(0,125);
+  const pName = results.title.trim();
+  const pageID  = results.pageid;
+  //middle = middle? middle.trim() : '';
+  //last = last.trim();
 
-  const mi = (middle == '')? '' : middle[0];
-  const fn = first.replace(/[.-\s]+/g, '');
-  const ln = last.replace(/[.-\s]+/g, '');
+  //const mi = (middle == '')? '' : middle[0];
+  //const fn = first.replace(/[.-\s]+/g, '');
+  //const ln = last.replace(/[.-\s]+/g, '');
   //let normalized = fn.toLowerCase() + '-' + mi.toLowerCase() + '-' + ln.toLowerCase();
-  let normalized = fn.toLowerCase() + '-' + '-' + ln.toLowerCase();
+  //let normalized = fn.toLowerCase() + '-' + '-' + ln.toLowerCase();
   try {
-    let poases = await Poas.findAll({where: { normalizedName: normalized }});
+    //let poases = await Poas.findAll({where: { normalizedName: normalized }});
+
+    let poases = await Poas.findAll({where: { wikiPageID: pageID }});
     let poas = null;
     const len = poases.length;
 
+
+    for (let i = 0; i < len; i++) {
+      p = poases[i];
+      if (p.wikiPageID == pageID) {
+        poas = p;
+      }
+    }
+
+    /*
     for (let i = 0; i < len; i++) {
       p = poases[i];
       if (!p.middleName || p.middleName == '') {
@@ -59,13 +75,16 @@ exports.findOrCreate = async (first, middle, last) => {
         }
       }
     }
+    */
+
     // no entry found
     if (poas == null) {
       poas = await Poas.create({
-        normalizedName: normalized,
-        firstName: first,
-        middleName: middle,
-        lastName: last,
+        name: pName,
+        wikiPageID: pageID,
+        wikiDescription: pDescription,
+        //middleName: middle,
+        //lastName: last,
         count: 0
       });
     }
