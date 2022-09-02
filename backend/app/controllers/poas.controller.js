@@ -35,6 +35,7 @@ exports.findOrCreate = async (name) => {
   const pDescription = summary.substring(0,125);
   const pName = results.title.trim();
   const pageID  = results.pageid;
+  const pLink = results.fullurl;
   //middle = middle? middle.trim() : '';
   //last = last.trim();
 
@@ -82,6 +83,7 @@ exports.findOrCreate = async (name) => {
       poas = await Poas.create({
         name: pName,
         wikiPageID: pageID,
+        wikiLink: pLink,
         wikiDescription: pDescription,
         //middleName: middle,
         //lastName: last,

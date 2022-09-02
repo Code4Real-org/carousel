@@ -63,6 +63,7 @@ exports.create = async (req, res) => {
       entry.preference = i + 1;
       let poas = await poasController.findOrCreate(entry.name);
       entry.wikiPageID = poas.wikiPageID;
+      entry.wikiLink = poas.wikiLink;
       entry.wikiDescription = poas.wikiDescription;
       let lottery = await Lottery.create(entry);
       await poas.addLottery(lottery.id);
@@ -109,6 +110,7 @@ exports.findAll = async (req, res) => {
       poasList.push(poas.id);
       lottery.name = poas.name;
       lottery.wikiPageID = poas.wikiPageID;
+      lottery.wikiLink = poas.wikiLink;
       lottery.wikiDescription = poas.wikiDescription;
       //lottery.middleName = poas.middleName;
       //lottery.lastName = poas.lastName;

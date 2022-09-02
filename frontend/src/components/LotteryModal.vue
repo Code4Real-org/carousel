@@ -18,6 +18,7 @@
               <input type="text" placeholder="Last name" id="lname" v-model.trim.lazy="entry.lastName" required maxlength="64" :disabled="isLocked">-->
               <label v-if="poasStats[index] && poasStats[index][0] == -1" id="counter" width:50px><b><i>taken</i></b></label>
               <label v-else id="counter" v-for="(count, preference) in poasStats[index]" :key="index + preference" width:150px> Opt. {{preference+1}}: {{count}}</label>
+              <p v-if="entry.wikiLink"> Wikipedia Page: <a :href = "entry.wikiLink" > {{entry.wikiLink}} </a></p>
               <p v-if="entry.wikiDescription"> {{entry.wikiDescription}}... </p>
               <br><br>
               <h5>What is the title of the (auto)biography? (limit of 100 characters)</h5>
@@ -97,8 +98,9 @@ export default {
         name:'',
         //middleName:'',
         //lastName:'',
-        wikiDescription: '',
-        biography: '',
+        wikiLink:'',
+        wikiDescription:'',
+        biography:'',
         statement:'',
         preference: this.lotteryEntries.length + 1
       });

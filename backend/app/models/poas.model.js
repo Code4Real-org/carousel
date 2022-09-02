@@ -4,11 +4,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    wikiLink: {
-      type: Sequelize.STRING,
-    },
     wikiPageID: {
       type: Sequelize.INTEGER
+    },
+    wikiLink: {
+      type: Sequelize.STRING,
     },
     wikiDescription: {
       type: Sequelize.STRING
