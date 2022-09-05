@@ -83,6 +83,16 @@ async function initial() {
   await assignment.addAssigner([2]);
   await assignment.addAssigner([3]);
 
+
+  nonexistentPoas = await Poas.create({
+    id: 1,
+    name: "*** POAS NOT FOUND ***",
+    wikiPageId: 0,
+    wikiLink: " ",
+    wikiDescription: "Check spelling and use the most commonly known name for the POAS",
+    count: 1
+  });
+
   /*
   poas1 = await Poas.create({
     id: 1,

@@ -30,21 +30,22 @@ exports.create = async (req, res) => {
 
 // Retrieve or create a new POAS entry in the database.
 exports.findOrCreate = async (name) => {
-  const results = await wiki().page(name);
-  const summary = await results.summary();
-  const pDescription = summary.substring(0,125);
-  const pName = results.title.trim();
-  const pageID  = results.pageid;
-  const pLink = results.fullurl;
-  //middle = middle? middle.trim() : '';
-  //last = last.trim();
-
-  //const mi = (middle == '')? '' : middle[0];
-  //const fn = first.replace(/[.-\s]+/g, '');
-  //const ln = last.replace(/[.-\s]+/g, '');
-  //let normalized = fn.toLowerCase() + '-' + mi.toLowerCase() + '-' + ln.toLowerCase();
-  //let normalized = fn.toLowerCase() + '-' + '-' + ln.toLowerCase();
   try {
+    const results = await wiki().page(name);
+    const summary = await results.summary();
+    const pDescription = summary.substring(0,125);
+    const pName = results.title.trim();
+    const pageID  = results.pageid;
+    const pLink = results.fullurl;
+    //middle = middle? middle.trim() : '';
+    //last = last.trim();
+
+    //const mi = (middle == '')? '' : middle[0];
+    //const fn = first.replace(/[.-\s]+/g, '');
+    //const ln = last.replace(/[.-\s]+/g, '');
+    //let normalized = fn.toLowerCase() + '-' + mi.toLowerCase() + '-' + ln.toLowerCase();
+    //let normalized = fn.toLowerCase() + '-' + '-' + ln.toLowerCase();
+
     //let poases = await Poas.findAll({where: { normalizedName: normalized }});
 
     let poases = await Poas.findAll({where: { wikiPageID: pageID }});
@@ -93,7 +94,11 @@ exports.findOrCreate = async (name) => {
 
     return(poas);
   } catch(err) {
-    console.log(err.message || "Some error occurred while getting a POAS.");
+      console.log(err.message || "Some error occurred while getting a POAS.");
+      if (err.message == "No article found") {
+        let poas = await Poas.findByPk(1);
+        return(poas);
+      }
   }
 };
 

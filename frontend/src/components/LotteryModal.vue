@@ -13,7 +13,7 @@
                 <button v-if="!isLocked" :disabled="delDisabled" @click="delEntry(index)">delete</button>
                 <label v-if="(index + 1 == poasAssigned)" id="assigned">assigned</label>
               </h5>
-              <input type="text" placeholder="name" id="name" v-model.trim.lazy="entry.name" required maxlength="100" :disabled="isLocked">
+              <input v-bind:class="{invalidPoas: entry.name == '*** POAS NOT FOUND ***'}" type="text" placeholder="name" id="name" v-model.trim.lazy="entry.name" required maxlength="100" :disabled="isLocked">
               <!--<input type="text" placeholder="Middle name" id="mname" v-model.trim.lazy="entry.middleName" required maxlength="32" :disabled="isLocked">
               <input type="text" placeholder="Last name" id="lname" v-model.trim.lazy="entry.lastName" required maxlength="64" :disabled="isLocked">-->
               <label v-if="poasStats[index] && poasStats[index][0] == -1" id="counter" width:50px><b><i>taken</i></b></label>
@@ -90,7 +90,7 @@ export default {
       let state = this.activeAssignment.state;
       let poasAssigned = this.poasAssigned;
       return (state > 0 && !(state == 2 && poasAssigned == 0));
-    }
+    },
   },
   methods: {
     addEntry() {
@@ -181,5 +181,9 @@ export default {
 #id{
    font-size: 1.9em;
    background-color: #417a63;
+}
+
+.invalidPoas {
+  color: red;
 }
 </style>
