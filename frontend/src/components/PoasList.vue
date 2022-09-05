@@ -47,9 +47,7 @@ export default {
     return {
       fields: [
         'index',
-        { key: 'firstName', sortable: true},
-        'middleName',
-        { key: 'lastName', sortable: true}
+        { key: 'name', sortable: true},
       ],
       selectMode: 'single',
       poases: [],
