@@ -87,7 +87,7 @@
           </template>
           <!-- Another virtual composite column -->
           <template #cell(poas)="data">
-            {{ data.item.poa? data.item.poa.firstName + ' ' + data.item.poa.middleName + ' ' + data.item.poa.lastName :
+            {{ data.item.poa? data.item.poa.name :
               data.item.lotteries.length + ' entries' }}
           </template>
           <!-- Another virtual composite column -->
@@ -169,7 +169,7 @@ export default {
         },
         { key: 'poas', label: 'POAS Assigned', sortable: true,
           sortByFormatted: (value, key, item) => {
-            return item.poa?`${item.poa.lastName}`:``
+            return item.poa?`${item.poa.name}`:``
           }
         }, 'show_details'
       ],
