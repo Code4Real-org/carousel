@@ -48,10 +48,16 @@ exports.findOrCreate = async (name) => {
 
     //let poases = await Poas.findAll({where: { normalizedName: normalized }});
 
-    let poases = await Poas.findAll({where: { wikiPageID: pageID }});
     let poas = null;
-    const len = poases.length;
 
+    //ambiguous entry
+    if (pName.includes("(disambiguation)")) {
+      poas = await Poas.findByPk(2);
+      return(poas);
+    }
+
+    let poases = await Poas.findAll({where: { wikiPageID: pageID }});
+    const len = poases.length;
 
     for (let i = 0; i < len; i++) {
       p = poases[i];

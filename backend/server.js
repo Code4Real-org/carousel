@@ -90,7 +90,16 @@ async function initial() {
     wikiPageId: 0,
     wikiLink: " ",
     wikiDescription: "Check spelling and use the most commonly known name for the POAS",
-    count: 1
+    count: 0
+  });
+
+  ambiguousPoas = await Poas.create({
+    id: 2,
+    name: "*** AMBIGUOUS ENTRY ***",
+    wikiPageId: 0,
+    wikiLink: " ",
+    wikiDescription: "Please use the most commonly known name for the person (use the title of the person's Wikipedia page)",
+    count: 0
   });
 
   /*
