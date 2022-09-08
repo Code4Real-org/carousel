@@ -37,6 +37,7 @@ exports.findOrCreate = async (name) => {
     const pName = results.title.trim();
     const pageID  = results.pageid;
     const pLink = results.fullurl;
+    const pageProperties = results.pageprops;
     //middle = middle? middle.trim() : '';
     //last = last.trim();
 
@@ -51,7 +52,7 @@ exports.findOrCreate = async (name) => {
     let poas = null;
 
     //ambiguous entry
-    if (pName.includes("(disambiguation)")) {
+    if (pName.includes("disambiguation") || pageProperties?.disambiguation !== undefined) {
       poas = await Poas.findByPk(2);
       return(poas);
     }
