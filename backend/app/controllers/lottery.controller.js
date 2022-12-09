@@ -26,7 +26,7 @@ exports.create = async (req, res) => {
   // Save Lottery in the database
   try {
     const assignment = await Assignment.findByPk(assignmentId);
-    user_assignment = await UserAssignments.findOne({where: {studentId: studentId, assignmentId: assignmentId}});
+    let user_assignment = await UserAssignments.findOne({where: {studentId: studentId, assignmentId: assignmentId}});
     const poas = await user_assignment.getPoa();
     const user = await User.findByPk(uid);
     let isTeacher = false;
@@ -47,7 +47,7 @@ exports.create = async (req, res) => {
     }
 
     let old_lotteries = await user_assignment.getLotteries();
-    for (entry of old_lotteries) {
+    for (let entry of old_lotteries) {
       let poas = await poasController.findOrCreate(entry.name);
       await paController.delLottery(assignmentId, poas, entry.preference, entry);
       await entry.destroy({ force: true });
