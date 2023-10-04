@@ -33,11 +33,10 @@ http.interceptors.request.use (
 http.interceptors.response.use((response) => {
   return response
 }, function (error) {
-  VueSimpleAlert.alert("Please access the correct dashboard.");
   if (error.response && error.response.status === 401) {
     router.push('/login');
   } else {
-    VueSimpleAlert.alert("Please access the correct dashboard.");
+    VueSimpleAlert.alert("Login failed.");
     router.push('/');
   }
   return Promise.reject(error);
