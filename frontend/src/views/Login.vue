@@ -67,7 +67,7 @@ export default {
     },
     onFailure(error) {
       console.log("Google sign in failed: " + error)
-      this.$alert("Hello Vue Simple Alert.");
+      this.$alert("Google sign in failed.");
       
     },
     toggleForm() {
