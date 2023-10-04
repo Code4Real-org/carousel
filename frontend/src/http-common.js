@@ -34,8 +34,12 @@ http.interceptors.response.use((response) => {
   return response
 }, function (error) {
   VueSimpleAlert.alert("Please access the correct dashboard.");
-
-  router.push('/');
+  if (error.response && error.response.status === 401) {
+    router.push('/login');
+  } else {
+    VueSimpleAlert.alert("Please access the correct dashboard.");
+    router.push('/');
+  }
   return Promise.reject(error);
 })
 
