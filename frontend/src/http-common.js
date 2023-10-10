@@ -36,7 +36,7 @@ http.interceptors.response.use((response) => {
   if (error.response && error.response.status === 401) {
     router.push('/login');
   } else {
-    VueSimpleAlert.alert("Login failed.");
+    VueSimpleAlert.alert("HTTP Request Error.");
     router.push('/');
   }
   return Promise.reject(error);
