@@ -6,6 +6,7 @@
             <h3>{{ activeAssignment.title }}</h3>
             <span>{{ activeAssignment.createdAt | formatDate }}</span>
             <p>{{ activeAssignment.description }}</p>
+            <a href="https://www.code4real.org/projects/student-instructions/" target="_blank">Instructions on how to enter POAS choices</a>
           </div>
           <b-form @submit.prevent>
             <div v-for="(entry, index) in lotteryEntries" :key="entry.id" class="comment">
